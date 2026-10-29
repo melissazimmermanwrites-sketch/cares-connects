@@ -1,0 +1,27 @@
+<div class="page">
+  <h1>Account</h1>
+  <p class="muted">Signed in as {{ auth.user()?.name }} ({{ auth.user()?.email }})</p>
+
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h2>Change password</h2>
+    <mat-form-field appearance="outline">
+      <mat-label>Current password</mat-label>
+      <input matInput type="password" formControlName="currentPassword" autocomplete="current-password" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>New password</mat-label>
+      <input matInput type="password" formControlName="newPassword" autocomplete="new-password" />
+      <mat-hint>At least 10 characters. A short phrase works well.</mat-hint>
+      @if (form.controls.newPassword.hasError('minlength')) { <mat-error>Use at least 10 characters</mat-error> }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Confirm new password</mat-label>
+      <input matInput type="password" formControlName="confirm" autocomplete="new-password" />
+    </mat-form-field>
+    @if (form.hasError('mismatch') && form.controls.confirm.touched) {
+      <p class="error-text">The new passwords don't match.</p>
+    }
+    @if (error(); as message) { <p class="error-text" role="alert">{{ message }}</p> }
+    <button mat-flat-button type="submit" [disabled]="busy()">Change password</button>
+  </form>
+</div>

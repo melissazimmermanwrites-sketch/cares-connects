@@ -1,0 +1,239 @@
+// Angular Material 3 theme + CARES Connects brand tokens.
+// Brand colors match caresconnects.org; Material components use the azure palette as the closest fit.
+// Learn more: https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+:root {
+  --cc-navy: #0d3b66;
+  --cc-navy-deep: #003868;
+  --cc-cyan: #00b6e3;
+  --cc-sky: #5bc0de;
+  --cc-blue: #1a7fc1;
+  --cc-green: #6ab04c;
+  --cc-yellow: #ffc61e;
+  --cc-orange: #ff6b4a;
+  --cc-gray-band: #f5f7fa;
+  // Text-safe variants of the brand colors (WCAG AA 4.5:1 on white / the gray band).
+  --cc-on-orange: #0a2a4a;
+  --cc-blue-text: #1669a3;
+  --cc-orange-text: #b33d1e;
+  --cc-ink: #1f2a37;
+  --cc-heading-font: 'Montserrat', 'Nunito Sans', sans-serif;
+  --cc-rainbow: linear-gradient(
+    90deg,
+    var(--cc-navy-deep) 0 16.66%,
+    var(--cc-blue) 16.66% 33.33%,
+    var(--cc-sky) 33.33% 50%,
+    var(--cc-green) 50% 66.66%,
+    var(--cc-yellow) 66.66% 83.33%,
+    var(--cc-orange) 83.33% 100%
+  );
+}
+
+html {
+  height: 100%;
+  color-scheme: light;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: (
+        plain-family: 'Nunito Sans',
+        brand-family: 'Montserrat',
+      ),
+      density: 0,
+    )
+  );
+}
+
+body {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-large);
+  margin: 0;
+  min-height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--mat-sys-primary);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+h1 {
+  font: var(--mat-sys-headline-medium);
+}
+
+h2 {
+  font: var(--mat-sys-title-large);
+}
+
+.page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.muted {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+// Small pill used for county / status labels.
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font: var(--mat-sys-label-medium);
+  background: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+  white-space: nowrap;
+
+  &.warn {
+    background: var(--mat-sys-tertiary-container);
+    color: var(--mat-sys-on-tertiary-container);
+  }
+
+  &.ok {
+    background: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  &.error {
+    background: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+  }
+}
+
+.error-text {
+  color: var(--mat-sys-error);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.full-width {
+  width: 100%;
+}
+
+// ---------- Public-site brand pieces (caresconnects.org look) ----------
+
+.cc-heading {
+  font-family: var(--cc-heading-font);
+  font-weight: 800;
+  color: var(--cc-navy);
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+}
+
+// Short six-color bar that sits above section headings.
+.cc-rainbow {
+  display: block;
+  width: 120px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--cc-rainbow);
+  margin-bottom: 20px;
+}
+
+// Full-width version used as a section divider.
+.cc-rainbow-strip {
+  height: 8px;
+  background: var(--cc-rainbow);
+}
+
+// Pill buttons used for the main calls to action.
+.cc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 52px;
+  padding: 0 32px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font-family: var(--cc-heading-font);
+  font-weight: 700;
+  font-size: 17px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 120ms,
+    box-shadow 120ms;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--cc-navy-deep);
+    outline-offset: 3px;
+  }
+
+  &.orange {
+    background: var(--cc-orange);
+    color: var(--cc-on-orange);
+    box-shadow: 0 10px 24px -8px rgb(255 107 74 / 60%);
+  }
+
+  &.yellow {
+    background: var(--cc-yellow);
+    color: var(--cc-navy);
+  }
+
+  &.outline-light {
+    border-color: #fff;
+    color: #fff;
+  }
+
+  &.small {
+    min-height: 44px;
+    padding: 0 22px;
+    font-size: 15px;
+  }
+}
+
+// Visible keyboard focus everywhere on the public site.
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--cc-blue-text);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

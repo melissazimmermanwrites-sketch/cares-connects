@@ -1,0 +1,78 @@
+<a class="skip" href="#main">Skip to main content</a>
+
+<aside class="crisis" aria-label="Crisis support">
+  <div class="inner">
+    <span class="need">Need help right now?</span>
+    <a href="tel:988" class="call">Call or text 988</a>
+    <span class="line">988 Suicide &amp; Crisis Lifeline: free, confidential, 24/7</span>
+  </div>
+</aside>
+
+<header class="nav">
+  <div class="inner">
+    <a routerLink="/" class="brand" aria-label="CARES Connects home">
+      @if (logo) {
+        <img [src]="logo" alt="CARES Connects" height="44" />
+      } @else {
+        <span class="wordmark">
+          <span class="rings" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="words"><strong>CARES</strong><strong>CONNECTS</strong></span>
+        </span>
+      }
+    </a>
+
+    <nav class="links" [class.open]="menuOpen()" aria-label="Main">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a [href]="links.about">About</a>
+      <a [href]="links.contact">Contact</a>
+      <a [href]="links.donate">Donate</a>
+      <a routerLink="/find" class="cc-btn orange small find">Find Help Now</a>
+    </nav>
+
+    <button type="button" class="menu-toggle" (click)="menuOpen.set(!menuOpen())"
+            [attr.aria-expanded]="menuOpen()" aria-label="Menu">
+      <mat-icon>{{ menuOpen() ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <router-outlet />
+</main>
+
+<footer class="footer">
+  <div class="inner grid">
+    <div class="about">
+      <p class="org">Community Alliance of Resources Education and Support is a 501(c)(3) nonprofit organization.</p>
+      <div class="social">
+        <a [href]="links.instagram" target="_blank" rel="noopener">Instagram<span class="visually-hidden"> (opens in a new tab)</span></a>
+        <a [href]="links.linkedin" target="_blank" rel="noopener">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>
+      </div>
+    </div>
+    <div>
+      <h2>Quick Links</h2>
+      <a routerLink="/">Home</a>
+      <a routerLink="/find">Find help</a>
+      <a [href]="links.about">About us</a>
+      <a [href]="links.contact">Contact us</a>
+      <a [href]="links.blog">Blog</a>
+    </div>
+    <div>
+      <h2>Get Help</h2>
+      <a href="tel:988">Call or text 988</a>
+      <a href="tel:211">Dial 211</a>
+      <a href="tel:911">Emergency: 911</a>
+    </div>
+    <div>
+      <h2>Contact Us</h2>
+      <span class="place"><mat-icon inline aria-hidden="true">location_on</mat-icon> California, US</span>
+      <a [href]="links.listYourOrganization" target="_blank" rel="noopener">List your organization<span class="visually-hidden"> (opens in a new tab)</span></a>
+    </div>
+  </div>
+  <div class="inner legal">
+    <span>Listings point you in the right direction, but hours and services change. Please call ahead.</span>
+    <span>© {{ year }} CARES Connects · <a routerLink="/admin">Staff sign in</a></span>
+  </div>
+</footer>
+
+<app-chat-widget />

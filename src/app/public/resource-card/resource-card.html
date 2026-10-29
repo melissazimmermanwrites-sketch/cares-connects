@@ -1,0 +1,26 @@
+<article class="card">
+  <div class="top">
+    <h2><a [routerLink]="['/resource', resource().id]">{{ resource().name }}</a></h2>
+    <span class="pill">{{ area() }}</span>
+  </div>
+  @if (summary()) {
+    <p class="summary">{{ summary() }}</p>
+  }
+  @if (resource().address) {
+    <p class="address muted"><mat-icon inline aria-hidden="true">location_on</mat-icon> {{ resource().address }}</p>
+  }
+  <div class="actions">
+    @if (tel(); as href) {
+      <a mat-flat-button [href]="href"><mat-icon>call</mat-icon><span class="visually-hidden">Call {{ resource().name }} at </span>{{ resource().phone }}</a>
+    } @else if (resource().phone) {
+      <span class="muted">{{ resource().phone }}</span>
+    }
+    @if (resource().website) {
+      <a mat-stroked-button [href]="resource().website" target="_blank" rel="noopener"><mat-icon>language</mat-icon>Website<span class="visually-hidden"> for {{ resource().name }} (opens in a new tab)</span></a>
+    }
+    @if (map(); as href) {
+      <a mat-stroked-button [href]="href" target="_blank" rel="noopener"><mat-icon>directions</mat-icon>Directions<span class="visually-hidden"> to {{ resource().name }} (opens in a new tab)</span></a>
+    }
+    <a mat-button [routerLink]="['/resource', resource().id]">Details<span class="visually-hidden"> about {{ resource().name }}</span></a>
+  </div>
+</article>

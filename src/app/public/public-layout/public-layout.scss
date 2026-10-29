@@ -1,0 +1,264 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: var(--cc-ink);
+  background: #fff;
+}
+
+.inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+
+  &:focus {
+    left: 16px;
+    top: 8px;
+    z-index: 100;
+    padding: 8px 12px;
+    background: #fff;
+  }
+}
+
+.crisis {
+  background: var(--cc-navy-deep);
+  color: #fff;
+  font-size: 14px;
+
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px 40px;
+    min-height: 48px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .need {
+    font-weight: 700;
+  }
+
+  .call {
+    font-family: var(--cc-heading-font);
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--cc-yellow);
+    text-decoration: none;
+  }
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--cc-cyan);
+
+  .inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 64px;
+  }
+}
+
+.brand {
+  text-decoration: none;
+  margin-right: auto;
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Simple overlapping-circle mark; swap for the real logo via IMAGES.logo.
+.rings {
+  position: relative;
+  width: 34px;
+  height: 34px;
+
+  i {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 4px solid;
+  }
+
+  i:nth-child(1) {
+    left: 0;
+    top: 0;
+    border-color: var(--cc-yellow);
+  }
+
+  i:nth-child(2) {
+    right: 0;
+    top: 4px;
+    border-color: var(--cc-orange);
+  }
+
+  i:nth-child(3) {
+    left: 6px;
+    bottom: 0;
+    border-color: var(--cc-navy-deep);
+  }
+}
+
+.words {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  font-family: var(--cc-heading-font);
+  font-size: 15px;
+  color: var(--cc-navy-deep);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  a:not(.cc-btn) {
+    color: var(--cc-navy-deep);
+    text-decoration: none;
+    font-size: 16px;
+
+    &:hover,
+    &.active {
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
+  }
+}
+
+.menu-toggle {
+  display: none;
+  border: 0;
+  background: transparent;
+  color: var(--cc-navy-deep);
+  padding: 8px;
+  cursor: pointer;
+}
+
+main {
+  flex: 1;
+}
+
+.footer {
+  color: #fff;
+  // Deep-blue gradient keeps white text above 6.7:1 (the brand cyan is too light for white text).
+  background: linear-gradient(120deg, #0b5f97 0%, #084b7d 50%, var(--cc-navy-deep) 100%);
+  padding: 56px 0 24px;
+
+  a {
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  h2 {
+    font-family: var(--cc-heading-font);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 32px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.org {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.5;
+  max-width: 360px;
+}
+
+.social {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.place {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legal {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgb(255 255 255 / 25%);
+  font-size: 14px;
+  color: #fff;
+}
+
+@media (max-width: 860px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 12px 20px 20px;
+    background: var(--cc-cyan);
+    box-shadow: 0 12px 20px -12px rgb(0 0 0 / 30%);
+
+    &.open {
+      display: flex;
+    }
+
+    a:not(.cc-btn) {
+      padding: 10px 0;
+    }
+
+    .find {
+      margin-top: 8px;
+    }
+  }
+
+  .crisis .line {
+    display: none;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about {
+    grid-column: 1 / -1;
+  }
+}

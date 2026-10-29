@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1793240996142,
+      "tag": "0000_damp_firebird",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1793243719382,
+      "tag": "0001_abnormal_network",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1793246573058,
+      "tag": "0002_rainy_zemo",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1793246586361,
+      "tag": "0003_seed_counties",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1793246618346,
+      "tag": "0004_secret_ink",
+      "breakpoints": true
+    }
+  ]
+}

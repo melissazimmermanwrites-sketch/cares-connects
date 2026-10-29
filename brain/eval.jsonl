@@ -1,0 +1,680 @@
+{"q": "trying to get community services for my family", "a": "[need:community-services]"}
+{"q": "could you point me to a community center", "a": "[need:community-services]"}
+{"q": "anywhere with a resource center", "a": "[need:community-services]"}
+{"q": "anywhere with general help", "a": "[need:community-services]"}
+{"q": "anywhere with community services", "a": "[need:community-services]"}
+{"q": "anywhere with counseling", "a": "[need:mental-health]"}
+{"q": "could you point me to therapy", "a": "[need:mental-health]"}
+{"q": "could you point me to a therapist", "a": "[need:mental-health]"}
+{"q": "trying to get mental health help for my family", "a": "[need:mental-health]"}
+{"q": "anywhere with help with depression", "a": "[need:mental-health]"}
+{"q": "could you point me to help with anxiety", "a": "[need:mental-health]"}
+{"q": "trying to get a counselor for my family", "a": "[need:mental-health]"}
+{"q": "trying to get a support group for my family", "a": "[need:mental-health]"}
+{"q": "could you point me to mental health services", "a": "[need:mental-health]"}
+{"q": "trying to get medication support for my family", "a": "[need:mental-health]"}
+{"q": "could you point me to free counseling", "a": "[need:mental-health]"}
+{"q": "anywhere with family support group", "a": "[need:mental-health]"}
+{"q": "trying to get family-to-family for my family", "a": "[need:mental-health]"}
+{"q": "trying to get youth counseling for my family", "a": "[need:mental-health]"}
+{"q": "trying to get wraparound for my family", "a": "[need:mental-health]"}
+{"q": "could you point me to county mental health", "a": "[need:mental-health]"}
+{"q": "trying to get children mental health for my family", "a": "[need:mental-health]"}
+{"q": "anywhere with mental health", "a": "[need:mental-health]"}
+{"q": "so i feel depressed, what now", "a": "[need:mental-health]"}
+{"q": "so i am stressed all the time, what now", "a": "[need:mental-health]"}
+{"q": "so i have anxiety, what now", "a": "[need:mental-health]"}
+{"q": "so i feel alone, what now", "a": "[need:mental-health]"}
+{"q": "so my teenager is struggling, what now", "a": "[need:mental-health]"}
+{"q": "anywhere with hospice", "a": "[need:hospice]"}
+{"q": "could you point me to grief support", "a": "[need:hospice]"}
+{"q": "anywhere with end of life care", "a": "[need:hospice]"}
+{"q": "anywhere with palliative care", "a": "[need:hospice]"}
+{"q": "trying to get a grief group for my family", "a": "[need:hospice]"}
+{"q": "anywhere with help after a death in the family", "a": "[need:hospice]"}
+{"q": "could you point me to bereavement", "a": "[need:hospice]"}
+{"q": "could you point me to widows", "a": "[need:hospice]"}
+{"q": "trying to get suicide loss for my family", "a": "[need:hospice]"}
+{"q": "anywhere with end of life", "a": "[need:hospice]"}
+{"q": "trying to get terminal illness for my family", "a": "[need:hospice]"}
+{"q": "anywhere with childrens grief", "a": "[need:hospice]"}
+{"q": "trying to get art therapy for my family", "a": "[need:hospice]"}
+{"q": "could you point me to free grief groups", "a": "[need:hospice]"}
+{"q": "trying to get hospice for my family", "a": "[need:hospice]"}
+{"q": "my husband is dying and i dont know what to do", "a": "[need:hospice]"}
+{"q": "so my mom just passed away, what now", "a": "[need:hospice]"}
+{"q": "i am grieving and i dont know what to do", "a": "[need:hospice]"}
+{"q": "trying to get immigration help for my family", "a": "[need:immigration]"}
+{"q": "anywhere with an immigration lawyer", "a": "[need:immigration]"}
+{"q": "trying to get help with citizenship for my family", "a": "[need:immigration]"}
+{"q": "could you point me to daca help", "a": "[need:immigration]"}
+{"q": "anywhere with asylum help", "a": "[need:immigration]"}
+{"q": "trying to get help with my green card for my family", "a": "[need:immigration]"}
+{"q": "anywhere with immigration legal services", "a": "[need:immigration]"}
+{"q": "trying to get undocumented friendly for my family", "a": "[need:immigration]"}
+{"q": "could you point me to know your rights", "a": "[need:immigration]"}
+{"q": "could you point me to removal defense", "a": "[need:immigration]"}
+{"q": "trying to get naturalization for my family", "a": "[need:immigration]"}
+{"q": "anywhere with daca", "a": "[need:immigration]"}
+{"q": "could you point me to u visa", "a": "[need:immigration]"}
+{"q": "could you point me to t visa", "a": "[need:immigration]"}
+{"q": "anywhere with unaccompanied minors", "a": "[need:immigration]"}
+{"q": "anywhere with undocumented", "a": "[need:immigration]"}
+{"q": "trying to get detention help for my family", "a": "[need:immigration]"}
+{"q": "anywhere with asylum", "a": "[need:immigration]"}
+{"q": "anywhere with citizenship", "a": "[need:immigration]"}
+{"q": "trying to get spanish speaking for my family", "a": "[need:immigration]"}
+{"q": "anywhere with rapid response", "a": "[need:immigration]"}
+{"q": "anywhere with daca renewal", "a": "[need:immigration]"}
+{"q": "anywhere with green card", "a": "[need:immigration]"}
+{"q": "anywhere with tps", "a": "[need:immigration]"}
+{"q": "trying to get immigration for my family", "a": "[need:immigration]"}
+{"q": "so i am undocumented, what now", "a": "[need:immigration]"}
+{"q": "i need help with my immigration case and i dont know what to do", "a": "[need:immigration]"}
+{"q": "so i want to become a citizen, what now", "a": "[need:immigration]"}
+{"q": "could you point me to services in spanish", "a": "[need:latino]"}
+{"q": "trying to get spanish speaking help for my family", "a": "[need:latino]"}
+{"q": "trying to get latino services for my family", "a": "[need:latino]"}
+{"q": "trying to get help in spanish for my family", "a": "[need:latino]"}
+{"q": "trying to get latino for my family", "a": "[need:latino]"}
+{"q": "anywhere with housing", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with a shelter", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get a place to stay for my family", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with a place to sleep", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to somewhere to sleep", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to rent help", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get help paying rent for my family", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get affordable housing for my family", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with a homeless shelter", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with a bed tonight", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to an apartment", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get transitional housing for my family", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get coordinated entry for my family", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with housing search", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get homeless families for my family", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with permanent supportive housing", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get rapid rehousing for my family", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with homeless prevention", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to rental assistance", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with security deposit", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with housing navigation", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with rent arrears", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with families with children", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with homelessness prevention", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get homeless outreach for my family", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with shelter referral", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get street outreach for my family", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with formerly homeless", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to serna village", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to interim housing", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to homeownership", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to sweat equity", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to first-time homebuyer", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with continuum of care", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with hmis", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to section 8", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to low income apartments", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with housing developer", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get county gateway for my family", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with housing authority", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with housing choice voucher", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get vash for my family", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get housing placement for my family", "a": "[need:shelter-and-housing]"}
+{"q": "could you point me to referral-based", "a": "[need:shelter-and-housing]"}
+{"q": "anywhere with shelter and housing", "a": "[need:shelter-and-housing]"}
+{"q": "i am homeless and i dont know what to do", "a": "[need:shelter-and-housing]"}
+{"q": "i have nowhere to sleep and i dont know what to do", "a": "[need:shelter-and-housing]"}
+{"q": "so we got evicted, what now", "a": "[need:shelter-and-housing]"}
+{"q": "i am getting evicted and i dont know what to do", "a": "[need:shelter-and-housing]"}
+{"q": "i lost my apartment and i dont know what to do", "a": "[need:shelter-and-housing]"}
+{"q": "so i am sleeping in my car, what now", "a": "[need:shelter-and-housing]"}
+{"q": "so i cant pay my rent, what now", "a": "[need:shelter-and-housing]"}
+{"q": "we have nowhere to go tonight and i dont know what to do", "a": "[need:shelter-and-housing]"}
+{"q": "trying to get a mentor for my family", "a": "[need:mentorship]"}
+{"q": "could you point me to a mentor for my kid", "a": "[need:mentorship]"}
+{"q": "could you point me to youth mentoring", "a": "[need:mentorship]"}
+{"q": "anywhere with big brothers big sisters", "a": "[need:mentorship]"}
+{"q": "could you point me to school-based mentoring", "a": "[need:mentorship]"}
+{"q": "anywhere with ages 8-18", "a": "[need:mentorship]"}
+{"q": "anywhere with one-to-one mentoring", "a": "[need:mentorship]"}
+{"q": "anywhere with casa", "a": "[need:mentorship]"}
+{"q": "could you point me to court appointed special advocates", "a": "[need:mentorship]"}
+{"q": "could you point me to volunteer mentors", "a": "[need:mentorship]"}
+{"q": "anywhere with dependency court", "a": "[need:mentorship]"}
+{"q": "anywhere with mentorship", "a": "[need:mentorship]"}
+{"q": "anywhere with help after prison", "a": "[need:rehabilitation]"}
+{"q": "trying to get reentry help for my family", "a": "[need:rehabilitation]"}
+{"q": "could you point me to help on probation", "a": "[need:rehabilitation]"}
+{"q": "could you point me to record clearance", "a": "[need:rehabilitation]"}
+{"q": "trying to get help getting my record expunged for my family", "a": "[need:rehabilitation]"}
+{"q": "anywhere with help after jail", "a": "[need:rehabilitation]"}
+{"q": "could you point me to formerly incarcerated", "a": "[need:rehabilitation]"}
+{"q": "could you point me to parole", "a": "[need:rehabilitation]"}
+{"q": "anywhere with probation", "a": "[need:rehabilitation]"}
+{"q": "could you point me to family reunification", "a": "[need:rehabilitation]"}
+{"q": "anywhere with employment barriers", "a": "[need:rehabilitation]"}
+{"q": "could you point me to felony reduction", "a": "[need:rehabilitation]"}
+{"q": "anywhere with day reporting center", "a": "[need:rehabilitation]"}
+{"q": "could you point me to rehabilitation", "a": "[need:rehabilitation]"}
+{"q": "i just got out of prison and i dont know what to do", "a": "[need:rehabilitation]"}
+{"q": "so i am on parole, what now", "a": "[need:rehabilitation]"}
+{"q": "so i have a record and cant find work, what now", "a": "[need:rehabilitation]"}
+{"q": "could you point me to help with my pet", "a": "[need:pet-health-and-rescue]"}
+{"q": "anywhere with a low cost vet", "a": "[need:pet-health-and-rescue]"}
+{"q": "anywhere with pet food", "a": "[need:pet-health-and-rescue]"}
+{"q": "could you point me to a vet", "a": "[need:pet-health-and-rescue]"}
+{"q": "could you point me to animal rescue", "a": "[need:pet-health-and-rescue]"}
+{"q": "could you point me to help for my dog", "a": "[need:pet-health-and-rescue]"}
+{"q": "anywhere with help for my cat", "a": "[need:pet-health-and-rescue]"}
+{"q": "could you point me to pet health and rescue", "a": "[need:pet-health-and-rescue]"}
+{"q": "so my dog is sick and i cant afford a vet, what now", "a": "[need:pet-health-and-rescue]"}
+{"q": "i cant afford pet food and i dont know what to do", "a": "[need:pet-health-and-rescue]"}
+{"q": "could you point me to after school programs", "a": "[need:youth-activities]"}
+{"q": "trying to get summer camp for my family", "a": "[need:youth-activities]"}
+{"q": "trying to get activities for kids for my family", "a": "[need:youth-activities]"}
+{"q": "anywhere with youth sports", "a": "[need:youth-activities]"}
+{"q": "could you point me to teen programs", "a": "[need:youth-activities]"}
+{"q": "anywhere with things for my kids to do", "a": "[need:youth-activities]"}
+{"q": "trying to get stem for my family", "a": "[need:youth-activities]"}
+{"q": "could you point me to youth development", "a": "[need:youth-activities]"}
+{"q": "could you point me to camps", "a": "[need:youth-activities]"}
+{"q": "anywhere with recreation scholarship", "a": "[need:youth-activities]"}
+{"q": "trying to get fee assistance for my family", "a": "[need:youth-activities]"}
+{"q": "could you point me to youth enrichment", "a": "[need:youth-activities]"}
+{"q": "could you point me to after-school program", "a": "[need:youth-activities]"}
+{"q": "trying to get youth center for my family", "a": "[need:youth-activities]"}
+{"q": "anywhere with homework help", "a": "[need:youth-activities]"}
+{"q": "trying to get sports for my family", "a": "[need:youth-activities]"}
+{"q": "could you point me to arts", "a": "[need:youth-activities]"}
+{"q": "could you point me to boys and girls club", "a": "[need:youth-activities]"}
+{"q": "trying to get swim lessons for my family", "a": "[need:youth-activities]"}
+{"q": "could you point me to day camp", "a": "[need:youth-activities]"}
+{"q": "could you point me to low income students", "a": "[need:youth-activities]"}
+{"q": "could you point me to arts program", "a": "[need:youth-activities]"}
+{"q": "anywhere with youth activities", "a": "[need:youth-activities]"}
+{"q": "could you point me to volunteer opportunities", "a": "[need:donation-and-volunteer]"}
+{"q": "could you point me to a place to volunteer", "a": "[need:donation-and-volunteer]"}
+{"q": "could you point me to where to donate", "a": "[need:donation-and-volunteer]"}
+{"q": "trying to get somewhere to donate clothes for my family", "a": "[need:donation-and-volunteer]"}
+{"q": "trying to get donation and volunteer for my family", "a": "[need:donation-and-volunteer]"}
+{"q": "anywhere with a doctor", "a": "[need:medical-and-dental-health]"}
+{"q": "trying to get a free clinic for my family", "a": "[need:medical-and-dental-health]"}
+{"q": "anywhere with medical care", "a": "[need:medical-and-dental-health]"}
+{"q": "anywhere with a dentist", "a": "[need:medical-and-dental-health]"}
+{"q": "trying to get dental care for my family", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to health insurance", "a": "[need:medical-and-dental-health]"}
+{"q": "trying to get medi-cal for my family", "a": "[need:medical-and-dental-health]"}
+{"q": "trying to get a health clinic for my family", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to eye care", "a": "[need:medical-and-dental-health]"}
+{"q": "trying to get glasses for my family", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to a checkup", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to health care", "a": "[need:medical-and-dental-health]"}
+{"q": "trying to get free clinic for my family", "a": "[need:medical-and-dental-health]"}
+{"q": "anywhere with primary care", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to uninsured", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to dental", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to ophthalmology", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to medical", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to optometry", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to vision", "a": "[need:medical-and-dental-health]"}
+{"q": "anywhere with medi-cal enrollment", "a": "[need:medical-and-dental-health]"}
+{"q": "anywhere with covered california", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to street medicine", "a": "[need:medical-and-dental-health]"}
+{"q": "anywhere with immunizations", "a": "[need:medical-and-dental-health]"}
+{"q": "could you point me to family support groups", "a": "[need:medical-and-dental-health]"}
+{"q": "anywhere with womens health", "a": "[need:medical-and-dental-health]"}
+{"q": "trying to get pediatrics for my family", "a": "[need:medical-and-dental-health]"}
+{"q": "anywhere with vaccines", "a": "[need:medical-and-dental-health]"}
+{"q": "trying to get medical and dental health for my family", "a": "[need:medical-and-dental-health]"}
+{"q": "i am sick and have no insurance and i dont know what to do", "a": "[need:medical-and-dental-health]"}
+{"q": "so my tooth hurts, what now", "a": "[need:medical-and-dental-health]"}
+{"q": "i need to see a doctor and i dont know what to do", "a": "[need:medical-and-dental-health]"}
+{"q": "so i cant afford a doctor, what now", "a": "[need:medical-and-dental-health]"}
+{"q": "so i lost my glasses, what now", "a": "[need:medical-and-dental-health]"}
+{"q": "anywhere with clothes", "a": "[need:clothing]"}
+{"q": "trying to get clothing for my family", "a": "[need:clothing]"}
+{"q": "could you point me to free clothes", "a": "[need:clothing]"}
+{"q": "trying to get a coat for my family", "a": "[need:clothing]"}
+{"q": "could you point me to shoes", "a": "[need:clothing]"}
+{"q": "anywhere with work clothes", "a": "[need:clothing]"}
+{"q": "trying to get a clothing closet for my family", "a": "[need:clothing]"}
+{"q": "anywhere with clothing", "a": "[need:clothing]"}
+{"q": "so my kids need clothes, what now", "a": "[need:clothing]"}
+{"q": "so i need clothes for a job interview, what now", "a": "[need:clothing]"}
+{"q": "i need a winter coat and i dont know what to do", "a": "[need:clothing]"}
+{"q": "anywhere with veteran services", "a": "[need:veterans]"}
+{"q": "could you point me to va benefits help", "a": "[need:veterans]"}
+{"q": "could you point me to help for veterans", "a": "[need:veterans]"}
+{"q": "anywhere with help for a veteran", "a": "[need:veterans]"}
+{"q": "trying to get military family support for my family", "a": "[need:veterans]"}
+{"q": "trying to get american legion for my family", "a": "[need:veterans]"}
+{"q": "anywhere with benefits referrals", "a": "[need:veterans]"}
+{"q": "anywhere with military families", "a": "[need:veterans]"}
+{"q": "anywhere with vfw", "a": "[need:veterans]"}
+{"q": "trying to get combat veterans for my family", "a": "[need:veterans]"}
+{"q": "anywhere with va claims", "a": "[need:veterans]"}
+{"q": "anywhere with benefits assistance", "a": "[need:veterans]"}
+{"q": "anywhere with records retrieval", "a": "[need:veterans]"}
+{"q": "could you point me to veterans", "a": "[need:veterans]"}
+{"q": "so i am a veteran, what now", "a": "[need:veterans]"}
+{"q": "i served in the military and need help and i dont know what to do", "a": "[need:veterans]"}
+{"q": "my husband is a veteran and i dont know what to do", "a": "[need:veterans]"}
+{"q": "trying to get a job for my family", "a": "[need:job-assistance]"}
+{"q": "could you point me to work", "a": "[need:job-assistance]"}
+{"q": "anywhere with job training", "a": "[need:job-assistance]"}
+{"q": "trying to get resume help for my family", "a": "[need:job-assistance]"}
+{"q": "trying to get help finding work for my family", "a": "[need:job-assistance]"}
+{"q": "trying to get employment help for my family", "a": "[need:job-assistance]"}
+{"q": "anywhere with a job program", "a": "[need:job-assistance]"}
+{"q": "anywhere with career help", "a": "[need:job-assistance]"}
+{"q": "anywhere with job search help", "a": "[need:job-assistance]"}
+{"q": "anywhere with employment training", "a": "[need:job-assistance]"}
+{"q": "trying to get workforce development for my family", "a": "[need:job-assistance]"}
+{"q": "could you point me to youth employment", "a": "[need:job-assistance]"}
+{"q": "trying to get esl for my family", "a": "[need:job-assistance]"}
+{"q": "anywhere with free training", "a": "[need:job-assistance]"}
+{"q": "trying to get job placement for my family", "a": "[need:job-assistance]"}
+{"q": "could you point me to career counseling", "a": "[need:job-assistance]"}
+{"q": "could you point me to barriers to employment", "a": "[need:job-assistance]"}
+{"q": "trying to get job search for my family", "a": "[need:job-assistance]"}
+{"q": "anywhere with job readiness", "a": "[need:job-assistance]"}
+{"q": "trying to get career center for my family", "a": "[need:job-assistance]"}
+{"q": "trying to get job center for my family", "a": "[need:job-assistance]"}
+{"q": "trying to get wioa for my family", "a": "[need:job-assistance]"}
+{"q": "trying to get americas job center for my family", "a": "[need:job-assistance]"}
+{"q": "anywhere with dislocated workers", "a": "[need:job-assistance]"}
+{"q": "could you point me to certifications", "a": "[need:job-assistance]"}
+{"q": "trying to get on-the-job training for my family", "a": "[need:job-assistance]"}
+{"q": "anywhere with career technical education", "a": "[need:job-assistance]"}
+{"q": "anywhere with social enterprise", "a": "[need:job-assistance]"}
+{"q": "anywhere with job assistance", "a": "[need:job-assistance]"}
+{"q": "so i lost my job, what now", "a": "[need:job-assistance]"}
+{"q": "i am unemployed and i dont know what to do", "a": "[need:job-assistance]"}
+{"q": "i need to find work and i dont know what to do", "a": "[need:job-assistance]"}
+{"q": "i got laid off and i dont know what to do", "a": "[need:job-assistance]"}
+{"q": "anywhere with money help", "a": "[need:financial-aid]"}
+{"q": "trying to get cash assistance for my family", "a": "[need:financial-aid]"}
+{"q": "anywhere with help paying bills", "a": "[need:financial-aid]"}
+{"q": "could you point me to help with my electric bill", "a": "[need:financial-aid]"}
+{"q": "anywhere with utility help", "a": "[need:financial-aid]"}
+{"q": "could you point me to emergency money", "a": "[need:financial-aid]"}
+{"q": "could you point me to free tax help", "a": "[need:financial-aid]"}
+{"q": "could you point me to financial help", "a": "[need:financial-aid]"}
+{"q": "could you point me to help with bills", "a": "[need:financial-aid]"}
+{"q": "could you point me to free tax prep", "a": "[need:financial-aid]"}
+{"q": "could you point me to tax credits", "a": "[need:financial-aid]"}
+{"q": "anywhere with benefits enrollment", "a": "[need:financial-aid]"}
+{"q": "could you point me to general assistance", "a": "[need:financial-aid]"}
+{"q": "trying to get cash aid for my family", "a": "[need:financial-aid]"}
+{"q": "trying to get ebt for my family", "a": "[need:financial-aid]"}
+{"q": "trying to get free tax filing for my family", "a": "[need:financial-aid]"}
+{"q": "trying to get money management for my family", "a": "[need:financial-aid]"}
+{"q": "could you point me to budgeting", "a": "[need:financial-aid]"}
+{"q": "trying to get liheap for my family", "a": "[need:financial-aid]"}
+{"q": "trying to get energy bills for my family", "a": "[need:financial-aid]"}
+{"q": "anywhere with weatherization", "a": "[need:financial-aid]"}
+{"q": "trying to get shut-off prevention for my family", "a": "[need:financial-aid]"}
+{"q": "could you point me to financial coaching", "a": "[need:financial-aid]"}
+{"q": "trying to get united way for my family", "a": "[need:financial-aid]"}
+{"q": "trying to get welfare office for my family", "a": "[need:financial-aid]"}
+{"q": "could you point me to emergency cash", "a": "[need:financial-aid]"}
+{"q": "could you point me to emergency financial help", "a": "[need:financial-aid]"}
+{"q": "anywhere with shut-off notice", "a": "[need:financial-aid]"}
+{"q": "trying to get financial aid for my family", "a": "[need:financial-aid]"}
+{"q": "so my power is about to be shut off, what now", "a": "[need:financial-aid]"}
+{"q": "so i cant pay my bills, what now", "a": "[need:financial-aid]"}
+{"q": "i am behind on my utilities and i dont know what to do", "a": "[need:financial-aid]"}
+{"q": "so i need money for bills, what now", "a": "[need:financial-aid]"}
+{"q": "could you point me to domestic violence help", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to a domestic violence shelter", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to help leaving an abuser", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to a restraining order", "a": "[need:domestic-violence-ipv]"}
+{"q": "anywhere with safety planning", "a": "[need:domestic-violence-ipv]"}
+{"q": "trying to get help with an abusive relationship for my family", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to restraining orders", "a": "[need:domestic-violence-ipv]"}
+{"q": "anywhere with victim compensation", "a": "[need:domestic-violence-ipv]"}
+{"q": "trying to get stalking for my family", "a": "[need:domestic-violence-ipv]"}
+{"q": "trying to get teen dating violence for my family", "a": "[need:domestic-violence-ipv]"}
+{"q": "anywhere with victim advocacy", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to court accompaniment", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to criminal justice", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to domestic violence restraining order", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to dvro", "a": "[need:domestic-violence-ipv]"}
+{"q": "trying to get court forms for my family", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to confidential location", "a": "[need:domestic-violence-ipv]"}
+{"q": "could you point me to children welcome", "a": "[need:domestic-violence-ipv]"}
+{"q": "anywhere with domestic violence ipv", "a": "[need:domestic-violence-ipv]"}
+{"q": "my partner abuses me and i dont know what to do", "a": "[need:domestic-violence-ipv]"}
+{"q": "so i need to leave my abuser, what now", "a": "[need:domestic-violence-ipv]"}
+{"q": "so my ex is stalking me, what now", "a": "[need:domestic-violence-ipv]"}
+{"q": "i am afraid of my husband and i dont know what to do", "a": "[need:domestic-violence-ipv]"}
+{"q": "trying to get native american services for my family", "a": "[need:tribal]"}
+{"q": "trying to get tribal services for my family", "a": "[need:tribal]"}
+{"q": "trying to get indian health services for my family", "a": "[need:tribal]"}
+{"q": "anywhere with help for native american families", "a": "[need:tribal]"}
+{"q": "anywhere with native american", "a": "[need:tribal]"}
+{"q": "could you point me to indian health", "a": "[need:tribal]"}
+{"q": "trying to get tribal fqhc for my family", "a": "[need:tribal]"}
+{"q": "anywhere with urban indian health", "a": "[need:tribal]"}
+{"q": "anywhere with native american students", "a": "[need:tribal]"}
+{"q": "trying to get substance use recovery for my family", "a": "[need:tribal]"}
+{"q": "could you point me to shingle springs miwok", "a": "[need:tribal]"}
+{"q": "could you point me to tribal government", "a": "[need:tribal]"}
+{"q": "anywhere with miwok", "a": "[need:tribal]"}
+{"q": "anywhere with tribal", "a": "[need:tribal]"}
+{"q": "anywhere with foster youth services", "a": "[need:foster-youth]"}
+{"q": "trying to get help aging out of foster care for my family", "a": "[need:foster-youth]"}
+{"q": "anywhere with help for foster kids", "a": "[need:foster-youth]"}
+{"q": "anywhere with former foster youth help", "a": "[need:foster-youth]"}
+{"q": "anywhere with transition age youth", "a": "[need:foster-youth]"}
+{"q": "anywhere with ages 18-25", "a": "[need:foster-youth]"}
+{"q": "anywhere with students with disabilities", "a": "[need:foster-youth]"}
+{"q": "trying to get iep for my family", "a": "[need:foster-youth]"}
+{"q": "could you point me to ages 16-21", "a": "[need:foster-youth]"}
+{"q": "could you point me to college support", "a": "[need:foster-youth]"}
+{"q": "could you point me to former foster youth", "a": "[need:foster-youth]"}
+{"q": "anywhere with guardian scholars", "a": "[need:foster-youth]"}
+{"q": "trying to get higher education for my family", "a": "[need:foster-youth]"}
+{"q": "could you point me to independent living program", "a": "[need:foster-youth]"}
+{"q": "trying to get aging out for my family", "a": "[need:foster-youth]"}
+{"q": "anywhere with extended foster care", "a": "[need:foster-youth]"}
+{"q": "trying to get foster youth for my family", "a": "[need:foster-youth]"}
+{"q": "could you point me to help for trafficking survivors", "a": "[need:human-trafficking]"}
+{"q": "could you point me to human trafficking help", "a": "[need:human-trafficking]"}
+{"q": "could you point me to a trafficking hotline", "a": "[need:human-trafficking]"}
+{"q": "could you point me to human trafficking", "a": "[need:human-trafficking]"}
+{"q": "could you point me to labor trafficking", "a": "[need:human-trafficking]"}
+{"q": "trying to get foreign-born survivors for my family", "a": "[need:human-trafficking]"}
+{"q": "could you point me to commercially sexually exploited children", "a": "[need:human-trafficking]"}
+{"q": "could you point me to 24 hour hotline", "a": "[need:human-trafficking]"}
+{"q": "could you point me to human trafficking", "a": "[need:human-trafficking]"}
+{"q": "anywhere with disability services", "a": "[need:disability-support]"}
+{"q": "could you point me to help for my disabled son", "a": "[need:disability-support]"}
+{"q": "could you point me to autism services", "a": "[need:disability-support]"}
+{"q": "anywhere with developmental disability services", "a": "[need:disability-support]"}
+{"q": "trying to get services for people with disabilities for my family", "a": "[need:disability-support]"}
+{"q": "trying to get peer counseling for my family", "a": "[need:disability-support]"}
+{"q": "could you point me to developmental disabilities", "a": "[need:disability-support]"}
+{"q": "could you point me to autism", "a": "[need:disability-support]"}
+{"q": "anywhere with early start", "a": "[need:disability-support]"}
+{"q": "could you point me to intellectual disabilities", "a": "[need:disability-support]"}
+{"q": "could you point me to adaptive recreation", "a": "[need:disability-support]"}
+{"q": "anywhere with special needs recreation", "a": "[need:disability-support]"}
+{"q": "anywhere with adult day program", "a": "[need:disability-support]"}
+{"q": "trying to get community integration for my family", "a": "[need:disability-support]"}
+{"q": "could you point me to in-home care", "a": "[need:disability-support]"}
+{"q": "could you point me to children with disabilities", "a": "[need:disability-support]"}
+{"q": "trying to get ilc for my family", "a": "[need:disability-support]"}
+{"q": "trying to get cerebral palsy for my family", "a": "[need:disability-support]"}
+{"q": "anywhere with disability support", "a": "[need:disability-support]"}
+{"q": "anywhere with a ride", "a": "[need:transportation]"}
+{"q": "trying to get transportation for my family", "a": "[need:transportation]"}
+{"q": "anywhere with a ride to the doctor", "a": "[need:transportation]"}
+{"q": "trying to get bus passes for my family", "a": "[need:transportation]"}
+{"q": "could you point me to help getting around", "a": "[need:transportation]"}
+{"q": "anywhere with rides for seniors", "a": "[need:transportation]"}
+{"q": "trying to get paratransit for my family", "a": "[need:transportation]"}
+{"q": "anywhere with a ride to my appointment", "a": "[need:transportation]"}
+{"q": "could you point me to medical transportation", "a": "[need:transportation]"}
+{"q": "could you point me to senior transportation", "a": "[need:transportation]"}
+{"q": "trying to get medical rides for my family", "a": "[need:transportation]"}
+{"q": "anywhere with transportation assistance", "a": "[need:transportation]"}
+{"q": "trying to get mileage reimbursement for my family", "a": "[need:transportation]"}
+{"q": "trying to get government benefit for my family", "a": "[need:transportation]"}
+{"q": "anywhere with public transit", "a": "[need:transportation]"}
+{"q": "trying to get rideshare for my family", "a": "[need:transportation]"}
+{"q": "could you point me to microtransit", "a": "[need:transportation]"}
+{"q": "could you point me to reduced fare", "a": "[need:transportation]"}
+{"q": "anywhere with low-cost transportation", "a": "[need:transportation]"}
+{"q": "could you point me to dial-a-ride", "a": "[need:transportation]"}
+{"q": "anywhere with bus", "a": "[need:transportation]"}
+{"q": "trying to get commuter bus for my family", "a": "[need:transportation]"}
+{"q": "trying to get transportation for my family", "a": "[need:transportation]"}
+{"q": "i have no car and i dont know what to do", "a": "[need:transportation]"}
+{"q": "so i cant get to my appointment, what now", "a": "[need:transportation]"}
+{"q": "so i need a ride to the doctor, what now", "a": "[need:transportation]"}
+{"q": "anywhere with parenting classes", "a": "[need:parenting-resources]"}
+{"q": "anywhere with help with my baby", "a": "[need:parenting-resources]"}
+{"q": "trying to get diapers for my family", "a": "[need:parenting-resources]"}
+{"q": "trying to get pregnancy help for my family", "a": "[need:parenting-resources]"}
+{"q": "trying to get parenting support for my family", "a": "[need:parenting-resources]"}
+{"q": "could you point me to help raising my kids", "a": "[need:parenting-resources]"}
+{"q": "anywhere with childcare", "a": "[need:parenting-resources]"}
+{"q": "anywhere with child care", "a": "[need:parenting-resources]"}
+{"q": "anywhere with family resource centers", "a": "[need:parenting-resources]"}
+{"q": "trying to get nurturing parenting for my family", "a": "[need:parenting-resources]"}
+{"q": "could you point me to children 0-5", "a": "[need:parenting-resources]"}
+{"q": "trying to get co-parenting for my family", "a": "[need:parenting-resources]"}
+{"q": "anywhere with family strengthening", "a": "[need:parenting-resources]"}
+{"q": "trying to get anger management for my family", "a": "[need:parenting-resources]"}
+{"q": "could you point me to prenatal", "a": "[need:parenting-resources]"}
+{"q": "trying to get first 5 for my family", "a": "[need:parenting-resources]"}
+{"q": "anywhere with early childhood", "a": "[need:parenting-resources]"}
+{"q": "anywhere with pregnancy support", "a": "[need:parenting-resources]"}
+{"q": "anywhere with funder", "a": "[need:parenting-resources]"}
+{"q": "trying to get birth and beyond for my family", "a": "[need:parenting-resources]"}
+{"q": "trying to get parent education for my family", "a": "[need:parenting-resources]"}
+{"q": "anywhere with home visiting", "a": "[need:parenting-resources]"}
+{"q": "anywhere with parenting education", "a": "[need:parenting-resources]"}
+{"q": "could you point me to public health nurse", "a": "[need:parenting-resources]"}
+{"q": "could you point me to newborn", "a": "[need:parenting-resources]"}
+{"q": "could you point me to pregnancy", "a": "[need:parenting-resources]"}
+{"q": "trying to get child development for my family", "a": "[need:parenting-resources]"}
+{"q": "anywhere with family preservation", "a": "[need:parenting-resources]"}
+{"q": "could you point me to parenting resources", "a": "[need:parenting-resources]"}
+{"q": "i am pregnant and i dont know what to do", "a": "[need:parenting-resources]"}
+{"q": "i just had a baby and i dont know what to do", "a": "[need:parenting-resources]"}
+{"q": "so i need diapers for my baby, what now", "a": "[need:parenting-resources]"}
+{"q": "trying to get small business help for my family", "a": "[need:small-business]"}
+{"q": "anywhere with a business loan", "a": "[need:small-business]"}
+{"q": "could you point me to help starting a business", "a": "[need:small-business]"}
+{"q": "anywhere with a microloan", "a": "[need:small-business]"}
+{"q": "trying to get business training for my family", "a": "[need:small-business]"}
+{"q": "trying to get financial education for my family", "a": "[need:small-business]"}
+{"q": "could you point me to microloans", "a": "[need:small-business]"}
+{"q": "trying to get small business loans for my family", "a": "[need:small-business]"}
+{"q": "anywhere with nonprofit lender", "a": "[need:small-business]"}
+{"q": "trying to get women-owned business for my family", "a": "[need:small-business]"}
+{"q": "trying to get minority-owned business for my family", "a": "[need:small-business]"}
+{"q": "anywhere with low-income entrepreneurs", "a": "[need:small-business]"}
+{"q": "could you point me to working capital", "a": "[need:small-business]"}
+{"q": "could you point me to microenterprise", "a": "[need:small-business]"}
+{"q": "trying to get access to capital for my family", "a": "[need:small-business]"}
+{"q": "trying to get permits for my family", "a": "[need:small-business]"}
+{"q": "trying to get startups for my family", "a": "[need:small-business]"}
+{"q": "could you point me to entrepreneurship training", "a": "[need:small-business]"}
+{"q": "trying to get credit building for my family", "a": "[need:small-business]"}
+{"q": "trying to get business plan for my family", "a": "[need:small-business]"}
+{"q": "anywhere with free consulting", "a": "[need:small-business]"}
+{"q": "anywhere with sbdc", "a": "[need:small-business]"}
+{"q": "anywhere with small business", "a": "[need:small-business]"}
+{"q": "anywhere with in-home care", "a": "[need:in-home-help]"}
+{"q": "could you point me to a caregiver", "a": "[need:in-home-help]"}
+{"q": "trying to get home care for my family", "a": "[need:in-home-help]"}
+{"q": "could you point me to meals on wheels", "a": "[need:in-home-help]"}
+{"q": "could you point me to help at home for my dad", "a": "[need:in-home-help]"}
+{"q": "anywhere with respite care", "a": "[need:in-home-help]"}
+{"q": "could you point me to home repairs for seniors", "a": "[need:in-home-help]"}
+{"q": "anywhere with home-delivered meals", "a": "[need:in-home-help]"}
+{"q": "trying to get in-home respite for my family", "a": "[need:in-home-help]"}
+{"q": "could you point me to aging in place", "a": "[need:in-home-help]"}
+{"q": "anywhere with personal care", "a": "[need:in-home-help]"}
+{"q": "could you point me to homemaker", "a": "[need:in-home-help]"}
+{"q": "anywhere with home modifications", "a": "[need:in-home-help]"}
+{"q": "could you point me to homebound seniors", "a": "[need:in-home-help]"}
+{"q": "anywhere with in-home supportive services", "a": "[need:in-home-help]"}
+{"q": "trying to get caregiver for my family", "a": "[need:in-home-help]"}
+{"q": "could you point me to ihss public authority", "a": "[need:in-home-help]"}
+{"q": "anywhere with provider registry", "a": "[need:in-home-help]"}
+{"q": "trying to get caregiver matching for my family", "a": "[need:in-home-help]"}
+{"q": "anywhere with home care providers", "a": "[need:in-home-help]"}
+{"q": "anywhere with provider enrollment", "a": "[need:in-home-help]"}
+{"q": "trying to get caregiver training for my family", "a": "[need:in-home-help]"}
+{"q": "trying to get in-home help for my family", "a": "[need:in-home-help]"}
+{"q": "anywhere with a crisis line", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to a hotline", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to someone to talk to right now", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to a 24 hour hotline", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to a crisis hotline", "a": "[need:crisis-help-lines]"}
+{"q": "anywhere with a helpline", "a": "[need:crisis-help-lines]"}
+{"q": "anywhere with 24/7 helpline", "a": "[need:crisis-help-lines]"}
+{"q": "trying to get 24/7 hotline for my family", "a": "[need:crisis-help-lines]"}
+{"q": "anywhere with anonymous", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to lgbtq youth", "a": "[need:crisis-help-lines]"}
+{"q": "trying to get mental health crisis for my family", "a": "[need:crisis-help-lines]"}
+{"q": "anywhere with domestic violence hotline", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to text chat", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to neglect", "a": "[need:crisis-help-lines]"}
+{"q": "trying to get child abuse hotline for my family", "a": "[need:crisis-help-lines]"}
+{"q": "anywhere with child protective services", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to neglect reporting", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to child welfare", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to rape crisis", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to 24/7 crisis line", "a": "[need:crisis-help-lines]"}
+{"q": "could you point me to crisis help lines", "a": "[need:crisis-help-lines]"}
+{"q": "anywhere with ged classes", "a": "[need:education]"}
+{"q": "trying to get adult education for my family", "a": "[need:education]"}
+{"q": "could you point me to english classes", "a": "[need:education]"}
+{"q": "anywhere with esl classes", "a": "[need:education]"}
+{"q": "trying to get tutoring for my family", "a": "[need:education]"}
+{"q": "could you point me to help going back to school", "a": "[need:education]"}
+{"q": "could you point me to education", "a": "[need:education]"}
+{"q": "could you point me to drug rehab", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get alcohol treatment for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with detox", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with addiction help", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get aa meetings for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get na meetings for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get sober living for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get help quitting drugs for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with help to stop drinking", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "could you point me to substance abuse treatment", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get recovery support for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get trauma informed for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with alcoholics anonymous", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with 12 step", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get mutual aid for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "could you point me to recovery community", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get outpatient for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with dual diagnosis", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with court mandated", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with co-occurring", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with adolescent", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "could you point me to substance abuse", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get recovery residence for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with naloxone", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get overdose prevention for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "could you point me to hiv testing", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "could you point me to hepatitis c", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "could you point me to people who use drugs", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with sud access line", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get residential treatment for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with addiction", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get social model for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with dhcs licensed", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with perinatal", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "trying to get substance abuse and recovery for my family", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "i drink too much and i dont know what to do", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "i am addicted to drugs and i dont know what to do", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "so my son is using drugs, what now", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "so i want to get sober, what now", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "so i cant stop drinking, what now", "a": "[need:substance-abuse-and-recovery]"}
+{"q": "anywhere with food", "a": "[need:food]"}
+{"q": "trying to get groceries for my family", "a": "[need:food]"}
+{"q": "anywhere with a food pantry", "a": "[need:food]"}
+{"q": "trying to get a food bank for my family", "a": "[need:food]"}
+{"q": "anywhere with a hot meal", "a": "[need:food]"}
+{"q": "trying to get something to eat for my family", "a": "[need:food]"}
+{"q": "could you point me to free food", "a": "[need:food]"}
+{"q": "could you point me to free meals", "a": "[need:food]"}
+{"q": "trying to get calfresh for my family", "a": "[need:food]"}
+{"q": "trying to get food stamps for my family", "a": "[need:food]"}
+{"q": "anywhere with ebt", "a": "[need:food]"}
+{"q": "trying to get lunch for my family", "a": "[need:food]"}
+{"q": "anywhere with dinner", "a": "[need:food]"}
+{"q": "trying to get a soup kitchen for my family", "a": "[need:food]"}
+{"q": "anywhere with food", "a": "[need:food]"}
+{"q": "i am hungry and i dont know what to do", "a": "[need:food]"}
+{"q": "we have no food and i dont know what to do", "a": "[need:food]"}
+{"q": "i cant afford groceries and i dont know what to do", "a": "[need:food]"}
+{"q": "so my kids are hungry, what now", "a": "[need:food]"}
+{"q": "we ran out of food and i dont know what to do", "a": "[need:food]"}
+{"q": "i have not eaten today and i dont know what to do", "a": "[need:food]"}
+{"q": "could you point me to furniture", "a": "[need:household-goods]"}
+{"q": "trying to get household items for my family", "a": "[need:household-goods]"}
+{"q": "anywhere with a bed", "a": "[need:household-goods]"}
+{"q": "could you point me to pots and pans", "a": "[need:household-goods]"}
+{"q": "could you point me to household goods", "a": "[need:household-goods]"}
+{"q": "trying to get free furniture for my family", "a": "[need:household-goods]"}
+{"q": "anywhere with household goods", "a": "[need:household-goods]"}
+{"q": "so i have no furniture, what now", "a": "[need:household-goods]"}
+{"q": "i need a bed for my kids and i dont know what to do", "a": "[need:household-goods]"}
+{"q": "anywhere with senior services", "a": "[need:aging-adult]"}
+{"q": "anywhere with help for my elderly mom", "a": "[need:aging-adult]"}
+{"q": "trying to get a senior center for my family", "a": "[need:aging-adult]"}
+{"q": "anywhere with help for seniors", "a": "[need:aging-adult]"}
+{"q": "could you point me to elder care", "a": "[need:aging-adult]"}
+{"q": "anywhere with dementia support", "a": "[need:aging-adult]"}
+{"q": "anywhere with medicare help", "a": "[need:aging-adult]"}
+{"q": "anywhere with medicare counseling", "a": "[need:aging-adult]"}
+{"q": "trying to get ombudsman for my family", "a": "[need:aging-adult]"}
+{"q": "trying to get alzheimers for my family", "a": "[need:aging-adult]"}
+{"q": "could you point me to dementia", "a": "[need:aging-adult]"}
+{"q": "could you point me to socialization", "a": "[need:aging-adult]"}
+{"q": "could you point me to recreation", "a": "[need:aging-adult]"}
+{"q": "could you point me to fitness classes", "a": "[need:aging-adult]"}
+{"q": "trying to get senior activities for my family", "a": "[need:aging-adult]"}
+{"q": "trying to get elder abuse reporting for my family", "a": "[need:aging-adult]"}
+{"q": "could you point me to ihss gateway", "a": "[need:aging-adult]"}
+{"q": "could you point me to financial exploitation", "a": "[need:aging-adult]"}
+{"q": "anywhere with aging adult", "a": "[need:aging-adult]"}
+{"q": "my mom has dementia and i dont know what to do", "a": "[need:aging-adult]"}
+{"q": "so my dad is getting older and needs help, what now", "a": "[need:aging-adult]"}
+{"q": "i am a senior and lonely and i dont know what to do", "a": "[need:aging-adult]"}
+{"q": "trying to get suicide prevention for my family", "a": "[need:suicide-prevention]"}
+{"q": "anywhere with suicide prevention help", "a": "[need:suicide-prevention]"}
+{"q": "could you point me to support after a suicide loss", "a": "[need:suicide-prevention]"}
+{"q": "anywhere with free confidential", "a": "[need:suicide-prevention]"}
+{"q": "anywhere with suicide loss survivors", "a": "[need:suicide-prevention]"}
+{"q": "could you point me to postvention", "a": "[need:suicide-prevention]"}
+{"q": "trying to get online groups for my family", "a": "[need:suicide-prevention]"}
+{"q": "anywhere with mobile crisis", "a": "[need:suicide-prevention]"}
+{"q": "could you point me to crisis stabilization", "a": "[need:suicide-prevention]"}
+{"q": "trying to get crisis text for my family", "a": "[need:suicide-prevention]"}
+{"q": "trying to get crisis chat for my family", "a": "[need:suicide-prevention]"}
+{"q": "could you point me to suicide prevention", "a": "[need:suicide-prevention]"}
+{"q": "trying to get a lawyer for my family", "a": "[need:legal]"}
+{"q": "anywhere with legal help", "a": "[need:legal]"}
+{"q": "trying to get free legal aid for my family", "a": "[need:legal]"}
+{"q": "anywhere with eviction help", "a": "[need:legal]"}
+{"q": "could you point me to help with custody", "a": "[need:legal]"}
+{"q": "could you point me to a divorce lawyer", "a": "[need:legal]"}
+{"q": "anywhere with help with court", "a": "[need:legal]"}
+{"q": "anywhere with legal advice", "a": "[need:legal]"}
+{"q": "could you point me to help with child support", "a": "[need:legal]"}
+{"q": "anywhere with bankruptcy", "a": "[need:legal]"}
+{"q": "trying to get consumer law for my family", "a": "[need:legal]"}
+{"q": "could you point me to family law", "a": "[need:legal]"}
+{"q": "could you point me to guardianship", "a": "[need:legal]"}
+{"q": "trying to get conservatorship for my family", "a": "[need:legal]"}
+{"q": "anywhere with immigration", "a": "[need:legal]"}
+{"q": "could you point me to eviction defense", "a": "[need:legal]"}
+{"q": "could you point me to civil legal services", "a": "[need:legal]"}
+{"q": "could you point me to public benefits", "a": "[need:legal]"}
+{"q": "trying to get elder law for my family", "a": "[need:legal]"}
+{"q": "anywhere with record clearing", "a": "[need:legal]"}
+{"q": "could you point me to public defender", "a": "[need:legal]"}
+{"q": "trying to get criminal defense for my family", "a": "[need:legal]"}
+{"q": "could you point me to felony", "a": "[need:legal]"}
+{"q": "could you point me to misdemeanor", "a": "[need:legal]"}
+{"q": "anywhere with indigent defense", "a": "[need:legal]"}
+{"q": "anywhere with divorce", "a": "[need:legal]"}
+{"q": "anywhere with custody", "a": "[need:legal]"}
+{"q": "could you point me to child support", "a": "[need:legal]"}
+{"q": "anywhere with restraining order", "a": "[need:legal]"}
+{"q": "could you point me to name change", "a": "[need:legal]"}
+{"q": "anywhere with legal", "a": "[need:legal]"}
+{"q": "my landlord is evicting me and i dont know what to do", "a": "[need:legal]"}
+{"q": "i have a court date and i dont know what to do", "a": "[need:legal]"}
+{"q": "so i need help with my divorce, what now", "a": "[need:legal]"}
+{"q": "so i am being sued, what now", "a": "[need:legal]"}

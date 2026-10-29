@@ -1,0 +1,1 @@
+ALTER TABLE `resource_tags` ADD `position` integer DEFAULT 0 NOT NULL;

@@ -1,0 +1,145 @@
+<div class="page wide">
+  <header class="head">
+    <div>
+      <h1>Discover</h1>
+      <p class="muted">New California nonprofits from IRS records that look like a fit. Review them, add contact info, and publish.</p>
+    </div>
+    <button mat-flat-button (click)="checkNow()" [disabled]="running() || starting()">
+      <mat-icon>sync</mat-icon>{{ running() ? 'Checking the IRS…' : 'Check the IRS now' }}
+    </button>
+  </header>
+
+  @if (summary.value(); as s) {
+    <div class="stats" role="group" aria-label="Discovery status">
+      <button type="button" class="stat warn" [class.on]="query().status === 'new'" (click)="setFilters({ status: 'new' })">
+        <strong>{{ s.newCount }}</strong><span>Waiting for review</span>
+      </button>
+      <button type="button" class="stat" [class.on]="query().status === 'all'" (click)="setFilters({ status: 'all' })">
+        <strong>{{ s.total.toLocaleString() }}</strong><span>California charities tracked</span>
+      </button>
+      <div class="stat static" aria-live="polite">
+        @if (s.lastRun; as run) {
+          @if (run.status === 'running') {
+            <strong class="small-strong">Checking now…</strong><span>Started {{ run.startedAt | date: 'shortTime' }}</span>
+          } @else if (run.status === 'failed') {
+            <strong class="small-strong error-text">Last check failed</strong><span>{{ run.error }}</span>
+          } @else {
+            <strong class="small-strong">Checked {{ run.finishedAt | date: 'mediumDate' }}</strong>
+            <span>{{ run.newCount }} new · IRS file {{ run.sourceModified ? (run.sourceModified | date: 'mediumDate') : 'local copy' }}</span>
+          }
+        } @else {
+          <strong class="small-strong">Never checked</strong><span>Click “Check the IRS now”</span>
+        }
+      </div>
+    </div>
+  }
+  @if (running()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Checking IRS records" />
+  }
+
+  <section class="filters" aria-label="Filters">
+    <mat-form-field appearance="outline" class="search" subscriptSizing="dynamic">
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-label>Search name, city, or EIN</mat-label>
+      <input matInput [value]="searchText()" (input)="searchText.set($any($event.target).value)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Show</mat-label>
+      <mat-select [value]="query().status" (selectionChange)="setFilters({ status: $event.value })">
+        <mat-option value="new">Waiting for review</mat-option>
+        <mat-option value="available">Not reviewed (older)</mat-option>
+        <mat-option value="approved">Added to directory</mat-option>
+        <mat-option value="listed">Already listed</mat-option>
+        <mat-option value="rejected">Not a fit</mat-option>
+        <mat-option value="all">Everything</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>County</mat-label>
+      <mat-select [value]="query().county" (selectionChange)="setFilters({ county: $event.value })">
+        <mat-option value="">All of California</mat-option>
+        @for (c of counties.value() ?? []; track c.id) {
+          <mat-option [value]="c.id">{{ c.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Category</mat-label>
+      <mat-select [value]="query().category" (selectionChange)="setFilters({ category: $event.value })">
+        <mat-option value="">Any category</mat-option>
+        @for (c of categories.value() ?? []; track c.id) {
+          <mat-option [value]="c.id">{{ c.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </section>
+
+  <div class="table-card">
+    @if (rows.isLoading()) {
+      <mat-progress-bar mode="indeterminate" class="loading" aria-label="Loading" />
+    }
+    <div class="scroll">
+      <table mat-table [dataSource]="rows.value()?.items ?? []">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Organization</th>
+          <td mat-cell *matCellDef="let r">
+            <div class="name">{{ r.name }}</div>
+            <div class="muted small">{{ r.city ?? 'Unknown city' }}{{ r.county ? ' · ' + r.county.name + ' County' : '' }} · EIN {{ r.ein }}</div>
+            @if (!r.inIrs) { <span class="pill error">No longer in IRS file</span> }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Suggested category</th>
+          <td mat-cell *matCellDef="let r">
+            {{ r.category?.name ?? '—' }}
+            <div class="muted small">IRS code {{ r.ntee }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="registered">
+          <th mat-header-cell *matHeaderCellDef>IRS registered</th>
+          <td mat-cell *matCellDef="let r" class="nowrap">{{ r.ruling ? (r.ruling + '-01' | date: 'MMM y') : '—' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let r">
+            <span class="pill" [class.warn]="r.status === 'new'" [class.ok]="r.status === 'approved' || r.status === 'listed'">{{ statusLabels[r.status] }}</span>
+            @if (r.reviewedBy) { <div class="muted small">{{ r.reviewedBy }}</div> }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">Actions</span></th>
+          <td mat-cell *matCellDef="let r" class="actions">
+            @if (r.resourceId) {
+              <a mat-stroked-button [routerLink]="['/admin/resources', r.resourceId]">Open listing</a>
+            } @else if (r.status === 'rejected') {
+              <button mat-button (click)="mark(r, 'new')">Move back to queue</button>
+            } @else {
+              <a mat-flat-button [routerLink]="['/admin/resources/new']" [queryParams]="{ fromEin: r.ein }">Review &amp; add</a>
+              <button mat-button (click)="mark(r, 'rejected')" [attr.aria-label]="'Not a fit: ' + r.name">Not a fit</button>
+              <button mat-button (click)="mark(r, 'listed')" [attr.aria-label]="'Already listed: ' + r.name">Already listed</button>
+            }
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell pad muted" [attr.colspan]="columns.length">
+            @if (!rows.isLoading()) {
+              {{ query().status === 'new' ? 'Nothing waiting. New IRS registrations will show up here after the next check.' : 'No organizations match these filters.' }}
+            }
+          </td>
+        </tr>
+      </table>
+    </div>
+    <mat-paginator [length]="rows.value()?.total ?? 0" [pageIndex]="query().page" [pageSize]="25" [hidePageSize]="true"
+                   (page)="onPage($event)" showFirstLastButtons aria-label="Choose page" />
+  </div>
+</div>

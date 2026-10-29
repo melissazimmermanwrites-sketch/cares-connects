@@ -1,0 +1,22 @@
+.page {
+  max-width: 520px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 16px;
+  padding: 20px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  background: var(--mat-sys-surface);
+
+  h2 {
+    margin-bottom: 12px;
+  }
+
+  button {
+    align-self: flex-start;
+  }
+}

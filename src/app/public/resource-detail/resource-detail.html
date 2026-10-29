@@ -1,0 +1,63 @@
+<div class="page">
+  @if (resource.isLoading()) {
+    <h1 class="visually-hidden">Loading listing…</h1>
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  } @else if (resource.error()) {
+    <h1>Listing not found</h1>
+    <p>It may have been removed or merged with another listing. <a routerLink="/find">Search the directory</a>.</p>
+  } @else if (resource.value(); as r) {
+    <nav class="crumbs" aria-label="Categories">
+      @for (c of r.categories; track c.id) {
+        <a [routerLink]="['/category', c.slug]">{{ c.name }}</a>
+      }
+    </nav>
+
+    <header class="head">
+      <h1 class="cc-heading">{{ r.name }}</h1>
+      <div class="row">
+        <span class="pill">{{ area() }}</span>
+        @if (r.verificationStatus === 'needs_verification') {
+          <span class="pill warn">Details not yet confirmed. Please call ahead</span>
+        }
+      </div>
+    </header>
+
+    <div class="actions">
+      @if (tel(); as href) {
+        <a mat-flat-button [href]="href"><mat-icon>call</mat-icon>Call {{ r.phone }}</a>
+      }
+      @if (r.website) {
+        <a mat-stroked-button [href]="r.website" target="_blank" rel="noopener"><mat-icon>language</mat-icon>Visit website<span class="visually-hidden"> (opens in a new tab)</span></a>
+      }
+      @if (map(); as href) {
+        <a mat-stroked-button [href]="href" target="_blank" rel="noopener"><mat-icon>directions</mat-icon>Get directions<span class="visually-hidden"> (opens in a new tab)</span></a>
+      }
+    </div>
+
+    <dl class="facts">
+      @if (r.phone && !tel()) {
+        <dt>Phone</dt><dd>{{ r.phone }}</dd>
+      }
+      @if (r.address) {
+        <dt>Address</dt><dd>{{ r.address }}</dd>
+      }
+    </dl>
+
+    @if (r.services) {
+      <section><h2>Services</h2><p>{{ r.services }}</p></section>
+    }
+    @if (r.mission) {
+      <section><h2>About</h2><p>{{ r.mission }}</p></section>
+    }
+    @if (r.notes) {
+      <section><h2>Good to know</h2><p>{{ r.notes }}</p></section>
+    }
+    @if (r.tags.length) {
+      <section class="tags" aria-label="Tags">
+        @for (t of r.tags; track t) {
+          <a class="pill" routerLink="/find" [queryParams]="{ q: t }">{{ t }}</a>
+        }
+      </section>
+    }
+  }
+</div>

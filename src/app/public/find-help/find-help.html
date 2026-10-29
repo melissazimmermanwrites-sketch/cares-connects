@@ -1,0 +1,61 @@
+<section class="hero">
+  <div class="page hero-inner">
+    <span class="cc-rainbow"></span>
+    <h1 class="cc-heading">Find help near you</h1>
+    <p>Food, shelter, health care, crisis support and more across Placer and Sacramento counties.</p>
+    <form class="search" role="search" (ngSubmit)="search()">
+      <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-label>What do you need help with?</mat-label>
+        <input matInput name="q" [value]="searchText()" (input)="searchText.set($any($event.target).value)"
+               placeholder="e.g. food pantry, rent help, Roseville" />
+        @if (searchText()) {
+          <button matSuffix mat-icon-button type="button" aria-label="Clear search" (click)="clearSearch()"><mat-icon>close</mat-icon></button>
+        }
+      </mat-form-field>
+      <button type="submit" class="cc-btn orange go">Search</button>
+    </form>
+    <app-county-filter [value]="county()" (changed)="setCounty($event)" />
+  </div>
+</section>
+
+<div class="page">
+  @if (searching()) {
+    <section aria-live="polite">
+      <div class="row results-head">
+        <h2>Results for “{{ q() }}”</h2>
+        <button mat-button (click)="clearSearch()">Browse categories instead</button>
+      </div>
+      @if (results.isLoading()) {
+        <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+      } @else if (results.value(); as list) {
+        <p class="muted">{{ list.length }} {{ list.length === 1 ? 'resource' : 'resources' }} found</p>
+        <div class="results">
+          @for (r of list; track r.id) {
+            <app-resource-card [resource]="r" />
+          } @empty {
+            <p>Nothing matched. Try a simpler word, browse the categories below, or dial <a href="tel:211">211</a> for help.</p>
+          }
+        </div>
+      }
+    </section>
+  }
+
+  <section id="categories" [class.after-results]="searching()">
+    <h2 class="cc-heading">Browse all categories</h2>
+    @if (categories.isLoading()) {
+      <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+    }
+    <ul class="grid">
+      @for (c of categories.value() ?? []; track c.id) {
+        <li>
+          <a class="tile" [routerLink]="['/category', c.slug]" [queryParams]="county() ? { county: county() } : {}">
+            <mat-icon aria-hidden="true">{{ icon(c.slug) }}</mat-icon>
+            <span class="name">{{ c.name }}</span>
+            <span class="count">{{ c.resourceCount }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </section>
+</div>

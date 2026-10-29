@@ -1,0 +1,213 @@
+<div class="page">
+  <a routerLink="/admin" class="back"><mat-icon>arrow_back</mat-icon>All resources</a>
+
+  @if (existing.isLoading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  } @else if (existing.error()) {
+    <p class="error-text" role="alert">Couldn't load this resource. It may have been removed.</p>
+  } @else {
+    <header class="head">
+      <div>
+        <h1>{{ isNew() ? 'Add resource' : form.controls.name.value || 'Untitled' }}</h1>
+        @if (record(); as r) {
+          <p class="muted">
+            Last edited {{ r.updatedAt | date: 'medium' }}@if (r.updatedBy) { by {{ r.updatedBy }} }
+            · <a [href]="'/resource/' + r.id" target="_blank">View on site</a>
+          </p>
+        }
+      </div>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      @if (discovery.value(); as d) {
+        <section class="card notice" aria-labelledby="irs-title">
+          <h2 id="irs-title"><mat-icon>travel_explore</mat-icon> From IRS records</h2>
+          <p>
+            We filled in what the IRS knows: name, address, county and a suggested category. The IRS doesn’t list phone
+            numbers or websites, so look those up, check the details, and save to publish it.
+          </p>
+          <div class="row">
+            @if (webSearchUrl(); as url) {
+              <a mat-flat-button [href]="url" target="_blank" rel="noopener">
+                <mat-icon>search</mat-icon> Search the web for {{ d.name }}<span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            }
+            <span class="muted small">EIN {{ d.ein }} · activity code {{ d.ntee }}</span>
+          </div>
+        </section>
+      }
+
+      @if (record()?.duplicates?.length && form.controls.duplicateGroup.value) {
+        <section class="card notice" aria-labelledby="dup-title">
+          <h2 id="dup-title"><mat-icon>content_copy</mat-icon> Possible duplicate</h2>
+          <p>
+            These listings have the same name but different details. Compare them, copy anything useful into one,
+            and archive the others. If they really are separate programs, clear the flag.
+          </p>
+          <ul>
+            @for (d of record()!.duplicates; track d.id) {
+              <li><a [routerLink]="['/admin/resources', d.id]">{{ d.name }}</a> <span class="muted">— {{ d.categories.join(', ') }}</span></li>
+            }
+          </ul>
+          <button mat-stroked-button type="button" (click)="clearDuplicateFlag()">Not a duplicate, clear flag</button>
+        </section>
+      }
+
+      <section class="card" aria-labelledby="basics">
+        <h2 id="basics">Basics</h2>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Organization name</mat-label>
+          <input matInput formControlName="name" required />
+          @if (form.controls.name.hasError('required')) { <mat-error>Name is required</mat-error> }
+        </mat-form-field>
+
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Categories</mat-label>
+            <mat-select formControlName="categoryIds" multiple required>
+              @for (c of categories.value() ?? []; track c.id) {
+                <mat-option [value]="c.id">{{ c.name }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Shows up under each one you pick</mat-hint>
+            @if (form.controls.categoryIds.hasError('required')) { <mat-error>Pick at least one category</mat-error> }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Counties served</mat-label>
+            <mat-select formControlName="countyIds" multiple>
+              @for (c of counties.value() ?? []; track c.id) {
+                <mat-option [value]="c.id">{{ c.name }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>{{ form.controls.statewide.value ? 'Shows under every county' : 'Where people can get this help' }}</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <mat-slide-toggle formControlName="statewide">Serves all of California (statewide)</mat-slide-toggle>
+
+        <mat-slide-toggle formControlName="isActive">
+          {{ form.controls.isActive.value ? 'Live on the public site' : 'Archived (hidden from the public site)' }}
+        </mat-slide-toggle>
+      </section>
+
+      <section class="card" aria-labelledby="verify">
+        <h2 id="verify">Verification</h2>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="verificationStatus">
+              <mat-option value="verified">Verified</mat-option>
+              <mat-option value="needs_verification">Needs verification</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Last verified</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="verifiedAt" />
+            <mat-datepicker-toggle matIconSuffix [for]="picker" />
+            <mat-datepicker #picker />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+          </mat-form-field>
+        </div>
+        <button mat-stroked-button type="button" (click)="markVerifiedToday()">
+          <mat-icon>verified</mat-icon> I checked this today
+        </button>
+      </section>
+
+      <section class="card" aria-labelledby="contact">
+        <h2 id="contact">How people reach them <span class="muted small">(public)</span></h2>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input matInput type="tel" formControlName="phone" placeholder="(916) 555-0100" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Website</mat-label>
+            <input matInput type="url" formControlName="website" placeholder="https://…" />
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Street address</mat-label>
+          <input matInput formControlName="address" placeholder="123 Main St, Roseville, CA 95678" />
+        </mat-form-field>
+      </section>
+
+      <section class="card" aria-labelledby="details">
+        <h2 id="details">Details <span class="muted small">(public)</span></h2>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Mission statement</mat-label>
+          <textarea matInput formControlName="mission" rows="3"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Services</mat-label>
+          <textarea matInput formControlName="services" rows="5"></textarea>
+          <mat-hint>What they offer, hours, eligibility</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Notes</mat-label>
+          <textarea matInput formControlName="notes" rows="4"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tags</mat-label>
+          <!-- An empty grid has no role, so it only gets a label once it holds chips. -->
+          <mat-chip-grid #chipGrid [attr.aria-label]="tags().length ? 'Tags' : null">
+            @for (tag of tags(); track tag) {
+              <mat-chip-row (removed)="removeTag(tag)">
+                {{ tag }}
+                <button matChipRemove [attr.aria-label]="'Remove ' + tag"><mat-icon>cancel</mat-icon></button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+          <!-- Outside the grid so the grid only contains rows (ARIA requirement); linked via matChipInputFor. -->
+          <input #tagInput placeholder="Add a tag…" aria-label="Add a tag" [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                 [matChipInputSeparatorKeyCodes]="[13, 188]" (matChipInputTokenEnd)="addTag($event)"
+                 (input)="tagText.set(tagInput.value)" />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectTag($event, tagInput)">
+            @for (t of tagOptions(); track t) {
+              <mat-option [value]="t">{{ t }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-hint>Helps people find this in search. Press Enter or comma after each.</mat-hint>
+        </mat-form-field>
+      </section>
+
+      <section class="card" aria-labelledby="internal">
+        <h2 id="internal">Internal contact <span class="muted small">(never shown publicly)</span></h2>
+        <div class="grid three">
+          <mat-form-field appearance="outline">
+            <mat-label>EIN (IRS employer ID)</mat-label>
+            <input matInput formControlName="ein" inputmode="numeric" maxlength="9" placeholder="9 digits" />
+            @if (form.controls.ein.hasError('pattern')) { <mat-error>9 digits, no dash</mat-error> }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Contact person</mat-label>
+            <input matInput formControlName="contactPerson" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Contact phone</mat-label>
+            <input matInput type="tel" formControlName="contactPhone" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Contact email</mat-label>
+            <input matInput type="email" formControlName="contactEmail" />
+            @if (form.controls.contactEmail.hasError('email')) { <mat-error>Not a valid email</mat-error> }
+          </mat-form-field>
+        </div>
+      </section>
+
+      <div class="save-bar">
+        @if (saveError(); as message) {
+          <span class="error-text" role="alert">{{ message }}</span>
+        } @else if (form.dirty) {
+          <span class="muted">Unsaved changes</span>
+        }
+        <span class="spacer"></span>
+        <a mat-button routerLink="/admin">Cancel</a>
+        <button mat-flat-button type="submit" [disabled]="saving() || (!form.dirty && !isNew())">
+          {{ saving() ? 'Saving…' : isNew() ? 'Add resource' : 'Save changes' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>

@@ -1,0 +1,64 @@
+<div class="page">
+  <header class="head">
+    <div>
+      <h1>Categories</h1>
+      <p class="muted">The sections of the public directory, in the order shown on the home page.</p>
+    </div>
+    <button mat-flat-button (click)="startNew()" [disabled]="draft()?.id === null"><mat-icon>add</mat-icon>Add category</button>
+  </header>
+
+  @if (list.isLoading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  }
+
+  <ng-template #editor let-d>
+    <form class="editor" (ngSubmit)="save()">
+      <div class="fields">
+        <mat-form-field appearance="outline" class="name">
+          <mat-label>Name</mat-label>
+          <input matInput name="name" required [ngModel]="d.name" (ngModelChange)="update({ name: $event })" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="order">
+          <mat-label>Order</mat-label>
+          <input matInput name="sortOrder" type="number" min="0" [ngModel]="d.sortOrder" (ngModelChange)="update({ sortOrder: $event })" />
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Short description (optional)</mat-label>
+        <input matInput name="description" [ngModel]="d.description" (ngModelChange)="update({ description: $event })" />
+      </mat-form-field>
+      @if (error(); as message) { <p class="error-text" role="alert">{{ message }}</p> }
+      <div class="row">
+        <button mat-flat-button type="submit" [disabled]="busy() || !d.name.trim()">{{ d.id ? 'Save' : 'Add' }}</button>
+        <button mat-button type="button" (click)="draft.set(null)">Cancel</button>
+        @if (d.id) { <span class="muted small">Renaming keeps the page address the same, so old links keep working.</span> }
+      </div>
+    </form>
+  </ng-template>
+
+  <ul class="list">
+    @if (draft()?.id === null) {
+      <li class="item editing"><ng-container *ngTemplateOutlet="editor; context: { $implicit: draft() }" /></li>
+    }
+    @for (c of list.value() ?? []; track c.id) {
+      <li class="item" [class.editing]="draft()?.id === c.id">
+        @if (draft()?.id === c.id) {
+          <ng-container *ngTemplateOutlet="editor; context: { $implicit: draft() }" />
+        } @else {
+          <div class="info">
+            <strong>{{ c.name }}</strong>
+            <span class="muted small">/category/{{ c.slug }} · order {{ c.sortOrder }}</span>
+            @if (c.description) { <span class="small">{{ c.description }}</span> }
+          </div>
+          <a mat-button [routerLink]="['/admin']" [queryParams]="{ category: c.id }">{{ c.resourceCount }} listings</a>
+          <button mat-icon-button (click)="edit(c)" [attr.aria-label]="'Edit ' + c.name"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button (click)="remove(c)" [disabled]="c.resourceCount > 0"
+                  [attr.aria-label]="'Delete ' + c.name"
+                  [title]="c.resourceCount > 0 ? 'Only empty categories can be deleted' : 'Delete'">
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
+      </li>
+    }
+  </ul>
+</div>

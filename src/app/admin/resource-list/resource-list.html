@@ -1,0 +1,180 @@
+<div class="page wide">
+  <header class="head">
+    <div>
+      <h1>Resources</h1>
+      <p class="muted">Every organization in the directory. Click a row to edit it.</p>
+    </div>
+    <div class="row">
+      <button mat-stroked-button [matMenuTriggerFor]="exportMenu"><mat-icon>download</mat-icon>Export</button>
+      <a mat-flat-button routerLink="/admin/resources/new"><mat-icon>add</mat-icon>Add resource</a>
+    </div>
+    <mat-menu #exportMenu="matMenu" xPosition="before">
+      <a mat-menu-item [href]="csvUrl()" download>
+        <mat-icon>table_view</mat-icon>
+        <span>CSV · {{ hasFilters() ? 'these ' + (rows.value()?.total ?? '') + ' results' : 'all live listings' }}</span>
+      </a>
+      <a mat-menu-item href="/api/admin/export.xlsx" download>
+        <mat-icon>grid_on</mat-icon>
+        <span>Google Sheets workbook · one tab per category</span>
+      </a>
+    </mat-menu>
+  </header>
+
+  @if (stats.value(); as s) {
+    <div class="stats" role="group" aria-label="Quick filters">
+      <button type="button" class="stat" [class.on]="!hasFilters()" (click)="clearFilters()">
+        <strong>{{ s.active }}</strong><span>Live on site</span>
+      </button>
+      <button type="button" class="stat warn" [class.on]="query().status === 'needs_verification'"
+              (click)="setFilters({ status: 'needs_verification', duplicates: false, archived: 'active' })">
+        <strong>{{ s.needsVerification }}</strong><span>Need verification</span>
+      </button>
+      <button type="button" class="stat warn" [class.on]="query().duplicates"
+              (click)="setFilters({ duplicates: true, status: '', archived: 'active', sort: 'name' })">
+        <strong>{{ s.possibleDuplicates }}</strong><span>Possible duplicates</span>
+      </button>
+      <button type="button" class="stat" [class.on]="query().archived === 'archived'"
+              (click)="setFilters({ archived: 'archived', status: '', duplicates: false })">
+        <strong>{{ s.archived }}</strong><span>Archived</span>
+      </button>
+    </div>
+  }
+
+  <section class="filters" aria-label="Filters">
+    <mat-form-field appearance="outline" class="search" subscriptSizing="dynamic">
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-label>Search name, services, tags, address…</mat-label>
+      <input matInput [value]="searchText()" (input)="searchText.set($any($event.target).value)" />
+      @if (searchText()) {
+        <button matSuffix mat-icon-button aria-label="Clear search" (click)="searchText.set('')"><mat-icon>close</mat-icon></button>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Category</mat-label>
+      <mat-select [value]="query().category" (selectionChange)="setFilters({ category: $event.value })">
+        <mat-option value="">All categories</mat-option>
+        @for (c of categories.value() ?? []; track c.id) {
+          <mat-option [value]="c.id">{{ c.name }} ({{ c.resourceCount }})</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>County</mat-label>
+      <mat-select [value]="query().county" (selectionChange)="setFilters({ county: $event.value })">
+        <mat-option value="">All counties</mat-option>
+        <mat-option value="statewide">Statewide only</mat-option>
+        @for (c of counties.value() ?? []; track c.id) {
+          <mat-option [value]="c.id">{{ c.name }}{{ c.resourceCount ? ' (' + c.resourceCount + ')' : '' }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Status</mat-label>
+      <mat-select [value]="query().status" (selectionChange)="setFilters({ status: $event.value })">
+        <mat-option value="">Any status</mat-option>
+        <mat-option value="verified">Verified</mat-option>
+        <mat-option value="needs_verification">Needs verification</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Show</mat-label>
+      <mat-select [value]="query().archived" (selectionChange)="setFilters({ archived: $event.value })">
+        <mat-option value="active">Live listings</mat-option>
+        <mat-option value="archived">Archived</mat-option>
+        <mat-option value="all">Everything</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-checkbox [checked]="query().duplicates" (change)="setFilters({ duplicates: $event.checked })">
+      Possible duplicates only
+    </mat-checkbox>
+
+    @if (hasFilters()) {
+      <button mat-button (click)="clearFilters()">Clear filters</button>
+    }
+  </section>
+
+  <div class="table-card">
+    @if (rows.isLoading()) {
+      <mat-progress-bar mode="indeterminate" aria-label="Loading" class="loading" />
+    }
+    @if (loadError(); as message) {
+      <p class="error-text pad" role="alert">{{ message }}</p>
+    }
+
+    <div class="scroll">
+      <table mat-table [dataSource]="rows.value()?.items ?? []" matSort
+             [matSortActive]="query().sort" [matSortDirection]="query().dir" matSortDisableClear
+             (matSortChange)="onSort($event)">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Organization</th>
+          <td mat-cell *matCellDef="let r">
+            <a class="name" [routerLink]="['/admin/resources', r.id]" (click)="$event.stopPropagation()">{{ r.name }}</a>
+            <div class="cats muted">{{ r.categories.join(' · ') }}</div>
+            <div class="flags">
+              @if (!r.isActive) { <span class="pill">Archived</span> }
+              @if (r.duplicateGroup) { <span class="pill warn">Possible duplicate</span> }
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="county">
+          <th mat-header-cell *matHeaderCellDef>Serves</th>
+          <td mat-cell *matCellDef="let r">{{ r.serviceArea }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Phone</th>
+          <td mat-cell *matCellDef="let r" class="nowrap">{{ r.phone ?? '—' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="verificationStatus">Status</th>
+          <td mat-cell *matCellDef="let r">
+            <span class="pill" [class.ok]="r.verificationStatus === 'verified'" [class.warn]="r.verificationStatus !== 'verified'">
+              {{ statusLabels[r.verificationStatus] }}
+            </span>
+            @if (r.verifiedAt) {
+              <div class="muted small">{{ r.verifiedAt | date: 'mediumDate' }}</div>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="updatedAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Last edited</th>
+          <td mat-cell *matCellDef="let r">
+            <div class="nowrap">{{ r.updatedAt | date: 'mediumDate' }}</div>
+            @if (r.updatedBy) {
+              <div class="muted small">{{ r.updatedBy }}</div>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">Actions</span></th>
+          <td mat-cell *matCellDef="let r">
+            <a mat-icon-button [routerLink]="['/admin/resources', r.id]" (click)="$event.stopPropagation()" [attr.aria-label]="'Edit ' + r.name">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns" (click)="open(row)" class="clickable" [class.archived]="!row.isActive"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell pad muted" [attr.colspan]="columns.length">
+            @if (!rows.isLoading()) { No resources match these filters. }
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator [length]="rows.value()?.total ?? 0" [pageIndex]="query().page" [pageSize]="query().pageSize"
+                   [pageSizeOptions]="[25, 50, 100, 200]" (page)="onPage($event)" showFirstLastButtons
+                   aria-label="Choose page" />
+  </div>
+</div>

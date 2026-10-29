@@ -1,0 +1,183 @@
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="cc-rainbow"></span>
+      <h1 class="cc-heading">Find verified local help.</h1>
+      <p class="lead">Get matched to local verified resources covering {{ categoryCount() }}+ categories of needs.</p>
+      <a routerLink="/find" class="cc-btn orange">Find Help <mat-icon inline>arrow_forward</mat-icon></a>
+      <ul class="checks">
+        <li><mat-icon inline aria-hidden="true">check_circle</mat-icon>Free to use</li>
+        <li><mat-icon inline aria-hidden="true">check_circle</mat-icon>No account needed</li>
+      </ul>
+    </div>
+
+    <div class="hero-art">
+      <svg class="map" viewBox="0 0 500 520" role="img" aria-label="Map of Placer and Sacramento counties with resource pins">
+        <rect width="500" height="520" rx="28" fill="#5bc0de" />
+        <g stroke="#fff" stroke-opacity=".55" stroke-width="10">
+          <path d="M90 0V520M200 0V520M320 0V520M430 0V520M0 110H500M0 230H500M0 360H500M0 470H500" />
+        </g>
+        <rect x="215" y="245" width="90" height="100" rx="12" fill="#6ab04c" />
+        <rect x="335" y="125" width="80" height="90" rx="12" fill="#6ab04c" />
+        <rect x="20" y="375" width="55" height="80" rx="10" fill="#6ab04c" opacity=".85" />
+        <path d="M0 330 L500 150" stroke="#fff" stroke-width="34" stroke-opacity=".9" />
+        <path d="M-10 470 C120 420 200 520 320 450 S470 400 520 420" fill="none" stroke="#1a7fc1" stroke-width="30" />
+
+        @for (pin of pins; track pin.icon + pin.x) {
+          <g [attr.transform]="'translate(' + pin.x + ' ' + pin.y + ')'">
+            <path d="M0 0 C-16-20-24-30-24-42 A24 24 0 1 1 24-42 C24-30 16-20 0 0Z" [attr.fill]="pin.color" stroke="#fff" stroke-width="3" />
+            <text y="-32" text-anchor="middle" class="pin-icon" [attr.fill]="pin.color === '#ffc61e' ? '#0d3b66' : '#fff'">{{ pin.icon }}</text>
+          </g>
+        }
+      </svg>
+      <div class="county-chips" aria-hidden="true">
+        <span>Placer County</span>
+        <span>Sacramento County</span>
+      </div>
+
+      @if (example(); as r) {
+        <article class="example">
+          <div class="example-top">
+            <span class="muted">Example result</span>
+            @if (r.verificationStatus === 'verified') {
+              <span class="verified"><mat-icon inline>verified</mat-icon>Verified</span>
+            }
+          </div>
+          <span class="tag">Food</span>
+          <p class="example-title"><a [routerLink]="['/resource', r.id]">{{ r.name }}</a></p>
+          <p class="muted">Nonprofit{{ exampleCity() ? ' in ' + exampleCity() + ',' : ' in' }} {{ exampleArea() }}</p>
+          <div class="example-actions">
+            @if (exampleTel(); as href) { <a [href]="href" class="mini primary">Call</a> }
+            @if (exampleMap(); as href) { <a [href]="href" target="_blank" rel="noopener" class="mini">Directions</a> }
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Feature strip -->
+<div class="cc-rainbow-strip"></div>
+<section class="features">
+  <div class="wrap feature-grid">
+    @for (f of features; track f.title) {
+      <div>
+        <h2>{{ f.title }}</h2>
+        <p>{{ f.text }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="cc-rainbow"></span>
+        <h2 class="cc-heading big">What kind of support do you need?</h2>
+        <p class="sub">Choose a category to see programs near you.</p>
+        <a routerLink="/find" class="cc-btn orange">Find Help <mat-icon inline>arrow_forward</mat-icon></a>
+      </div>
+      <a routerLink="/find" fragment="categories" class="see-all">See all {{ categoryCount() }}+ categories</a>
+    </div>
+
+    <ul class="cat-grid">
+      @for (c of featured(); track c.slug) {
+        <li>
+          <a class="cat-card" [routerLink]="['/category', c.slug]">
+            <span class="cat-icon" [class]="'cat-icon c-' + c.color"><mat-icon aria-hidden="true">{{ c.icon }}</mat-icon></span>
+            <h3>{{ c.title }}</h3>
+            <p>{{ c.blurb }}</p>
+            @if (c.count) { <span class="count">{{ c.count }} programs</span> }
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section gray">
+  <div class="wrap">
+    <span class="cc-rainbow"></span>
+    <h2 class="cc-heading big">Three steps from your question to a phone number.</h2>
+    <ol class="steps">
+      @for (s of steps; track s.title; let i = $index) {
+        <li>
+          <span class="num">{{ i + 1 }}</span>
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.text }}</p>
+        </li>
+      }
+    </ol>
+    <p class="disclaimer">
+      CARES Connects shares program information to point you in the right direction. Results are not a guarantee of
+      program availability; contact program providers to confirm hours, costs, or eligibility.
+    </p>
+  </div>
+</section>
+
+<!-- Partner calls to action -->
+<section class="section">
+  <div class="wrap cta-grid">
+    <div class="cta sky">
+      <h2 class="cc-heading">Run a nonprofit or public agency?</h2>
+      <p>Add your programs so residents in Placer and Sacramento Counties can find you. We review each submission before it goes live.</p>
+      <a [href]="links.listYourOrganization" target="_blank" rel="noopener" class="cc-btn orange small">List your organization<span class="visually-hidden"> (opens in a new tab)</span></a>
+    </div>
+    <div class="cta navy">
+      <h2 class="cc-heading">Plan with real community data.</h2>
+      <p>Our first benchmark report, <em>Connecting the Gaps</em>, scores how easily residents can find help in each service category across both counties.</p>
+      <a [href]="links.report" class="cc-btn yellow small">Get the report</a>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="section gray">
+  <div class="wrap about-grid">
+    <div class="photo-frame">
+      @if (images.about) {
+        <img [src]="images.about" alt="A CARES Connects staff member helping a resident find local resources on a laptop" loading="lazy" />
+      } @else {
+        <div class="photo-placeholder"><mat-icon aria-hidden="true">diversity_1</mat-icon></div>
+      }
+    </div>
+    <div>
+      <span class="cc-rainbow"></span>
+      <h2 class="cc-heading big">We care enough to improve the system.</h2>
+      <p class="body">
+        CARES Connects is a California 501(c)(3) nonprofit. Our team includes educators, veterans, and consultants who have
+        advised federal, state, and county projects. We're on a mission to improve access to available resources, so we
+        can help strengthen individuals, families, and communities.
+      </p>
+      <blockquote>Our mission is to close the gap between available support and the people who need it most.</blockquote>
+      <a [href]="links.about" class="story">Read our story</a>
+    </div>
+  </div>
+</section>
+
+<!-- Campaign -->
+<div class="cc-rainbow-strip"></div>
+<section class="campaign">
+  <div class="wrap campaign-grid">
+    <div class="campaign-copy">
+      <span class="eyebrow">Our campaign: Someone who cares</span>
+      <h2 class="cc-heading">Be a community that cares.</h2>
+      <p>Your gift helps us check listings, add new programs, and keep CARES Connects free for every resident who needs it.</p>
+      <div class="campaign-actions">
+        <a [href]="links.donate" class="cc-btn yellow">Donate</a>
+        <a [href]="links.contact" class="cc-btn outline-light">Partner with us</a>
+      </div>
+    </div>
+    <div class="photo-frame dark">
+      @if (images.campaign) {
+        <img [src]="images.campaign" alt="A volunteer wearing a 'this human cares' CARES Connects t-shirt" loading="lazy" />
+      } @else {
+        <div class="photo-placeholder dark"><span>this human<br />cares <mat-icon inline aria-hidden="true">favorite</mat-icon></span></div>
+      }
+    </div>
+  </div>
+</section>

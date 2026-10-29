@@ -1,0 +1,35 @@
+# Weekly IRS discovery: pulls the IRS California exempt-organization file and queues new
+# human-services 501(c)(3)s in the admin portal's Discover page. The IRS refreshes the file
+# about once a month; running weekly picks that up within days, and repeat runs change nothing.
+#
+# Needs repository secrets DATABASE_URL (libsql://…turso.io) and DATABASE_AUTH_TOKEN.
+name: IRS discovery
+
+on:
+  schedule:
+    - cron: '0 15 * * 1' # Mondays 15:00 UTC (7–8am Pacific)
+  workflow_dispatch: {}
+
+concurrency:
+  group: irs-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run db:migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_AUTH_TOKEN: ${{ secrets.DATABASE_AUTH_TOKEN }}
+      - run: npm run discover
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_AUTH_TOKEN: ${{ secrets.DATABASE_AUTH_TOKEN }}

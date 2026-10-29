@@ -1,0 +1,29 @@
+<div class="page">
+  <a routerLink="/find" [queryParams]="county() ? { county: county() } : {}" class="back"><mat-icon>arrow_back</mat-icon>All categories</a>
+
+  @if (resources.error()) {
+    <h1>Category not found</h1>
+    <p>This page may have moved. <a routerLink="/find">Browse all categories</a>.</p>
+  } @else {
+    <header class="head">
+      <h1 class="cc-heading">{{ category()?.name ?? '' }}</h1>
+      @if (category()?.description) {
+        <p class="muted">{{ category()!.description }}</p>
+      }
+      <app-county-filter [value]="county()" (changed)="setCounty($event)" />
+    </header>
+
+    @if (resources.isLoading()) {
+      <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+    } @else if (resources.value(); as list) {
+      <p class="muted" aria-live="polite">{{ list.length }} {{ list.length === 1 ? 'resource' : 'resources' }}</p>
+      <div class="list">
+        @for (r of list; track r.id) {
+          <app-resource-card [resource]="r" />
+        } @empty {
+          <p>No listings here for that county yet. Try “Both counties” or dial <a href="tel:211">211</a>.</p>
+        }
+      </div>
+    }
+  }
+</div>

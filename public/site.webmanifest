@@ -1,0 +1,13 @@
+{
+  "name": "CARES Connects",
+  "short_name": "CARES",
+  "description": "Find verified local help in Placer and Sacramento Counties.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#003868",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

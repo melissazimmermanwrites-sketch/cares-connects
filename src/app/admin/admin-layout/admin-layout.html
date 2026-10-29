@@ -1,0 +1,33 @@
+<header class="bar-wrap">
+<mat-toolbar class="bar">
+  <a routerLink="/admin" class="brand">CARES <span>Admin</span></a>
+  <nav class="nav" aria-label="Admin">
+    <a mat-button routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Resources</a>
+    <a mat-button routerLink="/admin/discover" routerLinkActive="active">
+      Discover
+      @if (discovery.value()?.newCount; as n) {
+        <span class="badge" [attr.aria-label]="n + ' waiting for review'">{{ n > 999 ? '999+' : n }}</span>
+      }
+    </a>
+    <a mat-button routerLink="/admin/categories" routerLinkActive="active">Categories</a>
+  </nav>
+  <span class="spacer"></span>
+  <a mat-icon-button href="/" target="_blank" aria-label="View public site (opens in new tab)" title="View public site">
+    <mat-icon>open_in_new</mat-icon>
+  </a>
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Account menu">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <div class="who">
+      <strong>{{ auth.user()?.name }}</strong>
+      <span class="muted">{{ auth.user()?.email }}</span>
+    </div>
+    <a mat-menu-item routerLink="/admin/account"><mat-icon>key</mat-icon>Change password</a>
+    <button mat-menu-item (click)="logout()"><mat-icon>logout</mat-icon>Sign out</button>
+  </mat-menu>
+</mat-toolbar>
+</header>
+<main>
+  <router-outlet />
+</main>
