@@ -1,0 +1,22 @@
+[
+ {
+  "q": "is this free",
+  "a": "Yes. CARES Connects is free to use, and you do not need an account."
+ },
+ {
+  "q": "we got evicted and have nowhere to go",
+  "a": "[need:shelter-and-housing]"
+ },
+ {
+  "q": "i need a dentist",
+  "a": "[need:medical-and-dental-health]"
+ },
+ {
+  "q": "what is the weather",
+  "a": "I can only help you find local services in California. Tell me what you need help with, like food, housing, or health care."
+ },
+ {
+  "q": "who runs this",
+  "a": "CARES Connects is run by Community Alliance of Resources Education and Support, a California 501(c)(3) nonprofit. The team includes educators, veterans, and consultants."
+ }
+]

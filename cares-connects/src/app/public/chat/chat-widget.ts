@@ -67,6 +67,8 @@ export class ChatWidget {
   private nextId = 1;
 
   private readonly categories = rxResource({ stream: () => this.api.categories() });
+  /** Counties with listings; the busiest ones become quick-pick bubbles, so new areas appear on their own. */
+  private readonly counties = rxResource({ stream: () => this.api.counties() });
   private readonly categoryName = computed(() => new Map((this.categories.value() ?? []).map((c) => [c.slug, c.name])));
 
   readonly serviceArea = serviceAreaLabel;
@@ -127,10 +129,11 @@ export class ChatWidget {
   private askLocation(): void {
     this.step = 'location';
     void this.brain.warmUp(); // load the model while they type, so the next step is instant
-    this.say('What is your ZIP code, city, or county?', [
-      { label: 'Placer County', run: () => this.handleLocation('Placer County') },
-      { label: 'Sacramento County', run: () => this.handleLocation('Sacramento County') },
-    ]);
+    const top = [...(this.counties.value() ?? [])].sort((a, b) => b.resourceCount - a.resourceCount).slice(0, 3);
+    this.say(
+      'What is your ZIP code, city, or county?',
+      top.map((c) => ({ label: `${c.name} County`, run: () => this.handleLocation(`${c.name} County`) })),
+    );
   }
 
   private async handleLocation(text: string, echo = true): Promise<void> {

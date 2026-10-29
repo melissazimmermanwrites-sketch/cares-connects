@@ -97,11 +97,12 @@ def tag_phrases(seed: dict) -> dict[str, list[str]]:
     return out
 
 
-def phrase_table(phrases: dict[str, list[str]]) -> dict[str, str]:
+def phrase_table(phrases: dict[str, list[str]], situations: dict[str, list[str]]) -> dict[str, str]:
     """Need phrase → category for the widget's exact-match pass (public/brain/phrases.json).
     Phrases claimed by more than one category are dropped rather than guessed."""
     owners: dict[str, set[str]] = defaultdict(set)
-    for cat, xs in phrases.items():
+    merged = {cat: list(xs) + list(situations.get(cat, [])) for cat, xs in phrases.items()}
+    for cat, xs in merged.items():
         for x in xs:
             key = normalize(re.sub(r"^(a|an|some|the) ", "", x))
             if len(key) >= 3:
@@ -134,11 +135,19 @@ def build(target_mb: float, seed: int = 7) -> tuple[str, list[dict]]:
                 for _ in range(WRAPS_PER_TEMPLATE):
                     need_turns.append(turn(rng.choice(PREFIXES) + core + rng.choice(SUFFIXES), label))
             eval_rows.append({"q": normalize(rng.choice(HELDOUT_NEED).format(x=x)), "a": label})
-        for s in F.SITUATIONS.get(cat, []):
+        sits = F.SITUATIONS.get(cat, [])
+        for s in sits:
+            # Situations are few next to tag phrases, so each gets its bare form plus many wraps.
+            need_turns.append(turn(s, label))
             for tpl in SITUATION_TEMPLATES:
                 core = tpl.format(s=s)
-                for _ in range(WRAPS_PER_TEMPLATE):
+                for _ in range(WRAPS_PER_TEMPLATE * 2):
                     need_turns.append(turn(rng.choice(PREFIXES) + core + rng.choice(SUFFIXES), label))
+            # Two situations from the same need in one message ("we got evicted and have nowhere to go").
+            for other in sits:
+                if other != s:
+                    for joiner in (" and ", ", ", ". ", " so "):
+                        need_turns.append(turn(s + joiner + other, label))
             eval_rows.append({"q": normalize(rng.choice(HELDOUT_SIT).format(s=s)), "a": label})
 
     fixed_turns: list[str] = []
@@ -172,7 +181,7 @@ def build(target_mb: float, seed: int = 7) -> tuple[str, list[dict]]:
     leaked = [t for t in need_turns if t.split("\n")[0][3:] in held]
     if leaked:
         raise SystemExit(f"{len(leaked)} eval questions leaked into training")
-    table = phrase_table(phrases)
+    table = phrase_table(phrases, F.SITUATIONS)
     (ROOT / "public" / "brain" / "phrases.json").write_text(json.dumps(table, separators=(",", ":")))
     print(f"phrase table: {len(table)} phrases -> public/brain/phrases.json")
     stats = {c: len(v) for c, v in phrases.items()}
