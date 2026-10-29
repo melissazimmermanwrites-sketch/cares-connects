@@ -24,7 +24,8 @@ export function securityHeaders(req: Request, res: Response, next: NextFunction)
     'Content-Security-Policy',
     "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'",
   );
-  if (req.path.startsWith('/admin') || req.path.startsWith('/api')) {
+  // NOINDEX=true on test/staging deploys keeps them out of search results entirely.
+  if (process.env['NOINDEX'] === 'true' || req.path.startsWith('/admin') || req.path.startsWith('/api')) {
     res.setHeader('X-Robots-Tag', 'noindex, nofollow');
   }
   next();

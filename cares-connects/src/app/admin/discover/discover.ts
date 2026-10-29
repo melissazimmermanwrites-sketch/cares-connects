@@ -123,7 +123,8 @@ export class Discover implements OnDestroy {
   async checkNow(): Promise<void> {
     this.starting.set(true);
     try {
-      await firstValueFrom(this.api.runDiscovery());
+      const started = await firstValueFrom(this.api.runDiscovery());
+      if (started.message) this.snackBar.open(started.message, 'OK', { duration: 6000, verticalPosition: 'top' });
       this.summary.reload();
     } catch (err) {
       this.snackBar.open(errorMessage(err), 'OK', { duration: 5000, verticalPosition: 'top' });

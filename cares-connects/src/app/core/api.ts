@@ -102,7 +102,7 @@ export class Api {
     return this.http.post<DiscoveryRow>(`/api/admin/discovery/${encodeURIComponent(ein)}/status`, { status });
   }
   runDiscovery() {
-    return this.http.post<{ runId: number }>('/api/admin/discovery/run', {});
+    return this.http.post<{ runId: number | null; message?: string }>('/api/admin/discovery/run', {});
   }
 
   tagSuggestions(q: string) {

@@ -138,10 +138,37 @@ discoveryRouter.post(
   }),
 );
 
+/**
+ * Serverless hosts (Netlify) stop a function after ~10s and freeze it once it responds, while a
+ * full import against Turso takes ~30–40s. There, the button starts the GitHub Action instead,
+ * when GITHUB_DISPATCH_TOKEN (a token allowed to run workflows) and GITHUB_REPOSITORY are set.
+ */
+async function dispatchWorkflow(): Promise<void> {
+  const token = process.env['GITHUB_DISPATCH_TOKEN'];
+  const repo = process.env['GITHUB_REPOSITORY'];
+  if (!token || !repo) {
+    throw new HttpError(
+      409,
+      'On this host the IRS check runs from GitHub Actions (every Monday). Start it now from the repository’s Actions tab → “IRS discovery” → Run workflow.',
+    );
+  }
+  const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/discover.yml/dispatches`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+    body: JSON.stringify({ ref: 'main' }),
+  });
+  if (!res.ok) throw new HttpError(502, `GitHub did not start the IRS check (HTTP ${res.status}).`);
+}
+
 /** "Check the IRS now": starts a run in the background and returns immediately. */
 discoveryRouter.post(
   '/run',
   handle(async (_req, res) => {
+    if (process.env['AWS_LAMBDA_FUNCTION_NAME']) {
+      await dispatchWorkflow();
+      res.status(202).json({ runId: null, message: 'Started on GitHub Actions; results appear here in a minute or two.' });
+      return;
+    }
     let runId: number;
     try {
       runId = await startRun(res.locals.user!.email);

@@ -43,6 +43,7 @@ const RESULT_LIMIT = 5;
 @Component({
   selector: 'app-chat-widget',
   imports: [RouterLink],
+  host: { '[style.bottom.px]': 'lift()', '[style.--cc-lift.px]': 'lift()' },
   templateUrl: './chat-widget.html',
   styleUrl: './chat-widget.scss',
 })
@@ -59,6 +60,8 @@ export class ChatWidget {
   readonly replies = signal<Reply[]>([]);
   readonly typing = signal(false);
   readonly draft = signal('');
+  /** Bottom offset; raised when a host badge (e.g. Netlify's) sits in the same corner. */
+  readonly lift = signal(20);
 
   private step: Step = 'ca';
   private county: CountyRef | null = null;
@@ -70,6 +73,19 @@ export class ChatWidget {
   /** Counties with listings; the busiest ones become quick-pick bubbles, so new areas appear on their own. */
   private readonly counties = rxResource({ stream: () => this.api.counties() });
   private readonly categoryName = computed(() => new Map((this.categories.value() ?? []).map((c) => [c.slug, c.name])));
+
+  constructor() {
+    if (!this.browser) return;
+    // Netlify injects a "Powered by Netlify" badge iframe bottom-right on some plans; it would
+    // cover the launcher. Sit above it when it shows up (it loads after the page).
+    for (const delay of [500, 2000, 5000]) {
+      setTimeout(() => {
+        const badge = document.querySelector<HTMLElement>('iframe[id*="nl-badge"], iframe[class*="nl-badge"]');
+        const rect = badge?.getBoundingClientRect();
+        if (rect && rect.height > 0) this.lift.set(Math.round(window.innerHeight - rect.top) + 12);
+      }, delay);
+    }
+  }
 
   readonly serviceArea = serviceAreaLabel;
   readonly tel = telHref;

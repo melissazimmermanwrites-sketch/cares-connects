@@ -44,7 +44,6 @@
               "entry": "src/server.ts"
             },
             "externalDependencies": [
-              "@libsql/client",
               "libsql"
             ]
           },

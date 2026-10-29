@@ -11,8 +11,10 @@ import { Api } from '../core/api';
   template: `
     <label class="wrap">
       <span class="label">Where are you?</span>
-      <select [value]="value()" (change)="changed.emit($any($event.target).value)">
-        <option value="">All of California</option>
+      <!-- Selection lives on the options: binding [value] on the select runs before the
+           county options load and leaves it blank. -->
+      <select (change)="changed.emit($any($event.target).value)">
+        <option value="" [selected]="!value()">All of California</option>
         @for (c of counties.value() ?? []; track c.id) {
           <option [value]="c.slug" [selected]="c.slug === value()">{{ c.name }} County</option>
         }

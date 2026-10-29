@@ -1,0 +1,15 @@
+# Netlify: static files from the CDN, everything else (pages + /api) through one function that
+# runs the Express server. Deployed from a local build (see HANDOFF.md):
+#   npm run build && netlify deploy --prod --no-build
+[build]
+  publish = "dist/cares-connects/browser"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  included_files = ["dist/cares-connects/server/**"]
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/app"
+  status = 200

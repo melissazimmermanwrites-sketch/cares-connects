@@ -93,42 +93,61 @@ turso db shell cares-connects "DELETE FROM sessions WHERE admin_id IN (SELECT id
 
 ---
 
-## 3. Deploy the app
+## 3. Deploy the app (Netlify)
 
-The app is one Node server. Any Node host works (Render, Railway, Fly.io, a VPS). Settings:
+The app is set up for Netlify: the CDN serves static files (including the chat brain) and one
+Netlify Function (`cares-connects/netlify/functions/app.mjs`) runs the Express server for
+page rendering and `/api`. Config is `cares-connects/netlify.toml`.
 
-| Setting | Value |
+**Deploy from a local build. Don't connect Netlify's Git builds or its Angular plugin.**
+Netlify's Angular plugin would swap our `server.ts` for an edge version that can't run the API.
+
+```bash
+cd cares-connects
+netlify login                                   # Mel logs in
+netlify sites:create --name <site-name>         # creates and links the site
+# environment variables: see table below
+npm ci && npm run build
+netlify deploy --prod --no-build
+```
+
+**Environment variables.** Set each with `--context production` and **no `--scope` flag**
+(with `--scope`, the CLI reports success but saves nothing). The token goes in as a secret:
+
+```bash
+netlify env:set DATABASE_URL "libsql://cares-connects-<org>.turso.io" --context production
+netlify env:set DATABASE_AUTH_TOKEN "<token>" --secret --context production
+netlify env:set NG_ALLOWED_HOSTS "caresconnects.org,www.caresconnects.org,<site-name>.netlify.app" --context production
+netlify env:set SITE_URL "https://caresconnects.org" --context production
+netlify env:set NODE_ENV production --context production
+```
+
+Check them with `netlify env:get <NAME> --context production`. Functions read environment
+variables at deploy time, so **redeploy after changing any of them**.
+
+| Variable | Purpose |
 |---|---|
-| Root / working directory | `cares-connects` |
-| Node version | 24 |
-| Build command | `npm ci --include=dev && npm run db:migrate && npm run build` |
-| Start command | `npm run serve:ssr:cares-connects` |
-| Port | the host's `PORT` env var (the server reads it) |
+| `DATABASE_URL`, `DATABASE_AUTH_TOKEN` | Turso database |
+| `NG_ALLOWED_HOSTS` | every hostname the site answers on; Angular returns 400 for anything else |
+| `SITE_URL` | used in the sitemap |
+| `NODE_ENV=production` | login cookies become HTTPS-only |
+| `NOINDEX=true` | **test sites only**: keeps the site out of search results. Don't set it on the real site. |
+| `GITHUB_DISPATCH_TOKEN`, `GITHUB_REPOSITORY` | optional: lets the admin's "Check the IRS now" button start the GitHub Action (a fine-grained token with Actions read/write on this repo; repository as `owner/name`). Without them, the button explains where to run it. |
 
-`--include=dev` matters: with `NODE_ENV=production` set, a plain `npm ci` skips the build tools
-and the build fails.
-
-**Environment variables** (as secrets in the host's dashboard):
-
-| Variable | Value |
-|---|---|
-| `DATABASE_URL` | `libsql://cares-connects-<org>.turso.io` |
-| `DATABASE_AUTH_TOKEN` | the Turso token |
-| `NG_ALLOWED_HOSTS` | the site's hostnames, comma-separated, e.g. `caresconnects.org,www.caresconnects.org` (Angular refuses other hosts) |
-| `SITE_URL` | `https://caresconnects.org` (used in the sitemap) |
-| `NODE_ENV` | `production` (login cookies become HTTPS-only) |
-
-The host must serve HTTPS. HSTS is sent automatically on HTTPS requests.
+Why the IRS button works this way: a full import against Turso takes about 30–40 seconds,
+longer than a Netlify function may run, so on Netlify the import always runs in GitHub Actions.
 
 **If the domain is not caresconnects.org**, also change `SITE_URL` in
 `src/app/public/site-content.ts` (canonical links and share previews), regenerate the share
 image with `npm run make:images`, and commit.
 
-**Netlify instead of a Node host?** It's possible, but it isn't a drop-in. Netlify runs
-serverless functions, not a long-running Express server. You'd move the `/api` router into a
-Netlify Function, switch the database client to `@libsql/client/web`, and make "Check the IRS
-now" trigger the GitHub Action instead of running inside the request. Plan for real work and
-testing; a Node host needs none of it.
+**A Node host (Render, Railway, Fly.io) also works, unchanged:** build with
+`npm ci --include=dev && npm run db:migrate && npm run build` and start with
+`npm run serve:ssr:cares-connects`, using the same environment variables.
+
+**A test copy is running** at `https://cares-connects-test.netlify.app` on Jason's Netlify and
+Turso (`NOINDEX=true`). Once Mel's site is live, ask Jason to delete that Netlify project and,
+if the data was copied rather than transferred, the test Turso database.
 
 ---
 

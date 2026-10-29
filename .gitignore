@@ -3,3 +3,6 @@
 /x_donotuse_Copy of CARES_DIRECTORY/
 
 .DS_Store
+
+# Local Netlify folder
+.netlify
