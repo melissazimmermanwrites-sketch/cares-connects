@@ -6,6 +6,7 @@
  * The password is prompted for (hidden), or read from ADMIN_PASSWORD for scripted setups.
  */
 import { createInterface } from 'node:readline/promises';
+import { Writable } from 'node:stream';
 import { eq } from 'drizzle-orm';
 import { client, db, DATABASE_URL } from '../src/server/db/client';
 import { admins } from '../src/server/db/schema';
@@ -19,16 +20,12 @@ if (!email || !email.includes('@')) {
 }
 
 async function promptHidden(question: string): Promise<string> {
-  const rl = createInterface({ input: process.stdin, output: process.stdout, terminal: true });
-  const write = (rl as unknown as { _writeToOutput: (s: string) => void })._writeToOutput.bind(rl);
-  let prompted = false;
-  (rl as unknown as { _writeToOutput: (s: string) => void })._writeToOutput = (s: string) => {
-    if (!prompted) {
-      write(s);
-      prompted = true;
-    }
-  };
-  const answer = await rl.question(question);
+  // Print the question, then route readline's echo to a stream that drops it, so the
+  // password never shows. (Node 24's readline/promises has no _writeToOutput to patch.)
+  process.stdout.write(question);
+  const muted = new Writable({ write: (_chunk, _enc, done) => done() });
+  const rl = createInterface({ input: process.stdin, output: muted, terminal: true });
+  const answer = await rl.question('');
   rl.close();
   process.stdout.write('\n');
   return answer;
