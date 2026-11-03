@@ -64,5 +64,10 @@
     "fsevents@2.3.3": true,
     "lmdb@3.5.6": true,
     "msgpackr-extract@3.0.4": true
+  },
+  "overrides": {
+    "minimatch@^3": "^11.0.1",
+    "minimatch@^5": "^11.0.1",
+    "uuid@^8": "^11.1.1"
   }
 }
