@@ -1,0 +1,26 @@
+// Cloudflare Workers config. Deployed from a local build (see HANDOFF.md):
+//   npm run build && npx wrangler deploy
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cares-connects",
+  "main": "cloudflare/worker.mjs",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "dist/cares-connects/browser",
+    // Pages are rendered by the Worker; never fall back to a static index.html.
+    "not_found_handling": "none"
+  },
+  // Angular's server chunks start with createRequire(import.meta.url), which is undefined once
+  // Wrangler bundles them. Any absolute file URL works; nothing is read from disk.
+  "define": { "import.meta.url": "\"file:///worker.mjs\"" },
+  "observability": { "enabled": true },
+  // After the first deploy, add the workers.dev address it prints to NG_ALLOWED_HOSTS.
+  // Plain settings. Secrets (DATABASE_AUTH_TOKEN, GITHUB_DISPATCH_TOKEN) go in with
+  // `npx wrangler secret put <NAME>`, never in this file.
+  "vars": {
+    "NODE_ENV": "production",
+    "SITE_URL": "https://caresconnects.org",
+    "NG_ALLOWED_HOSTS": "caresconnects.org,www.caresconnects.org"
+  }
+}

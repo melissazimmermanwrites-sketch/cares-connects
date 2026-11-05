@@ -9,7 +9,8 @@ import { join } from 'node:path';
 import { api } from './server/api';
 import { securityHeaders, siteFiles } from './server/site';
 
-const browserDistFolder = join(import.meta.dirname, '../browser');
+// import.meta.dirname is undefined on Cloudflare Workers, where Cloudflare serves these files itself.
+const browserDistFolder = join(import.meta.dirname ?? '.', '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
@@ -66,5 +67,5 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
  */
 export const reqHandler = createNodeRequestHandler(app);
 
-/** The Express app itself, for serverless wrappers (netlify/functions/app.mjs). */
+/** The Express app itself, for serverless wrappers (cloudflare/worker.mjs, netlify/functions/app.mjs). */
 export { app };

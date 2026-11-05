@@ -60,3 +60,7 @@ Thumbs.db
 
 # Netlify CLI link
 .netlify/
+
+# Local Cloudflare settings and build cache
+.dev.vars*
+.wrangler

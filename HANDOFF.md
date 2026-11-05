@@ -95,6 +95,9 @@ turso db shell cares-connects "DELETE FROM sessions WHERE admin_id IN (SELECT id
 
 ## 3. Deploy the app (Netlify)
 
+> **Moving to Cloudflare Workers:** follow `CLOUDFLARE.md` instead of this section. The Netlify
+> setup below stays valid until that move is finished.
+
 The app is set up for Netlify: the CDN serves static files (including the chat brain) and one
 Netlify Function (`cares-connects/netlify/functions/app.mjs`) runs the Express server for
 page rendering and `/api`. Config is `cares-connects/netlify.toml`.
