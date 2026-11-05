@@ -1,7 +1,10 @@
 # Netlify: static files from the CDN, everything else (pages + /api) through one function that
-# runs the Express server. Deployed from a local build (see HANDOFF.md):
+# runs the Express server. Netlify builds the Develop branch from GitHub, with the site's base
+# directory set to cares-connects/ (so this file is read). A local build also works:
 #   npm run build && netlify deploy --prod --no-build
+# Don't add Netlify's Angular plugin: it replaces server.ts with a version that can't run the API.
 [build]
+  command = "npm run build"
   publish = "dist/cares-connects/browser"
 
 [functions]
