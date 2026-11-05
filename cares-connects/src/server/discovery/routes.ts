@@ -139,7 +139,7 @@ discoveryRouter.post(
 );
 
 /**
- * Serverless hosts (Netlify) stop a function after ~10s and freeze it once it responds, while a
+ * Serverless hosts (Cloudflare Workers, Netlify) stop a function after ~10s and freeze it once it responds, while a
  * full import against Turso takes ~30–40s. There, the button starts the GitHub Action instead,
  * when GITHUB_DISPATCH_TOKEN (a token allowed to run workflows) and GITHUB_REPOSITORY are set.
  */
@@ -160,11 +160,16 @@ async function dispatchWorkflow(): Promise<void> {
   if (!res.ok) throw new HttpError(502, `GitHub did not start the IRS check (HTTP ${res.status}).`);
 }
 
+/** True on Netlify (AWS Lambda) and Cloudflare Workers, where a long import can't run in the background. */
+function onServerlessHost(): boolean {
+  return !!process.env['AWS_LAMBDA_FUNCTION_NAME'] || globalThis.navigator?.userAgent === 'Cloudflare-Workers';
+}
+
 /** "Check the IRS now": starts a run in the background and returns immediately. */
 discoveryRouter.post(
   '/run',
   handle(async (_req, res) => {
-    if (process.env['AWS_LAMBDA_FUNCTION_NAME']) {
+    if (onServerlessHost()) {
       await dispatchWorkflow();
       res.status(202).json({ runId: null, message: 'Started on GitHub Actions; results appear here in a minute or two.' });
       return;

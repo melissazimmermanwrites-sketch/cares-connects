@@ -8,6 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:cares-connects": "node dist/cares-connects/server/server.mjs",
+    "cf:dev": "wrangler dev",
+    "cf:deploy": "npm run build && wrangler deploy",
     "db:extract": "tsx scripts/extract-sheet.mts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.mts",
@@ -54,7 +56,8 @@
     "prettier": "^3.8.1",
     "tsx": "^4.23.15",
     "typescript": "~6.0.2",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.0",
+    "wrangler": "^4.158.0"
   },
   "allowScripts": {
     "esbuild@0.18.20": true,
@@ -63,6 +66,7 @@
     "@parcel/watcher@2.6.0": true,
     "fsevents@2.3.3": true,
     "lmdb@3.5.6": true,
-    "msgpackr-extract@3.0.4": true
+    "msgpackr-extract@3.0.4": true,
+    "workerd@1.20261104.1": true
   }
 }
