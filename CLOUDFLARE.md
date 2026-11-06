@@ -149,11 +149,25 @@ Do this after step 7 passes. **Keep the Netlify project and its files** (`netlif
    ```bash
    netlify env:set SITE_URL "https://caresconnects.netlify.app" --context production
    netlify env:set NG_ALLOWED_HOSTS "caresconnects.netlify.app" --context production
-   netlify env:set NOINDEX true --context production
+   netlify env:set NOINDEX true        # every Netlify context, so previews are covered too
    ```
 
-5. Redeploy `Develop`, then check caresconnects.netlify.app: it loads, shows the development
-   data, and its pages say `noindex`.
+   **Never set `NOINDEX` while caresconnects.org still points at Netlify**, and never in
+   `wrangler.jsonc`. Either would take the real site out of Google.
+
+5. Redeploy `Develop`, then check caresconnects.netlify.app loads and shows the development data.
+
+6. **Check search settings on both sites. This step must pass:**
+
+   ```bash
+   curl -sI https://caresconnects.netlify.app/ | grep -i x-robots-tag
+   curl -sI https://caresconnects.netlify.app/find | grep -i x-robots-tag
+   curl -sI https://caresconnects.org/ | grep -i x-robots-tag
+   ```
+
+   The first two must each print `x-robots-tag: noindex, nofollow`. The third must print
+   nothing, because the live site has to stay in Google. Don't add the development site to
+   `robots.txt`: a crawler that is blocked from a page can't see its `noindex`.
 
 **Rolling back** before step 8: in Cloudflare DNS, remove the Worker custom domains and add back
 `A caresconnects.org → 75.2.60.5` and `CNAME www → caresconnects.netlify.app` (DNS only). After
