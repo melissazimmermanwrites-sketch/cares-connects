@@ -149,11 +149,11 @@ Do this after step 7 passes. **Keep the Netlify project and its files** (`netlif
    ```bash
    netlify env:set SITE_URL "https://caresconnects.netlify.app" --context production
    netlify env:set NG_ALLOWED_HOSTS "caresconnects.netlify.app" --context production
-   netlify env:set NOINDEX true        # every Netlify context, so previews are covered too
    ```
 
-   **Never set `NOINDEX` while caresconnects.org still points at Netlify**, and never in
-   `wrangler.jsonc`. Either would take the real site out of Google.
+   Search engines are already kept off every `.netlify.app` address by `src/server/robots.ts`,
+   so there's nothing to set. Don't set `NOINDEX` here or in `wrangler.jsonc`: on a deploy that
+   serves caresconnects.org, it would take the real site out of Google.
 
 5. Redeploy `Develop`, then check caresconnects.netlify.app loads and shows the development data.
 
