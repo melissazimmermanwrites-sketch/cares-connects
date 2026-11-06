@@ -5,6 +5,17 @@ chat brain). One Worker (`cares-connects/cloudflare/worker.mjs`) runs the same E
 that Netlify ran, for page rendering and `/api`. Config is `cares-connects/wrangler.jsonc`.
 The database (Turso) and the weekly IRS import (GitHub Actions) don't change.
 
+**Where each branch lives after this move:**
+
+| Branch | Hosted on | Address |
+|---|---|---|
+| `main` | Cloudflare Workers (live site) | caresconnects.org |
+| `Develop` | Netlify (development site) | caresconnects.netlify.app |
+
+**Until step 6 is done, check what Netlify is publishing.** Netlify builds `Develop`, and
+caresconnects.org still points at that Netlify site. If `Develop` is its production branch,
+anything pushed to `Develop` goes live on the real domain, so hold those pushes until then.
+
 The live Netlify site keeps working until step 6, so the site stays up during the move. Do the
 steps in order. Commands run from `cares-connects/` unless noted.
 
@@ -66,6 +77,9 @@ To see live errors while you test: `npx wrangler tail`.
 
 ## 5. Move the domain's DNS to Cloudflare
 
+**Status, 2026-11-06:** done. Public DNS shows Cloudflare's nameservers, with the `A` and `www`
+records still pointing at Netlify. Skip to step 6 once step 4 passes.
+
 caresconnects.org is registered at **GoDaddy**, and GoDaddy runs its DNS
 (`ns31/ns32.domaincontrol.com`). Workers can only answer on a domain whose DNS is on Cloudflare.
 The domain stays registered at GoDaddy; only the nameservers change.
@@ -107,24 +121,54 @@ minutes. During those minutes the site may be unreachable, so do this at a quiet
 - [ ] `/robots.txt` and `/sitemap.xml` load
 - [ ] `www.caresconnects.org` loads too
 
-## 8. Clean up (after a week of the site working on Cloudflare)
+## 8. Make Netlify the development site
 
-- Delete the Netlify project: <https://app.netlify.com/projects/caresconnects> →
-  Project configuration → Delete project.
-- Remove the Netlify files from the repo: `cares-connects/netlify.toml`,
-  `cares-connects/netlify/`, and the `serverless-http` dependency (`npm uninstall serverless-http`).
-- Update section 3 of `HANDOFF.md` if it's still around.
+Do this after step 7 passes. **Keep the Netlify project and its files** (`netlify.toml`,
+`netlify/`, `serverless-http`), because `Develop` deploys from them.
+
+1. In Netlify, under domain management, remove `caresconnects.org` and `www.caresconnects.org`.
+2. Confirm the production branch is `Develop` and the base directory is `cares-connects`.
+3. Give it its own database, so test edits can't change real listings. In `cares-connects/`:
+
+   ```bash
+   turso db create cares-connects-dev
+   export DATABASE_URL="$(turso db show cares-connects-dev --url)"
+   export DATABASE_AUTH_TOKEN="$(turso db tokens create cares-connects-dev)"
+   echo "$DATABASE_URL"    # stop unless this name ends in -dev
+   npm run db:setup
+   npm run admin:create -- <email> "Dev admin"
+   netlify env:set DATABASE_URL "$DATABASE_URL" --context production
+   netlify env:set DATABASE_AUTH_TOKEN "$DATABASE_AUTH_TOKEN" --secret --context production
+   unset DATABASE_URL DATABASE_AUTH_TOKEN
+   ```
+
+   Never run `db:seed -- --force` against the production database: it wipes and reseeds.
+
+4. Set the rest of its settings. "production" here is Netlify's name for the `Develop` build:
+
+   ```bash
+   netlify env:set SITE_URL "https://caresconnects.netlify.app" --context production
+   netlify env:set NG_ALLOWED_HOSTS "caresconnects.netlify.app" --context production
+   netlify env:set NOINDEX true --context production
+   ```
+
+5. Redeploy `Develop`, then check caresconnects.netlify.app: it loads, shows the development
+   data, and its pages say `noindex`.
 
 **Rolling back** before step 8: in Cloudflare DNS, remove the Worker custom domains and add back
-`A caresconnects.org → 75.2.60.5` and `CNAME www → caresconnects.netlify.app` (DNS only).
+`A caresconnects.org → 75.2.60.5` and `CNAME www → caresconnects.netlify.app` (DNS only). After
+step 8, also add the domains back in Netlify and restore its production settings.
 
 ---
 
 ## Day to day
 
+Merging to `main` doesn't update the live site by itself. Deploy from an up-to-date `main`:
+
 | Task | Command (from `cares-connects/`) |
 |---|---|
-| Deploy a change | `npm run cf:deploy` |
+| Deploy `main` to the live site | `git checkout main && git pull`, then `npm run cf:deploy` |
+| Update the development site | Push to `Develop`; Netlify builds it |
 | Watch live logs | `npx wrangler tail` |
 | Change a secret | `npx wrangler secret put <NAME>` (takes effect immediately) |
 | Change `SITE_URL` / allowed hosts | edit `vars` in `wrangler.jsonc`, then deploy |
