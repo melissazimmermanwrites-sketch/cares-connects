@@ -20,6 +20,7 @@
     { "pattern": "caresconnects.org", "custom_domain": true },
     { "pattern": "www.caresconnects.org", "custom_domain": true }
   ],
+  "workers_dev": true,
   "observability": { "enabled": true },
   // Plain settings. Secrets (DATABASE_AUTH_TOKEN, GITHUB_DISPATCH_TOKEN) go in with
   // `npx wrangler secret put <NAME>`, never in this file.
