@@ -4,7 +4,8 @@
 #   npm run build && netlify deploy --prod --no-build
 # Don't add Netlify's Angular plugin: it replaces server.ts with a version that can't run the API.
 [build]
-  command = "npm run build"
+  # NODE_ENV=production makes npm skip devDependencies, which include the Angular build tools.
+  command = "npm ci --include=dev && npm run build"
   publish = "dist/cares-connects/browser"
 
 [functions]
