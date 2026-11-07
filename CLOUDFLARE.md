@@ -116,14 +116,14 @@ minutes. During those minutes the site may be unreachable, so do this at a quiet
 
 ## 7. Check everything (on https://caresconnects.org)
 
-- [ ] Home page, `/find`, a category page and a listing page load
+- [x] Home page, `/find`, a category page and a listing page load
 - [ ] The "Find help" chat: ZIP → need → results; typing "is this free?" gets an answer;
       typing a crisis phrase shows 911/988
 - [ ] `/admin` sign-in works; editing a listing shows up on the public site
 - [ ] Discover page shows the IRS queue; "Review & add" publishes a listing
 - [ ] Export → Google Sheets workbook downloads
-- [ ] `/robots.txt` and `/sitemap.xml` load
-- [ ] `www.caresconnects.org` loads too
+- [x] `/robots.txt` and `/sitemap.xml` load
+- [x] `www.caresconnects.org` loads too
 
 ## 8. Make Netlify the development site
 
