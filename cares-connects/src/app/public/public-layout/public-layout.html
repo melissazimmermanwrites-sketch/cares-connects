@@ -23,6 +23,7 @@
 
     <nav class="links" [class.open]="menuOpen()" aria-label="Main">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/resources" routerLinkActive="active">Directory</a>
       <a [href]="links.about">About</a>
       <a [href]="links.contact">Contact</a>
       <a [href]="links.donate">Donate</a>
@@ -53,6 +54,7 @@
       <h2>Quick Links</h2>
       <a routerLink="/">Home</a>
       <a routerLink="/find">Find help</a>
+      <a routerLink="/resources">All listings</a>
       <a [href]="links.about">About us</a>
       <a [href]="links.contact">Contact us</a>
       <a [href]="links.blog">Blog</a>
@@ -66,7 +68,7 @@
     <div>
       <h2>Contact Us</h2>
       <span class="place"><mat-icon inline aria-hidden="true">location_on</mat-icon> California, US</span>
-      <a [href]="links.listYourOrganization" target="_blank" rel="noopener">List your organization<span class="visually-hidden"> (opens in a new tab)</span></a>
+      <a routerLink="/list-your-organization">List your organization</a>
     </div>
   </div>
   <div class="inner legal">

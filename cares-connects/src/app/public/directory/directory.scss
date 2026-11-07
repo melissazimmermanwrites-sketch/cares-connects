@@ -1,0 +1,36 @@
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.list {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 0;
+    text-decoration: none;
+    font: var(--mat-sys-label-large);
+  }
+
+  .next {
+    margin-left: auto;
+  }
+}

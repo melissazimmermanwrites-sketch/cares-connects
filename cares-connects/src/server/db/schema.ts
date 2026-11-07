@@ -1,10 +1,17 @@
 import { sql } from 'drizzle-orm';
 import { index, integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import type { CheckMatch, SubmissionAnswers, SubmissionChecks } from '../../shared/submissions';
 
 export const VERIFICATION_STATUSES = ['verified', 'needs_verification'] as const;
 
 export const DISCOVERY_STATUSES = ['new', 'available', 'approved', 'rejected', 'listed'] as const;
 export const RUN_STATUSES = ['running', 'success', 'failed'] as const;
+/**
+ * awaiting_email -> (link confirmed) -> pending if nothing in our database matches, else duplicate.
+ * Only "pending" is the to-be-sorted queue.
+ */
+export const SUBMISSION_STATUSES = ['awaiting_email', 'duplicate', 'pending', 'approved', 'rejected', 'spam'] as const;
+export const EMAIL_STATUSES = ['not_sent', 'sent', 'failed', 'not_configured', 'verified', 'declined'] as const;
 
 export type DiscoveryStatus = (typeof DISCOVERY_STATUSES)[number];
 export type VerificationStatus = (typeof VERIFICATION_STATUSES)[number];
@@ -208,6 +215,70 @@ export const sessions = sqliteTable(
       .default(sql`(unixepoch())`),
   },
   (t) => [index('sessions_admin_idx').on(t.adminId)],
+);
+
+/**
+ * "List your organization" requests from the public form. Nothing here is public: an admin reviews
+ * each one, and approving it opens the normal listing form, prefilled.
+ */
+export const listingSubmissions = sqliteTable(
+  'listing_submissions',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    status: text('status', { enum: SUBMISSION_STATUSES }).notNull().default('awaiting_email'),
+    name: text('name').notNull(),
+    website: text('website').notNull(),
+    phone: text('phone').notNull(),
+    address: text('address'),
+    ein: text('ein'),
+    contactName: text('contact_name').notNull(),
+    contactEmail: text('contact_email').notNull(),
+    mission: text('mission'),
+    services: text('services').notNull(),
+    statewide: integer('statewide', { mode: 'boolean' }).notNull().default(false),
+    countyIds: text('county_ids', { mode: 'json' }).$type<number[]>().notNull(),
+    categoryIds: text('category_ids', { mode: 'json' }).$type<number[]>().notNull(),
+    /** The optional questions carried over from the old Google Form. */
+    answers: text('answers', { mode: 'json' }).$type<SubmissionAnswers>().notNull(),
+    /** Why the spam filter sorted this into the spam tab, if it did. */
+    spamFlags: text('spam_flags', { mode: 'json' }).$type<string[]>().notNull(),
+    /** Latest verification results; null until an admin's queue has run them. */
+    checks: text('checks', { mode: 'json' }).$type<SubmissionChecks>(),
+    /** What in our database this matched when the email was confirmed. */
+    dbMatches: text('db_matches', { mode: 'json' }).$type<CheckMatch[]>(),
+    /** Whether whoever controls the contact email has answered the verification link. */
+    emailStatus: text('email_status', { enum: EMAIL_STATUSES }).notNull().default('not_sent'),
+    /** SHA-256 of the link's token, so a leaked database can't confirm anything. */
+    emailTokenHash: text('email_token_hash'),
+    emailTokenExpiresAt: integer('email_token_expires_at', { mode: 'timestamp' }),
+    emailSentAt: integer('email_sent_at', { mode: 'timestamp' }),
+    emailSendCount: integer('email_send_count').notNull().default(0),
+    emailAnsweredAt: integer('email_answered_at', { mode: 'timestamp' }),
+    reviewedAt: integer('reviewed_at', { mode: 'timestamp' }),
+    reviewedBy: text('reviewed_by'),
+    resourceId: integer('resource_id').references(() => resources.id, { onDelete: 'set null' }),
+    ...timestamps,
+  },
+  (t) => [
+    index('listing_submissions_status_idx').on(t.status),
+    index('listing_submissions_email_idx').on(t.contactEmail),
+    index('listing_submissions_token_idx').on(t.emailTokenHash),
+  ],
+);
+
+/**
+ * Counters behind the form's rate limits. They live in the database because each Cloudflare
+ * Worker instance has its own memory. Keys are keyed hashes, so no visitor IP is stored.
+ */
+export const submissionThrottle = sqliteTable(
+  'submission_throttle',
+  {
+    key: text('key').primaryKey(),
+    count: integer('count').notNull().default(1),
+    /** Unix seconds. */
+    expiresAt: integer('expires_at').notNull(),
+  },
+  (t) => [index('submission_throttle_expires_idx').on(t.expiresAt)],
 );
 
 export type Category = typeof categories.$inferSelect;

@@ -1,0 +1,41 @@
+.page {
+  max-width: 640px;
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  font-size: 56px;
+  color: var(--cc-green);
+}
+
+h1 {
+  margin: 8px 0;
+}
+
+.lead {
+  margin: 0 0 24px;
+}
+
+.steps {
+  display: grid;
+  gap: 16px;
+  margin: 0 0 24px;
+  padding-left: 24px;
+
+  strong,
+  span {
+    display: block;
+  }
+
+  b {
+    overflow-wrap: anywhere;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}

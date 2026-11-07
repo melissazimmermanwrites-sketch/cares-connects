@@ -45,7 +45,7 @@
             }
           </div>
           <span class="tag">Food</span>
-          <p class="example-title"><a [routerLink]="['/resource', r.id]">{{ r.name }}</a></p>
+          <p class="example-title"><a [routerLink]="resourceLink(r)">{{ r.name }}</a></p>
           <p class="muted">Nonprofit{{ exampleCity() ? ' in ' + exampleCity() + ',' : ' in' }} {{ exampleArea() }}</p>
           <div class="example-actions">
             @if (exampleTel(); as href) { <a [href]="href" class="mini primary">Call</a> }
@@ -125,7 +125,7 @@
     <div class="cta sky">
       <h2 class="cc-heading">Run a nonprofit or public agency?</h2>
       <p>Add your programs so residents in Placer and Sacramento Counties can find you. We review each submission before it goes live.</p>
-      <a [href]="links.listYourOrganization" target="_blank" rel="noopener" class="cc-btn orange small">List your organization<span class="visually-hidden"> (opens in a new tab)</span></a>
+      <a routerLink="/list-your-organization" class="cc-btn orange small">List your organization</a>
     </div>
     <div class="cta navy">
       <h2 class="cc-heading">Plan with real community data.</h2>
