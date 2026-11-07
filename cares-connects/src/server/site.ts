@@ -2,6 +2,7 @@ import { type NextFunction, type Request, type Response, Router } from 'express'
 import { asc, eq } from 'drizzle-orm';
 import { db } from './db/client';
 import { categories, resources } from './db/schema';
+import { shouldNoindex } from './robots';
 
 /** Public origin for sitemap links. Set SITE_URL in production if the domain changes. */
 const SITE_URL = (process.env['SITE_URL'] ?? 'https://caresconnects.org').replace(/\/$/, '');
@@ -25,7 +26,7 @@ export function securityHeaders(req: Request, res: Response, next: NextFunction)
     "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'",
   );
   // NOINDEX=true on test/staging deploys keeps them out of search results entirely.
-  if (process.env['NOINDEX'] === 'true' || req.path.startsWith('/admin') || req.path.startsWith('/api')) {
+  if (shouldNoindex(req.get('host'), req.path, process.env['NOINDEX'])) {
     res.setHeader('X-Robots-Tag', 'noindex, nofollow');
   }
   next();
