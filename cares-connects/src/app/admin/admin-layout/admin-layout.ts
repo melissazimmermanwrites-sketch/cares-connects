@@ -20,6 +20,8 @@ export class AdminLayout {
   protected readonly auth = inject(Auth);
   /** Count of IRS discoveries waiting for review, shown on the nav link. */
   protected readonly discovery = rxResource({ stream: () => this.api.discoverySummary() });
+  /** Count of unread contact messages. */
+  protected readonly messages = rxResource({ stream: () => this.api.contactSummary() });
 
   async logout(): Promise<void> {
     await this.auth.logout();

@@ -23,9 +23,9 @@
 
     <nav class="links" [class.open]="menuOpen()" aria-label="Main">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-      <a [href]="links.about">About</a>
-      <a [href]="links.contact">Contact</a>
-      <a [href]="links.donate">Donate</a>
+      <a routerLink="/about" routerLinkActive="active">About</a>
+      <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      <a routerLink="/donate" routerLinkActive="active">Donate</a>
       <a routerLink="/find" class="cc-btn orange small find">Find Help Now</a>
     </nav>
 
@@ -53,8 +53,8 @@
       <h2>Quick Links</h2>
       <a routerLink="/">Home</a>
       <a routerLink="/find">Find help</a>
-      <a [href]="links.about">About us</a>
-      <a [href]="links.contact">Contact us</a>
+      <a routerLink="/about">About us</a>
+      <a routerLink="/contact">Contact us</a>
       <a [href]="links.blog">Blog</a>
     </div>
     <div>

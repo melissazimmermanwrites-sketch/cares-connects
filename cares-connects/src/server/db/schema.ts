@@ -5,6 +5,7 @@ export const VERIFICATION_STATUSES = ['verified', 'needs_verification'] as const
 
 export const DISCOVERY_STATUSES = ['new', 'available', 'approved', 'rejected', 'listed'] as const;
 export const RUN_STATUSES = ['running', 'success', 'failed'] as const;
+export const CONTACT_STATUSES = ['new', 'read', 'spam'] as const;
 
 export type DiscoveryStatus = (typeof DISCOVERY_STATUSES)[number];
 export type VerificationStatus = (typeof VERIFICATION_STATUSES)[number];
@@ -208,6 +209,39 @@ export const sessions = sqliteTable(
       .default(sql`(unixepoch())`),
   },
   (t) => [index('sessions_admin_idx').on(t.adminId)],
+);
+
+/** Messages from the public contact form. Only signed-in admins can read them. */
+export const contactMessages = sqliteTable(
+  'contact_messages',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    name: text('name').notNull(),
+    email: text('email').notNull(),
+    message: text('message').notNull(),
+    status: text('status', { enum: CONTACT_STATUSES }).notNull().default('new'),
+    /** Why the spam filter sorted this into the spam tab, if it did. */
+    spamReasons: text('spam_reasons', { mode: 'json' }).$type<string[]>().notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .notNull()
+      .default(sql`(unixepoch())`),
+  },
+  (t) => [index('contact_messages_status_idx').on(t.status), index('contact_messages_email_idx').on(t.email)],
+);
+
+/**
+ * Counters behind the contact form's rate limits. They live in the database because each
+ * Cloudflare Worker instance has its own memory. Keys are keyed hashes, so no visitor IP is stored.
+ */
+export const contactThrottle = sqliteTable(
+  'contact_throttle',
+  {
+    key: text('key').primaryKey(),
+    count: integer('count').notNull().default(1),
+    /** Unix seconds. */
+    expiresAt: integer('expires_at').notNull(),
+  },
+  (t) => [index('contact_throttle_expires_idx').on(t.expiresAt)],
 );
 
 export type Category = typeof categories.$inferSelect;

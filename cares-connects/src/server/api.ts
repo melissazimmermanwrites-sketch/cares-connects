@@ -46,6 +46,7 @@ import { serviceAreaLabel } from '../shared/api-types';
 import { slugify } from '../shared/slug';
 import { exportCsv, exportWorkbook } from './export';
 import { adminWhere, categoriesFor, countiesFor, inCategory, OUTER_CATEGORY_ID, searchFilter, servesCounty, tagsFor } from './queries';
+import { adminContactRouter, contactRouter } from './contact/routes';
 import { discoveryRouter } from './discovery/routes';
 import { handle, HttpError, parse } from './http';
 import { locate } from './locate';
@@ -250,6 +251,7 @@ async function adminResource(id: number): Promise<AdminResource> {
 export const api = Router();
 api.use(express.json({ limit: '200kb' }));
 api.use(sameOriginOnly);
+api.use('/contact', contactRouter);
 
 // Public site ---------------------------------------------------------------
 
@@ -544,6 +546,7 @@ admin.get(
 );
 
 admin.use('/discovery', discoveryRouter);
+admin.use('/messages', adminContactRouter);
 
 admin.get(
   '/export.csv',

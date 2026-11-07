@@ -1,20 +1,13 @@
 /**
  * Marketing copy and outside links for the public site, kept in one place so they're easy to edit.
- * The About / Contact / Donate links still point at the current caresconnects.org pages until
- * those pages are rebuilt here.
  */
 
 /** Public origin used for canonical URLs and share links (no trailing slash). */
 export const SITE_URL = 'https://caresconnects.org';
 
 export const LINKS = {
-  about: 'https://caresconnects.org/about',
-  contact: 'https://caresconnects.org/contact',
-  donate: 'https://caresconnects.org/donate',
   blog: 'https://www.caresconnects.org/blog',
   listYourOrganization: 'https://docs.google.com/forms/d/1BwqNlFJQCEyfeHqMpa8XJFiKT6qO0smfEisBGIeasnY',
-  // TODO: the live site's "Get the report" button has no link yet; send people to Contact for now.
-  report: 'https://caresconnects.org/contact',
   instagram: 'https://instagram.com/cares_connects',
   linkedin: 'https://www.linkedin.com/company/cares-connects',
 };

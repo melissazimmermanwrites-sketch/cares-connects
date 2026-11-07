@@ -17,6 +17,7 @@ import type {
   LocateResult,
   ResourceInput,
 } from '../../shared/api-types';
+import type { ContactInput, ContactMessageRow, ContactStatus, ContactSummary } from '../../shared/contact';
 
 /** Turns an API error into a sentence safe to show the user. */
 export function errorMessage(err: unknown): string {
@@ -86,6 +87,23 @@ export class Api {
   }
   adminCounties() {
     return this.http.get<CountySummary[]>('/api/admin/counties');
+  }
+
+  // Contact form
+  contactToken() {
+    return this.http.get<{ token: string }>('/api/contact/token');
+  }
+  sendContactMessage(input: ContactInput) {
+    return this.http.post<{ ok: boolean }>('/api/contact', input);
+  }
+  contactSummary() {
+    return this.http.get<ContactSummary>('/api/admin/messages/summary');
+  }
+  contactMessages(query: { status: string; page: number }) {
+    return this.http.get<Page<ContactMessageRow>>('/api/admin/messages', { params: toParams(query) });
+  }
+  setContactStatus(id: number, status: ContactStatus) {
+    return this.http.post<ContactMessageRow>(`/api/admin/messages/${id}/status`, { status });
   }
 
   // IRS discovery
