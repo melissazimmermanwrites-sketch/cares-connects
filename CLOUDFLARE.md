@@ -101,6 +101,10 @@ The domain stays registered at GoDaddy; only the nameservers change.
 
 ## 6. Point the domain at the Worker
 
+**Status, 2026-11-06:** done. Both custom domains are attached through `routes` in
+`wrangler.jsonc`, so `npx wrangler deploy` keeps them. `workers_dev: true` keeps the
+workers.dev test address on.
+
 In Cloudflare: **DNS → Records**, delete the Netlify `A` record for `caresconnects.org` and the
 `www` CNAME. Then:
 
