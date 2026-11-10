@@ -13,6 +13,7 @@
     "db:extract": "tsx scripts/extract-sheet.mts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.mts",
+    "db:status": "tsx scripts/db-status.mts",
     "db:seed": "tsx scripts/seed.mts",
     "db:setup": "npm run db:migrate && npm run db:seed",
     "db:studio": "drizzle-kit studio",
