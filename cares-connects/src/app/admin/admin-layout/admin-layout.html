@@ -9,6 +9,12 @@
         <span class="badge" [attr.aria-label]="n + ' waiting for review'">{{ n > 999 ? '999+' : n }}</span>
       }
     </a>
+    <a mat-button routerLink="/admin/submissions" routerLinkActive="active">
+      Submissions
+      @if (submissions.value()?.pending; as n) {
+        <span class="badge" [attr.aria-label]="n + ' waiting for review'">{{ n > 999 ? '999+' : n }}</span>
+      }
+    </a>
     <a mat-button routerLink="/admin/messages" routerLinkActive="active">
       Messages
       @if (messages.value()?.new; as n) {

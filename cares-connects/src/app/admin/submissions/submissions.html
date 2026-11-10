@@ -1,0 +1,169 @@
+<div class="page">
+  <header class="head">
+    <h1>Submissions</h1>
+    <p class="muted">
+      Requests reach “To be sorted” once their email is confirmed and nothing in our database matches them. Nothing goes live until you add it.
+    </p>
+  </header>
+
+  <nav class="tabs" aria-label="Filter submissions">
+    @for (t of tabs; track t.value) {
+      <button type="button" mat-button [class.on]="current() === t.value" [attr.aria-current]="current() === t.value ? 'true' : null" (click)="select(t.value)">
+        {{ t.label }}
+        @if (t.value === 'pending' && summary.value()?.pending; as n) { <span class="count">{{ n }}</span> }
+        @if (t.value === 'awaiting_email' && summary.value()?.awaitingEmail; as n) { <span class="count muted-count">{{ n }}</span> }
+        @if (t.value === 'duplicate' && summary.value()?.duplicate; as n) { <span class="count muted-count">{{ n }}</span> }
+        @if (t.value === 'spam' && summary.value()?.spam; as n) { <span class="count muted-count">{{ n }}</span> }
+      </button>
+    }
+  </nav>
+
+  @if (rows.isLoading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  } @else if (rows.error()) {
+    <p class="error-text" role="alert">Couldn't load submissions.</p>
+  }
+
+  <div class="list">
+    @for (r of list(); track r.id) {
+      <article class="card">
+        <header class="card-head">
+          <div>
+            <h2>{{ r.name }}</h2>
+            <p class="muted small">Sent {{ r.createdAt | date: 'medium' }}@if (r.reviewedBy) { · reviewed by {{ r.reviewedBy }} }</p>
+          </div>
+          @if (r.checks; as c) {
+            <span class="pill" [class.ok]="c.overall === 'pass'" [class.warn]="c.overall === 'review'" [class.error]="c.overall === 'fail'">{{ overallLabels[c.overall] }}</span>
+          }
+        </header>
+
+        @if (r.spamFlags.length) {
+          <p class="flags"><mat-icon inline aria-hidden="true">report</mat-icon> Spam filter: {{ r.spamFlags.join('; ') }}</p>
+        }
+
+        @if (r.dbMatches?.length) {
+          <div class="db-matches">
+            <strong>Already in our database</strong>
+            <ul class="matches">
+              @for (m of r.dbMatches; track $index) {
+                <li class="small">
+                  @if (m.resourceId) { <a [routerLink]="['/admin/resources', m.resourceId]">{{ m.name }}</a> } @else { {{ m.name }} (another submission) }@if (!m.isActive) { (archived) }: {{ m.reasons.join(', ') }}
+                </li>
+              }
+            </ul>
+          </div>
+        }
+
+        <div class="columns">
+          <div>
+            <dl>
+              <dt>Website</dt>
+              <dd><a [href]="r.website" target="_blank" rel="noopener noreferrer nofollow">{{ r.website }}<span class="visually-hidden"> (opens in a new tab)</span></a></dd>
+              <dt>Phone</dt><dd>{{ r.phone }}</dd>
+              @if (r.address) { <dt>Address</dt><dd>{{ r.address }}</dd> }
+              @if (r.ein) { <dt>EIN</dt><dd>{{ r.ein }}</dd> }
+              <dt>Contact</dt><dd>{{ r.contactName }} · {{ r.contactEmail }}</dd>
+              <dt>Serves</dt>
+              <dd>
+                @if (r.statewide) { All of California } @else {
+                  @for (c of r.counties; track c.id; let last = $last) { {{ c.name }}{{ last ? '' : ', ' }} }
+                }
+              </dd>
+              <dt>Categories</dt>
+              <dd>@for (c of r.categories; track c.id; let last = $last) { {{ c.name }}{{ last ? '' : ', ' }} }</dd>
+              <dt>Services</dt><dd class="text">{{ r.services }}</dd>
+              @if (r.mission) { <dt>Mission</dt><dd class="text">{{ r.mission }}</dd> }
+              @if (answerLines(r).length) {
+                <dt>Other answers</dt>
+                <dd>
+                  @for (line of answerLines(r); track line) { <div>{{ line }}</div> }
+                </dd>
+              }
+            </dl>
+          </div>
+
+          <section class="checks" [attr.aria-label]="'Verification checks for ' + r.name">
+            <h3>Verification</h3>
+            <div class="email-state" [class]="r.emailStatus">
+              <mat-icon aria-hidden="true">{{ r.emailStatus === 'verified' ? 'mark_email_read' : r.emailStatus === 'declined' ? 'unsubscribe' : 'mail' }}</mat-icon>
+              <div>
+                <strong>{{ emailLabels[r.emailStatus] }}</strong>
+                <div class="small">
+                  @if (r.emailAnsweredAt) { Answered {{ r.emailAnsweredAt | date: 'medium' }}. }
+                  @else if (r.emailSentAt) { Last sent {{ r.emailSentAt | date: 'medium' }} ({{ r.emailSendCount }} of {{ maxEmails }}). }
+                </div>
+                @if (canResend(r)) {
+                  <button mat-button type="button" (click)="resend(r)" [disabled]="resending().has(r.id)">{{ r.emailSendCount ? 'Send again' : 'Send verification email' }}</button>
+                }
+              </div>
+            </div>
+            @if (checking().has(r.id)) {
+              <mat-progress-bar mode="indeterminate" aria-label="Running checks" />
+              <p class="muted small">Checking their website and email…</p>
+            }
+            @if (r.checks; as c) {
+              <ul>
+                @for (item of c.items; track item.key) {
+                  <li [class]="item.status">
+                    <mat-icon aria-hidden="true">{{ checkIcons[item.status] }}</mat-icon>
+                    <div>
+                      <strong>{{ item.label }}</strong>
+                      <span class="visually-hidden"> ({{ item.status }})</span>
+                      <div class="small">
+                        {{ item.detail }}
+                      </div>
+                      @if (item.matches?.length) {
+                        <ul class="matches">
+                          @for (m of item.matches; track $index) {
+                            <li class="small">
+                              <a [routerLink]="['/admin/resources', m.resourceId]">{{ m.name }}</a>@if (!m.isActive) { (archived) }: {{ m.reasons.join(', ') }}
+                            </li>
+                          }
+                        </ul>
+                      }
+                    </div>
+                  </li>
+                }
+              </ul>
+              <p class="muted small">Checked {{ c.ranAt | date: 'medium' }}</p>
+            } @else if (!checking().has(r.id)) {
+              <p class="muted small">Not checked yet.</p>
+            }
+            <button mat-button type="button" (click)="runCheck(r)" [disabled]="checking().has(r.id)"><mat-icon>refresh</mat-icon>{{ r.checks ? 'Check again' : 'Run checks' }}</button>
+          </section>
+        </div>
+
+        <footer class="actions">
+          @if (r.resourceId) {
+            <a mat-stroked-button [routerLink]="['/admin/resources', r.resourceId]">Open listing</a>
+          } @else if (r.status === 'spam' || r.status === 'rejected' || r.status === 'approved') {
+            <button mat-button (click)="mark(r, afterNotSpam(r))">{{ r.status === 'spam' ? 'Not spam' : 'Move back' }}</button>
+          }
+          @if (r.status === 'duplicate') {
+            <button mat-flat-button (click)="mark(r, 'pending')" [attr.aria-label]="'Not a duplicate, move to To be sorted: ' + r.name">Not a duplicate, move to To be sorted</button>
+            <button mat-button (click)="mark(r, 'rejected')" [attr.aria-label]="'Not a fit: ' + r.name">Not a fit</button>
+            <button mat-button (click)="mark(r, 'spam')" [attr.aria-label]="'Spam: ' + r.name">Spam</button>
+          }
+          @if (r.status === 'awaiting_email') {
+            <button mat-stroked-button (click)="mark(r, 'pending')" [attr.aria-label]="'Confirmed another way, move to To be sorted: ' + r.name">Confirmed another way, move to To be sorted</button>
+            <button mat-button (click)="mark(r, 'rejected')" [attr.aria-label]="'Not a fit: ' + r.name">Not a fit</button>
+            <button mat-button (click)="mark(r, 'spam')" [attr.aria-label]="'Spam: ' + r.name">Spam</button>
+          }
+          @if (r.status === 'pending') {
+            <a mat-flat-button routerLink="/admin/resources/new" [queryParams]="{ fromSubmission: r.id }">Review &amp; add</a>
+            <button mat-button (click)="mark(r, 'rejected')" [attr.aria-label]="'Not a fit: ' + r.name">Not a fit</button>
+            <button mat-button (click)="mark(r, 'spam')" [attr.aria-label]="'Spam: ' + r.name">Spam</button>
+          }
+        </footer>
+      </article>
+    } @empty {
+      @if (!rows.isLoading() && !rows.error()) {
+        <p class="muted">Nothing here.</p>
+      }
+    }
+  </div>
+
+  @if ((rows.hasValue() ? rows.value().total : 0) > 20) {
+    <mat-paginator [length]="rows.value()!.total" [pageIndex]="page()" [pageSize]="20" [hidePageSize]="true" (page)="onPage($event)" aria-label="Choose page" />
+  }
+</div>

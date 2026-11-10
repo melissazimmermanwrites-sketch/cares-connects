@@ -7,6 +7,7 @@ import { Api } from '../../core/api';
 import { mapsUrl, telHref } from '../contact-links';
 import { type CountyRef, type PublicResource, serviceAreaLabel } from '../../../shared/api-types';
 import { ChatAnalytics, modelOutcome, reportableNeed } from './chat-analytics';
+import { resourceLink } from '../../../shared/slug';
 import { Brain } from './brain';
 import { FOLLOW_UPS, type FollowUpOption, GENERIC_FOLLOW_UP, isCrisis, parseBrain, parseYesNo } from './chat-flows';
 
@@ -49,6 +50,8 @@ const RESULT_LIMIT = 5;
   styleUrl: './chat-widget.scss',
 })
 export class ChatWidget {
+  readonly resourceLink = resourceLink;
+
   private readonly api = inject(Api);
   private readonly brain = inject(Brain);
   private readonly analytics = inject(ChatAnalytics);

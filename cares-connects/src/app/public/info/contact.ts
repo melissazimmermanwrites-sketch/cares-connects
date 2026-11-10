@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Api, errorMessage } from '../../core/api';
 import { Seo } from '../../core/seo';
@@ -10,7 +10,7 @@ import { DraftNotice } from './draft-notice';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule, DraftNotice],
+  imports: [ReactiveFormsModule, RouterLink, DraftNotice],
   templateUrl: './contact.html',
   styleUrl: './info-page.scss',
 })

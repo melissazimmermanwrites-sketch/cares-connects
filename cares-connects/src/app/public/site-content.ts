@@ -12,7 +12,6 @@ export const ANALYTICS_HOSTS = ['caresconnects.org', 'www.caresconnects.org'];
 
 export const LINKS = {
   blog: 'https://www.caresconnects.org/blog',
-  listYourOrganization: 'https://docs.google.com/forms/d/1BwqNlFJQCEyfeHqMpa8XJFiKT6qO0smfEisBGIeasnY',
   instagram: 'https://instagram.com/cares_connects',
   linkedin: 'https://www.linkedin.com/company/cares-connects',
 };
