@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, REQUEST, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { isDevelopmentHost } from '../../shared/hosts';
 import { SITE_URL } from '../public/site-content';
 
 export interface SeoData {
@@ -24,6 +25,8 @@ export class Seo {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly doc = inject(DOCUMENT);
+  /** Present only while rendering on the server. */
+  private readonly request = inject(REQUEST, { optional: true });
 
   update(data: SeoData): void {
     const url = SITE_URL + data.path;
@@ -32,7 +35,9 @@ export class Seo {
 
     this.title.setTitle(data.title);
     this.setName('description', description);
-    this.setName('robots', data.noindex ? 'noindex, nofollow' : 'index, follow');
+    // The development site matches the X-Robots-Tag header the server already sends it (robots.ts).
+    const hidden = data.noindex || this.onDevelopmentSite();
+    this.setName('robots', hidden ? 'noindex, nofollow' : 'index, follow');
 
     this.setProperty('og:site_name', SITE_NAME);
     this.setProperty('og:type', data.type ?? 'website');
@@ -50,6 +55,12 @@ export class Seo {
 
     this.setCanonical(url);
     this.setJsonLd(data.jsonLd ?? null);
+  }
+
+  /** The Host header while rendering on the server, the address bar in the browser, as robots.ts reads it. */
+  private onDevelopmentSite(): boolean {
+    const host = this.request ? this.request.headers.get('host') : this.doc.location?.host;
+    return isDevelopmentHost(host);
   }
 
   private setName(name: string, content: string): void {
@@ -97,4 +108,4 @@ export const ORGANIZATION_JSONLD = {
   ],
   nonprofitStatus: 'Nonprofit501c3',
   sameAs: ['https://instagram.com/cares_connects', 'https://www.linkedin.com/company/cares-connects'],
-};
+}
