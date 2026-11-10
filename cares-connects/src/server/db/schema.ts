@@ -1,10 +1,11 @@
 import { sql } from 'drizzle-orm';
-import { index, integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { blob, index, integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const VERIFICATION_STATUSES = ['verified', 'needs_verification'] as const;
 
 export const DISCOVERY_STATUSES = ['new', 'available', 'approved', 'rejected', 'listed'] as const;
 export const RUN_STATUSES = ['running', 'success', 'failed'] as const;
+export const POST_STATUSES = ['draft', 'published'] as const;
 
 export type DiscoveryStatus = (typeof DISCOVERY_STATUSES)[number];
 export type VerificationStatus = (typeof VERIFICATION_STATUSES)[number];
@@ -209,6 +210,40 @@ export const sessions = sqliteTable(
   },
   (t) => [index('sessions_admin_idx').on(t.adminId)],
 );
+
+/** Blog posts. The body is Markdown, rendered when read. */
+export const blogPosts = sqliteTable(
+  'blog_posts',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    slug: text('slug').notNull().unique(),
+    title: text('title').notNull(),
+    description: text('description').notNull(),
+    body: text('body').notNull(),
+    coverImage: text('cover_image'),
+    coverAlt: text('cover_alt'),
+    author: text('author'),
+    status: text('status', { enum: POST_STATUSES }).notNull().default('draft'),
+    /** The date shown on the post. A published post goes live once this date arrives. */
+    publishedAt: integer('published_at', { mode: 'timestamp' }),
+    /** Email of the admin who last saved this post. */
+    updatedBy: text('updated_by'),
+    ...timestamps,
+  },
+  (t) => [index('blog_posts_live_idx').on(t.status, t.publishedAt)],
+);
+
+/** Images uploaded for blog posts. Kept in the database because Workers have no disk. */
+export const blogMedia = sqliteTable('blog_media', {
+  id: text('id').primaryKey(),
+  contentType: text('content_type').notNull(),
+  data: blob('data', { mode: 'buffer' }).notNull(),
+  size: integer('size').notNull(),
+  uploadedBy: text('uploaded_by'),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`),
+});
 
 export type Category = typeof categories.$inferSelect;
 export type CountyRow = typeof counties.$inferSelect;

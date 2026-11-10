@@ -1,0 +1,26 @@
+<div class="page">
+  <a routerLink="/blog" class="back"><mat-icon aria-hidden="true">arrow_back</mat-icon>All posts</a>
+
+  @if (post.isLoading()) {
+    <h1 class="visually-hidden">Loading post…</h1>
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  } @else if (post.error()) {
+    <h1>Post not found</h1>
+    <p>It may have been moved or removed. <a routerLink="/blog">See all posts</a>.</p>
+  } @else if (loaded(); as p) {
+    <article>
+      <header class="head">
+        <span class="cc-rainbow"></span>
+        <h1 class="cc-heading">{{ p.title }}</h1>
+        <p class="muted">
+          <time [attr.datetime]="p.publishedAt">{{ p.publishedAt | date: 'longDate' : 'UTC' }}</time>
+          @if (p.author) { · {{ p.author }} }
+        </p>
+      </header>
+      @if (p.coverImage) {
+        <img class="cover" [src]="p.coverImage" [alt]="p.coverAlt ?? ''" />
+      }
+      <div class="prose" [innerHTML]="p.html"></div>
+    </article>
+  }
+</div>

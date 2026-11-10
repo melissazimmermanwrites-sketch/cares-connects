@@ -35,6 +35,23 @@ export const routes: Routes = [
         loadComponent: () => import('./admin/discover/discover').then((m) => m.Discover),
       },
       {
+        path: 'posts',
+        title: 'Blog · CARES Admin',
+        loadComponent: () => import('./admin/posts/post-list/post-list').then((m) => m.PostList),
+      },
+      {
+        path: 'posts/new',
+        title: 'New post · CARES Admin',
+        loadComponent: () => import('./admin/posts/post-form/post-form').then((m) => m.PostForm),
+        canDeactivate: [(c: { canLeave(): boolean }) => c.canLeave()],
+      },
+      {
+        path: 'posts/:id',
+        title: 'Edit post · CARES Admin',
+        loadComponent: () => import('./admin/posts/post-form/post-form').then((m) => m.PostForm),
+        canDeactivate: [(c: { canLeave(): boolean }) => c.canLeave()],
+      },
+      {
         path: 'categories',
         title: 'Categories · CARES Admin',
         loadComponent: () => import('./admin/categories/categories').then((m) => m.Categories),
@@ -57,6 +74,14 @@ export const routes: Routes = [
       {
         path: 'find',
         loadComponent: () => import('./public/find-help/find-help').then((m) => m.FindHelp),
+      },
+      {
+        path: 'blog',
+        loadComponent: () => import('./public/blog/list/blog-list').then((m) => m.BlogList),
+      },
+      {
+        path: 'blog/:slug',
+        loadComponent: () => import('./public/blog/post/blog-post').then((m) => m.BlogPost),
       },
       {
         path: 'category/:slug',
