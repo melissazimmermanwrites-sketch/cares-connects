@@ -22,6 +22,8 @@ export class AdminLayout {
   protected readonly discovery = rxResource({ stream: () => this.api.discoverySummary() });
   /** Count of "List your organization" requests waiting for review. */
   protected readonly submissions = rxResource({ stream: () => this.api.submissionSummary() });
+  /** Count of unread contact messages. */
+  protected readonly messages = rxResource({ stream: () => this.api.contactSummary() });
 
   async logout(): Promise<void> {
     await this.auth.logout();

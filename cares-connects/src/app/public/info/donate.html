@@ -1,0 +1,38 @@
+<div class="page">
+  <app-draft-notice />
+
+  <header class="head">
+    <span class="cc-rainbow"></span>
+    <h1 class="cc-heading">Help close the gap</h1>
+    <p>Your support helps connect people with the local resources they need.</p>
+  </header>
+
+  <div class="grid">
+    <div>
+      <section>
+        <h2>What your gift does</h2>
+        <p class="todo">To add: what donations pay for, with real examples.</p>
+      </section>
+      <section>
+        <h2>About our nonprofit</h2>
+        <p>Community Alliance of Resources Education and Support is a 501(c)(3) nonprofit organization.</p>
+        <p class="todo">To add: EIN and the wording for donation receipts and tax information.</p>
+      </section>
+      <section>
+        <h2>Volunteer for school credit</h2>
+        <p>We’re always accepting volunteers for school credit. <a routerLink="/contact">Contact us</a> for more information.</p>
+      </section>
+    </div>
+
+    <aside class="card" aria-labelledby="give-title">
+      <h2 id="give-title">Make a donation</h2>
+      <div class="amounts">
+        @for (amount of amounts; track amount) {
+          <button type="button" class="amount" disabled>{{ amount }}</button>
+        }
+      </div>
+      <button type="button" class="cc-btn orange small" disabled>Donate</button>
+      <p class="note muted">Preview only: no payment can be made here yet.</p>
+    </aside>
+  </div>
+</div>

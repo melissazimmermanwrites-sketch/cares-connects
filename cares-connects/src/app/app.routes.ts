@@ -40,6 +40,11 @@ export const routes: Routes = [
         loadComponent: () => import('./admin/submissions/submissions').then((m) => m.Submissions),
       },
       {
+        path: 'messages',
+        title: 'Messages · CARES Admin',
+        loadComponent: () => import('./admin/messages/messages').then((m) => m.Messages),
+      },
+      {
         path: 'categories',
         title: 'Categories · CARES Admin',
         loadComponent: () => import('./admin/categories/categories').then((m) => m.Categories),
@@ -62,6 +67,22 @@ export const routes: Routes = [
       {
         path: 'find',
         loadComponent: () => import('./public/find-help/find-help').then((m) => m.FindHelp),
+      },
+      {
+        path: 'about',
+        loadComponent: () => import('./public/info/about').then((m) => m.About),
+      },
+      {
+        path: 'contact',
+        loadComponent: () => import('./public/info/contact').then((m) => m.Contact),
+      },
+      {
+        path: 'contact/thanks',
+        loadComponent: () => import('./public/info/contact-thanks/contact-thanks').then((m) => m.ContactThanks),
+      },
+      {
+        path: 'donate',
+        loadComponent: () => import('./public/info/donate').then((m) => m.Donate),
       },
       {
         path: 'category/:slug',
