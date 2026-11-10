@@ -12,7 +12,6 @@ export const LINKS = {
   contact: 'https://caresconnects.org/contact',
   donate: 'https://caresconnects.org/donate',
   blog: 'https://www.caresconnects.org/blog',
-  listYourOrganization: 'https://docs.google.com/forms/d/1BwqNlFJQCEyfeHqMpa8XJFiKT6qO0smfEisBGIeasnY',
   // TODO: the live site's "Get the report" button has no link yet; send people to Contact for now.
   report: 'https://caresconnects.org/contact',
   instagram: 'https://instagram.com/cares_connects',

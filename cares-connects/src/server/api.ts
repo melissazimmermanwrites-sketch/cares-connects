@@ -42,11 +42,12 @@ import type {
   PublicResource,
   ResourceInput,
 } from '../shared/api-types';
-import { serviceAreaLabel } from '../shared/api-types';
+import { DIRECTORY_PAGE_SIZE, serviceAreaLabel } from '../shared/api-types';
 import { slugify } from '../shared/slug';
 import { exportCsv, exportWorkbook } from './export';
 import { adminWhere, categoriesFor, countiesFor, inCategory, OUTER_CATEGORY_ID, searchFilter, servesCounty, tagsFor } from './queries';
 import { discoveryRouter } from './discovery/routes';
+import { adminSubmissionRouter, submissionRouter } from './submissions/routes';
 import { handle, HttpError, parse } from './http';
 import { locate } from './locate';
 
@@ -250,6 +251,7 @@ async function adminResource(id: number): Promise<AdminResource> {
 export const api = Router();
 api.use(express.json({ limit: '200kb' }));
 api.use(sameOriginOnly);
+api.use('/submissions', submissionRouter);
 
 // Public site ---------------------------------------------------------------
 
@@ -290,6 +292,40 @@ api.get(
     const [cats, tagMap, areas] = await Promise.all([categoriesFor(ids), tagsFor(ids), countiesFor(ids)]);
     res.set('Cache-Control', 'public, max-age=60');
     res.json(rows.map((r) => toPublic(r, cats.get(r.id) ?? [], tagMap.get(r.id) ?? [], areas.get(r.id) ?? [])));
+  }),
+);
+
+api.get(
+  '/resources/directory',
+  handle(async (req, res) => {
+    const page = Math.max(Math.trunc(Number(req.query['page'])) || 1, 1);
+    const county = String(req.query['county'] ?? '');
+
+    const filters: (SQL | undefined)[] = [eq(resources.isActive, true)];
+    if (county) {
+      const [row] = await db.select({ id: counties.id }).from(counties).where(eq(counties.slug, county));
+      if (!row) throw new HttpError(404, 'County not found');
+      filters.push(servesCounty(row.id));
+    }
+    const where = and(...filters);
+
+    const [[{ total }], rows] = await Promise.all([
+      db.select({ total: count() }).from(resources).where(where),
+      db
+        .select()
+        .from(resources)
+        .where(where)
+        .orderBy(asc(resources.name), asc(resources.id))
+        .limit(DIRECTORY_PAGE_SIZE)
+        .offset((page - 1) * DIRECTORY_PAGE_SIZE),
+    ]);
+    const ids = rows.map((r) => r.id);
+    const [cats, tagMap, areas] = await Promise.all([categoriesFor(ids), tagsFor(ids), countiesFor(ids)]);
+    res.set('Cache-Control', 'public, max-age=60');
+    res.json({
+      items: rows.map((r) => toPublic(r, cats.get(r.id) ?? [], tagMap.get(r.id) ?? [], areas.get(r.id) ?? [])),
+      total,
+    });
   }),
 );
 
@@ -544,6 +580,7 @@ admin.get(
 );
 
 admin.use('/discovery', discoveryRouter);
+admin.use('/submissions', adminSubmissionRouter);
 
 admin.get(
   '/export.csv',

@@ -178,6 +178,21 @@ Do this after step 7 passes. **Keep the Netlify project and its files** (`netlif
    nothing, because the live site has to stay in Google. Don't add the development site to
    `robots.txt`: a crawler that is blocked from a page can't see its `noindex`.
 
+**Before deploying the "List your organization" form:**
+
+1. Apply the new tables to the production database with `npm run db:migrate`.
+2. `npx wrangler secret put SUBMISSION_SECRET` with a long random value (`openssl rand -base64 32`).
+   Without it, the form politely refuses submissions.
+3. Required for verification emails: create a [Resend](https://resend.com) account, add
+   caresconnects.org there and add the DNS records it shows in Cloudflare, then run
+   `npx wrangler secret put RESEND_API_KEY`. Until then nothing reaches "To be sorted" by itself:
+   requests wait in "Waiting on email", where an admin can move them along after confirming another way. `MAIL_FROM` in `vars` overrides the sender (default `verify@caresconnects.org`).
+4. Recommended: create a Turnstile widget (Cloudflare dashboard → Turnstile) for caresconnects.org.
+   Add `TURNSTILE_SITE_KEY` to `vars` in `wrangler.jsonc` and run
+   `npx wrangler secret put TURNSTILE_SECRET_KEY`. The form works without these, with weaker bot protection.
+5. Recommended: add a rate limiting rule (Security → WAF) on `POST /api/submissions`, so a flood is
+   stopped before it reaches the Worker. The app's own limits still apply behind it.
+
 **Rolling back** before step 8: in Cloudflare DNS, remove the Worker custom domains and add back
 `A caresconnects.org → 75.2.60.5` and `CNAME www → caresconnects.netlify.app` (DNS only). After
 step 8, also add the domains back in Netlify and restore its production settings.

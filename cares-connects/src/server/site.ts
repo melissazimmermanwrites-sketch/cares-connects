@@ -3,6 +3,7 @@ import { asc, eq } from 'drizzle-orm';
 import { db } from './db/client';
 import { categories, resources } from './db/schema';
 import { shouldNoindex } from './robots';
+import { resourceParam } from '../shared/slug';
 
 /** Public origin for sitemap links. Set SITE_URL in production if the domain changes. */
 const SITE_URL = (process.env['SITE_URL'] ?? 'https://caresconnects.org').replace(/\/$/, '');
@@ -46,7 +47,7 @@ siteFiles.get('/sitemap.xml', async (_req, res, next) => {
     const [cats, live] = await Promise.all([
       db.select({ slug: categories.slug, updatedAt: categories.updatedAt }).from(categories).orderBy(asc(categories.sortOrder)),
       db
-        .select({ id: resources.id, updatedAt: resources.updatedAt })
+        .select({ id: resources.id, name: resources.name, updatedAt: resources.updatedAt })
         .from(resources)
         .where(eq(resources.isActive, true))
         .orderBy(asc(resources.id)),
@@ -58,8 +59,10 @@ siteFiles.get('/sitemap.xml', async (_req, res, next) => {
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
       entry('/', undefined, '1.0'),
       entry('/find', undefined, '0.9'),
+      entry('/resources', undefined, '0.8'),
+      entry('/list-your-organization', undefined, '0.5'),
       ...cats.map((c) => entry(`/category/${c.slug}`, c.updatedAt, '0.8')),
-      ...live.map((r) => entry(`/resource/${r.id}`, r.updatedAt, '0.6')),
+      ...live.map((r) => entry(`/resource/${resourceParam(r)}`, r.updatedAt, '0.6')),
       '</urlset>',
       '',
     ].join('\n');

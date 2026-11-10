@@ -4,15 +4,12 @@
     <mat-progress-bar mode="indeterminate" aria-label="Loading" />
   } @else if (resource.error()) {
     <h1>Listing not found</h1>
-    <p>It may have been removed or merged with another listing. <a routerLink="/find">Search the directory</a>.</p>
+    <p>It may have been removed or merged with another listing. <a routerLink="/resources">See all listings</a>.</p>
   } @else if (resource.value(); as r) {
-    <nav class="crumbs" aria-label="Categories">
-      @for (c of r.categories; track c.id) {
-        <a [routerLink]="['/category', c.slug]">{{ c.name }}</a>
-      }
-    </nav>
+    <a routerLink="/resources" class="back"><mat-icon aria-hidden="true">arrow_back</mat-icon>All listings</a>
 
     <header class="head">
+      <span class="cc-rainbow"></span>
       <h1 class="cc-heading">{{ r.name }}</h1>
       <div class="row">
         <span class="pill">{{ area() }}</span>
@@ -22,42 +19,57 @@
       </div>
     </header>
 
-    <div class="actions">
-      @if (tel(); as href) {
-        <a mat-flat-button [href]="href"><mat-icon>call</mat-icon>Call {{ r.phone }}</a>
-      }
-      @if (r.website) {
-        <a mat-stroked-button [href]="r.website" target="_blank" rel="noopener"><mat-icon>language</mat-icon>Visit website<span class="visually-hidden"> (opens in a new tab)</span></a>
-      }
-      @if (map(); as href) {
-        <a mat-stroked-button [href]="href" target="_blank" rel="noopener"><mat-icon>directions</mat-icon>Get directions<span class="visually-hidden"> (opens in a new tab)</span></a>
-      }
-    </div>
+    <div class="layout">
+      <aside class="contact" [attr.aria-label]="'Contact ' + r.name">
+        <div class="actions">
+          @if (tel(); as href) {
+            <a mat-flat-button [href]="href"><mat-icon>call</mat-icon>Call {{ r.phone }}</a>
+          }
+          @if (r.website) {
+            <a mat-stroked-button [href]="r.website" target="_blank" rel="noopener"><mat-icon>language</mat-icon>Visit website<span class="visually-hidden"> (opens in a new tab)</span></a>
+          }
+          @if (map(); as href) {
+            <a mat-stroked-button [href]="href" target="_blank" rel="noopener"><mat-icon>directions</mat-icon>Get directions<span class="visually-hidden"> (opens in a new tab)</span></a>
+          }
+        </div>
 
-    <dl class="facts">
-      @if (r.phone && !tel()) {
-        <dt>Phone</dt><dd>{{ r.phone }}</dd>
-      }
-      @if (r.address) {
-        <dt>Address</dt><dd>{{ r.address }}</dd>
-      }
-    </dl>
+        <dl class="facts">
+          @if (r.phone && !tel()) {
+            <dt>Phone</dt><dd>{{ r.phone }}</dd>
+          }
+          @if (r.address) {
+            <dt>Address</dt><dd>{{ r.address }}</dd>
+          }
+          <dt>Serves</dt><dd>{{ area() }}</dd>
+          @if (r.categories.length) {
+            <dt>Categories</dt>
+            <dd class="categories">
+              @for (c of r.categories; track c.id) {
+                <a [routerLink]="['/category', c.slug]">{{ c.name }}</a>
+              }
+            </dd>
+          }
+        </dl>
+      </aside>
 
-    @if (r.services) {
-      <section><h2>Services</h2><p>{{ r.services }}</p></section>
-    }
-    @if (r.mission) {
-      <section><h2>About</h2><p>{{ r.mission }}</p></section>
-    }
-    @if (r.notes) {
-      <section><h2>Good to know</h2><p>{{ r.notes }}</p></section>
-    }
-    @if (r.tags.length) {
-      <section class="tags" aria-label="Tags">
-        @for (t of r.tags; track t) {
-          <a class="pill" routerLink="/find" [queryParams]="{ q: t }">{{ t }}</a>
+      <div class="body">
+        @if (r.mission) {
+          <section><h2>About</h2><p>{{ r.mission }}</p></section>
         }
-      </section>
-    }
+        @if (r.services) {
+          <section><h2>Services</h2><p>{{ r.services }}</p></section>
+        }
+        @if (r.notes) {
+          <section><h2>Good to know</h2><p>{{ r.notes }}</p></section>
+        }
+        @if (r.tags.length) {
+          <section class="tags" aria-label="Tags">
+            @for (t of r.tags; track t) {
+              <a class="pill" routerLink="/find" [queryParams]="{ q: t }">{{ t }}</a>
+            }
+          </section>
+        }
+      </div>
+    </div>
   }
 </div>

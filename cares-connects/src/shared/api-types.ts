@@ -113,6 +113,9 @@ export interface AdminResourceRow {
   updatedBy: string | null;
 }
 
+/** Listings per page on the public directory (/resources). */
+export const DIRECTORY_PAGE_SIZE = 24;
+
 export interface Page<T> {
   items: T[];
   total: number;

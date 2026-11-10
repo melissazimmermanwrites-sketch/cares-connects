@@ -35,6 +35,11 @@ export const routes: Routes = [
         loadComponent: () => import('./admin/discover/discover').then((m) => m.Discover),
       },
       {
+        path: 'submissions',
+        title: 'Submissions · CARES Admin',
+        loadComponent: () => import('./admin/submissions/submissions').then((m) => m.Submissions),
+      },
+      {
         path: 'categories',
         title: 'Categories · CARES Admin',
         loadComponent: () => import('./admin/categories/categories').then((m) => m.Categories),
@@ -62,6 +67,23 @@ export const routes: Routes = [
         path: 'category/:slug',
         loadComponent: () => import('./public/category/category').then((m) => m.CategoryPage),
       },
+      {
+        path: 'resources',
+        loadComponent: () => import('./public/directory/directory').then((m) => m.DirectoryPage),
+      },
+      {
+        path: 'list-your-organization',
+        loadComponent: () => import('./public/list-organization/list-organization').then((m) => m.ListOrganization),
+      },
+      {
+        path: 'list-your-organization/thanks',
+        loadComponent: () => import('./public/list-organization/thanks/thanks').then((m) => m.ListingThanks),
+      },
+      {
+        path: 'list-your-organization/verify',
+        loadComponent: () => import('./public/list-organization/verify/verify').then((m) => m.ListingVerify),
+      },
+      { path: 'resource', redirectTo: 'resources', pathMatch: 'full' },
       {
         path: 'resource/:id',
         loadComponent: () => import('./public/resource-detail/resource-detail').then((m) => m.ResourceDetail),
