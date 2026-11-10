@@ -1,19 +1,16 @@
 /**
  * Marketing copy and outside links for the public site, kept in one place so they're easy to edit.
- * The About / Contact / Donate links still point at the current caresconnects.org pages until
- * those pages are rebuilt here.
  */
 
 /** Public origin used for canonical URLs and share links (no trailing slash). */
 export const SITE_URL = 'https://caresconnects.org';
 
+/** ZTA (ztas.io) site ID for chat usage numbers. Null keeps tracking off. Site IDs aren't secret. */
+export const ZTAS_SITE_ID = null as string | null;
+/** Where chat usage is counted, so development and local testing don't skew the numbers. */
+export const ANALYTICS_HOSTS = ['caresconnects.org', 'www.caresconnects.org'];
+
 export const LINKS = {
-  about: 'https://caresconnects.org/about',
-  contact: 'https://caresconnects.org/contact',
-  donate: 'https://caresconnects.org/donate',
-  listYourOrganization: 'https://docs.google.com/forms/d/1BwqNlFJQCEyfeHqMpa8XJFiKT6qO0smfEisBGIeasnY',
-  // TODO: the live site's "Get the report" button has no link yet; send people to Contact for now.
-  report: 'https://caresconnects.org/contact',
   instagram: 'https://instagram.com/cares_connects',
   linkedin: 'https://www.linkedin.com/company/cares-connects',
 };

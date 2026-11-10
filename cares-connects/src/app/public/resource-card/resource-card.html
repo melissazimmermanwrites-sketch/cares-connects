@@ -1,6 +1,6 @@
 <article class="card">
   <div class="top">
-    <h2><a [routerLink]="['/resource', resource().id]">{{ resource().name }}</a></h2>
+    <h2><a [routerLink]="link()">{{ resource().name }}</a></h2>
     <span class="pill">{{ area() }}</span>
   </div>
   @if (summary()) {
@@ -21,6 +21,6 @@
     @if (map(); as href) {
       <a mat-stroked-button [href]="href" target="_blank" rel="noopener"><mat-icon>directions</mat-icon>Directions<span class="visually-hidden"> to {{ resource().name }} (opens in a new tab)</span></a>
     }
-    <a mat-button [routerLink]="['/resource', resource().id]">Details<span class="visually-hidden"> about {{ resource().name }}</span></a>
+    <a mat-button [routerLink]="link()">View listing<span class="visually-hidden"> for {{ resource().name }}</span></a>
   </div>
 </article>

@@ -1,0 +1,39 @@
+<div class="page">
+  <header class="head">
+    <h1 class="cc-heading">All listings</h1>
+    <p class="muted">Every program in the directory, A to Z. Open a listing for its full page.</p>
+    <app-county-filter [value]="county()" (changed)="setCounty($event)" />
+  </header>
+
+  @if (listings.isLoading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  } @else if (listings.error()) {
+    <p>We couldn't load the listings. Please try again, or dial <a href="tel:211">211</a> for help.</p>
+  } @else if (listings.value(); as result) {
+    <p class="muted" aria-live="polite">
+      {{ result.total }} {{ result.total === 1 ? 'listing' : 'listings' }} · page {{ pageNumber() }} of {{ lastPage() }}
+    </p>
+    <div class="list">
+      @for (r of result.items; track r.id) {
+        <app-resource-card [resource]="r" />
+      } @empty {
+        @if (pageNumber() > 1) {
+          <p>There's nothing on this page. <a routerLink="/resources" [queryParams]="queryFor(1)">Go to the first page</a>.</p>
+        } @else {
+          <p>No listings here for that county yet. Try “Both counties” or dial <a href="tel:211">211</a>.</p>
+        }
+      }
+    </div>
+
+    @if (lastPage() > 1) {
+      <nav class="pager" aria-label="Pages">
+        @if (pageNumber() > 1) {
+          <a routerLink="/resources" [queryParams]="queryFor(pageNumber() - 1)" rel="prev"><mat-icon aria-hidden="true">arrow_back</mat-icon>Previous</a>
+        }
+        @if (pageNumber() < lastPage()) {
+          <a class="next" routerLink="/resources" [queryParams]="queryFor(pageNumber() + 1)" rel="next">Next<mat-icon aria-hidden="true">arrow_forward</mat-icon></a>
+        }
+      </nav>
+    }
+  }
+</div>

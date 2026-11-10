@@ -17,6 +17,15 @@ import type {
   LocateResult,
   ResourceInput,
 } from '../../shared/api-types';
+import type {
+  SubmissionFormConfig,
+  SubmissionInput,
+  SubmissionRow,
+  SubmissionStatus,
+  SubmissionSummary,
+  VerificationState,
+} from '../../shared/submissions';
+import type { ContactInput, ContactMessageRow, ContactStatus, ContactSummary } from '../../shared/contact';
 import type { AdminPost, AdminPostRow, PostInput, PostSummary, PublicPost } from '../../shared/blog';
 
 /** Turns an API error into a sentence safe to show the user. */
@@ -46,6 +55,9 @@ export class Api {
   }
   resources(query: { q?: string; county?: string; category?: string }) {
     return this.http.get<PublicResource[]>('/api/resources', { params: toParams(query) });
+  }
+  directory(query: { page: number; county?: string }) {
+    return this.http.get<Page<PublicResource>>('/api/resources/directory', { params: toParams(query) });
   }
   resource(id: number) {
     return this.http.get<PublicResource>(`/api/resources/${id}`);
@@ -89,6 +101,53 @@ export class Api {
     return this.http.get<CountySummary[]>('/api/admin/counties');
   }
 
+  // List your organization
+  submissionConfig() {
+    return this.http.get<SubmissionFormConfig>('/api/submissions/token');
+  }
+  submitListing(input: SubmissionInput) {
+    return this.http.post<{ message: string }>('/api/submissions', input);
+  }
+  submissionSummary() {
+    return this.http.get<SubmissionSummary>('/api/admin/submissions/summary');
+  }
+  submissions(query: { status: string; page: number }) {
+    return this.http.get<Page<SubmissionRow>>('/api/admin/submissions', { params: toParams(query) });
+  }
+  submission(id: number) {
+    return this.http.get<SubmissionRow>(`/api/admin/submissions/${id}`);
+  }
+  checkSubmission(id: number) {
+    return this.http.post<SubmissionRow>(`/api/admin/submissions/${id}/check`, {});
+  }
+  resendVerification(id: number) {
+    return this.http.post<SubmissionRow>(`/api/admin/submissions/${id}/resend-verification`, {});
+  }
+  verificationState(token: string) {
+    return this.http.get<VerificationState>('/api/submissions/verify', { params: { token } });
+  }
+  answerVerification(token: string, answer: 'verified' | 'declined') {
+    return this.http.post<VerificationState>('/api/submissions/verify', { token, answer });
+  }
+  setSubmissionStatus(id: number, status: SubmissionStatus, resourceId?: number) {
+    return this.http.post<SubmissionRow>(`/api/admin/submissions/${id}/status`, { status, resourceId });
+  }
+  // Contact form
+  contactToken() {
+    return this.http.get<{ token: string }>('/api/contact/token');
+  }
+  sendContactMessage(input: ContactInput) {
+    return this.http.post<{ ok: boolean }>('/api/contact', input);
+  }
+  contactSummary() {
+    return this.http.get<ContactSummary>('/api/admin/messages/summary');
+  }
+  contactMessages(query: { status: string; page: number }) {
+    return this.http.get<Page<ContactMessageRow>>('/api/admin/messages', { params: toParams(query) });
+  }
+  setContactStatus(id: number, status: ContactStatus) {
+    return this.http.post<ContactMessageRow>(`/api/admin/messages/${id}/status`, { status });
+  }
   // Blog
   posts(page: number) {
     return this.http.get<Page<PostSummary>>('/api/posts', { params: toParams({ page }) });

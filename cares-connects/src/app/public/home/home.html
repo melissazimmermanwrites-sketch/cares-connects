@@ -45,7 +45,7 @@
             }
           </div>
           <span class="tag">Food</span>
-          <p class="example-title"><a [routerLink]="['/resource', r.id]">{{ r.name }}</a></p>
+          <p class="example-title"><a [routerLink]="resourceLink(r)">{{ r.name }}</a></p>
           <p class="muted">Nonprofit{{ exampleCity() ? ' in ' + exampleCity() + ',' : ' in' }} {{ exampleArea() }}</p>
           <div class="example-actions">
             @if (exampleTel(); as href) { <a [href]="href" class="mini primary">Call</a> }
@@ -125,12 +125,13 @@
     <div class="cta sky">
       <h2 class="cc-heading">Run a nonprofit or public agency?</h2>
       <p>Add your programs so residents in Placer and Sacramento Counties can find you. We review each submission before it goes live.</p>
-      <a [href]="links.listYourOrganization" target="_blank" rel="noopener" class="cc-btn orange small">List your organization<span class="visually-hidden"> (opens in a new tab)</span></a>
+      <a routerLink="/list-your-organization" class="cc-btn orange small">List your organization</a>
     </div>
     <div class="cta navy">
       <h2 class="cc-heading">Plan with real community data.</h2>
       <p>Our first benchmark report, <em>Connecting the Gaps</em>, scores how easily residents can find help in each service category across both counties.</p>
-      <a [href]="links.report" class="cc-btn yellow small">Get the report</a>
+      <!-- The report has no link yet, so this goes to Contact for now. -->
+      <a routerLink="/contact" class="cc-btn yellow small">Get the report</a>
     </div>
   </div>
 </section>
@@ -154,7 +155,7 @@
         can help strengthen individuals, families, and communities.
       </p>
       <blockquote>Our mission is to close the gap between available support and the people who need it most.</blockquote>
-      <a [href]="links.about" class="story">Read our story</a>
+      <a routerLink="/about" class="story">Read our story</a>
     </div>
   </div>
 </section>
@@ -168,8 +169,8 @@
       <h2 class="cc-heading">Be a community that cares.</h2>
       <p>Your gift helps us check listings, add new programs, and keep CARES Connects free for every resident who needs it.</p>
       <div class="campaign-actions">
-        <a [href]="links.donate" class="cc-btn yellow">Donate</a>
-        <a [href]="links.contact" class="cc-btn outline-light">Partner with us</a>
+        <a routerLink="/donate" class="cc-btn yellow">Donate</a>
+        <a routerLink="/contact" class="cc-btn outline-light">Partner with us</a>
       </div>
     </div>
     <div class="photo-frame dark">

@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { serviceAreaLabel, type PublicResource } from '../../../shared/api-types';
+import { resourceLink } from '../../../shared/slug';
 import { mapsUrl, telHref } from '../contact-links';
 
 @Component({
@@ -13,6 +14,7 @@ import { mapsUrl, telHref } from '../contact-links';
 })
 export class ResourceCard {
   readonly resource = input.required<PublicResource>();
+  readonly link = computed(() => resourceLink(this.resource()));
   readonly area = computed(() => serviceAreaLabel(this.resource()));
 
   readonly tel = computed(() => telHref(this.resource().phone));
