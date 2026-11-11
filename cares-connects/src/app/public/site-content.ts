@@ -11,7 +11,6 @@ export const ZTAS_SITE_ID = null as string | null;
 export const ANALYTICS_HOSTS = ['caresconnects.org', 'www.caresconnects.org'];
 
 export const LINKS = {
-  blog: 'https://www.caresconnects.org/blog',
   instagram: 'https://instagram.com/cares_connects',
   linkedin: 'https://www.linkedin.com/company/cares-connects',
 };

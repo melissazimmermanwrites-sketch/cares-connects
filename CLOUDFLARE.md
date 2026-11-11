@@ -198,6 +198,9 @@ Do this after step 7 passes. **Keep the Netlify project and its files** (`netlif
 `npx wrangler secret put SUBMISSION_SECRET` for Cloudflare and `netlify env:set` for Netlify. Without
 it, the form refuses messages. Recommended: add a Cloudflare rate limiting rule on `POST /api/contact`.
 
+**Before deploying the blog:** apply its tables with `npm run db:migrate`. Posts and images live in the
+database, so publishing one doesn't need a deploy.
+
 **Rolling back** before step 8: in Cloudflare DNS, remove the Worker custom domains and add back
 `A caresconnects.org → 75.2.60.5` and `CNAME www → caresconnects.netlify.app` (DNS only). After
 step 8, also add the domains back in Netlify and restore its production settings.

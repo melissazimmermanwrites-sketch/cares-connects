@@ -47,6 +47,7 @@ import { slugify } from '../shared/slug';
 import { exportCsv, exportWorkbook } from './export';
 import { adminWhere, categoriesFor, countiesFor, inCategory, OUTER_CATEGORY_ID, searchFilter, servesCounty, tagsFor } from './queries';
 import { adminContactRouter, contactRouter } from './contact/routes';
+import { adminBlogRouter, adminMediaRouter, blogRouter } from './blog/routes';
 import { discoveryRouter } from './discovery/routes';
 import { adminSubmissionRouter, submissionRouter } from './submissions/routes';
 import { handle, HttpError, parse } from './http';
@@ -254,6 +255,7 @@ api.use(express.json({ limit: '200kb' }));
 api.use(sameOriginOnly);
 api.use('/submissions', submissionRouter);
 api.use('/contact', contactRouter);
+api.use('/posts', blogRouter);
 
 // Public site ---------------------------------------------------------------
 
@@ -584,6 +586,8 @@ admin.get(
 admin.use('/discovery', discoveryRouter);
 admin.use('/submissions', adminSubmissionRouter);
 admin.use('/messages', adminContactRouter);
+admin.use('/posts', adminBlogRouter);
+admin.use('/media', adminMediaRouter);
 
 admin.get(
   '/export.csv',

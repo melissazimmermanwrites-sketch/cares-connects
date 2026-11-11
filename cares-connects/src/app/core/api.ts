@@ -26,6 +26,7 @@ import type {
   VerificationState,
 } from '../../shared/submissions';
 import type { ContactInput, ContactMessageRow, ContactStatus, ContactSummary } from '../../shared/contact';
+import type { AdminPost, AdminPostRow, PostInput, PostSummary, PublicPost } from '../../shared/blog';
 
 /** Turns an API error into a sentence safe to show the user. */
 export function errorMessage(err: unknown): string {
@@ -146,6 +147,34 @@ export class Api {
   }
   setContactStatus(id: number, status: ContactStatus) {
     return this.http.post<ContactMessageRow>(`/api/admin/messages/${id}/status`, { status });
+  }
+  // Blog
+  posts(page: number) {
+    return this.http.get<Page<PostSummary>>('/api/posts', { params: toParams({ page }) });
+  }
+  post(slug: string) {
+    return this.http.get<PublicPost>(`/api/posts/${encodeURIComponent(slug)}`);
+  }
+  adminPosts(query: { status: string; q: string; page: number }) {
+    return this.http.get<Page<AdminPostRow>>('/api/admin/posts', { params: toParams(query) });
+  }
+  adminPost(id: number) {
+    return this.http.get<AdminPost>(`/api/admin/posts/${id}`);
+  }
+  createPost(input: PostInput) {
+    return this.http.post<AdminPost>('/api/admin/posts', input);
+  }
+  updatePost(id: number, input: PostInput) {
+    return this.http.put<AdminPost>(`/api/admin/posts/${id}`, input);
+  }
+  deletePost(id: number) {
+    return this.http.delete<{ ok: boolean }>(`/api/admin/posts/${id}`);
+  }
+  previewPost(body: string) {
+    return this.http.post<{ html: string }>('/api/admin/posts/preview', { body });
+  }
+  uploadMedia(file: File) {
+    return this.http.post<{ url: string }>('/api/admin/media', file, { headers: { 'Content-Type': 'application/octet-stream' } });
   }
 
   // IRS discovery

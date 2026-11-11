@@ -1,0 +1,128 @@
+<div class="page">
+  <a routerLink="/admin/posts" class="back"><mat-icon>arrow_back</mat-icon>All posts</a>
+
+  @if (existing.isLoading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  } @else if (existing.error()) {
+    <p class="error-text" role="alert">Couldn’t load this post. It may have been deleted.</p>
+  } @else {
+    <header class="head">
+      <div>
+        <h1>{{ isNew() ? 'New post' : form.controls.title.value || 'Untitled' }}</h1>
+        @if (record(); as r) {
+          <p class="muted">
+            <span class="pill" [class.ok]="r.status === 'published'">{{ r.status === 'published' ? 'Published' : 'Draft' }}</span>
+            Last edited {{ r.updatedAt | date: 'medium' }}@if (r.updatedBy) { by {{ r.updatedBy }} }
+            @if (r.status === 'published') { · <a [href]="'/blog/' + r.slug" target="_blank" rel="noopener">View on site<span class="visually-hidden"> (opens in a new tab)</span></a> }
+          </p>
+        }
+      </div>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="save(status())" novalidate>
+      <div class="layout">
+        <div class="main">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" required maxlength="200" />
+            <mat-error>Add a title.</mat-error>
+          </mat-form-field>
+
+          <section class="editor" aria-label="Post content">
+            <div class="toolbar" role="toolbar" aria-label="Formatting">
+              @for (a of actions; track a.action) {
+                <button mat-icon-button type="button" [attr.aria-label]="a.label" [title]="a.label" (click)="format(a.action)"><mat-icon>{{ a.icon }}</mat-icon></button>
+              }
+              <label class="icon-upload" title="Insert image">
+                <span class="visually-hidden">Insert image</span>
+                <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" (change)="insertImage($event)" />
+                <mat-icon aria-hidden="true">image</mat-icon>
+              </label>
+              <span class="spacer"></span>
+              <div class="tabs">
+                <button mat-button type="button" [class.on]="tab() === 'write'" (click)="tab.set('write')">Write</button>
+                <button mat-button type="button" [class.on]="tab() === 'preview'" (click)="tab.set('preview')">Preview</button>
+              </div>
+            </div>
+            @if (uploading()) {
+              <mat-progress-bar mode="indeterminate" aria-label="Uploading image" />
+            }
+            <div class="panes" [class.show-preview]="tab() === 'preview'">
+              <textarea #bodyInput class="body" formControlName="body" aria-label="Post text, in Markdown"
+                        placeholder="Write your post here. Use the buttons above for headings, links and images."></textarea>
+              <div class="prose preview" aria-label="Preview" [innerHTML]="previewHtml()"></div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="side">
+          <section class="card" aria-labelledby="publish-title">
+            <h2 id="publish-title">Publish</h2>
+            @if (error(); as message) {
+              <p class="error-text" role="alert">{{ message }}</p>
+            }
+            <div class="publish-actions">
+              @if (status() === 'published') {
+                <button mat-flat-button type="button" [disabled]="saving() || uploading()" (click)="save('published')">Save changes</button>
+                <button mat-stroked-button type="button" [disabled]="saving() || uploading()" (click)="save('draft')">Unpublish</button>
+              } @else {
+                <button mat-flat-button type="button" [disabled]="saving() || uploading()" (click)="save('published')">Publish</button>
+                <button mat-stroked-button type="button" [disabled]="saving() || uploading()" (click)="save('draft')">Save draft</button>
+              }
+            </div>
+            <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+              <mat-label>Date</mat-label>
+              <input matInput type="date" formControlName="publishedOn" />
+            </mat-form-field>
+            <p class="muted hint">Blank means today. Use a past date for older posts. A future date goes live that day.</p>
+            @if (record()) {
+              <button mat-button type="button" class="delete" (click)="remove()"><mat-icon>delete</mat-icon>Delete post</button>
+            }
+          </section>
+
+          <section class="card" aria-labelledby="details-title">
+            <h2 id="details-title">Details</h2>
+            <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+              <mat-label>Description</mat-label>
+              <textarea matInput rows="3" formControlName="description" maxlength="300"></textarea>
+              <mat-hint>Shown on the blog page and in search results. About 150 characters is ideal.</mat-hint>
+              <mat-hint align="end">{{ form.controls.description.value.length }}</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+              <mat-label>Web address</mat-label>
+              <span matTextPrefix>/blog/</span>
+              <input matInput formControlName="slug" maxlength="120" (input)="markSlugEdited()" />
+              @if (status() === 'published') {
+                <mat-hint>Changing this breaks links people already shared.</mat-hint>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+              <mat-label>Author</mat-label>
+              <input matInput formControlName="author" maxlength="100" />
+            </mat-form-field>
+          </section>
+
+          <section class="card" aria-labelledby="cover-title">
+            <h2 id="cover-title">Cover image</h2>
+            @if (form.controls.coverImage.value; as cover) {
+              <img class="cover" [src]="cover" alt="" />
+              <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+                <mat-label>Describe the image</mat-label>
+                <input matInput formControlName="coverAlt" maxlength="300" />
+                <mat-hint>For people using screen readers.</mat-hint>
+              </mat-form-field>
+              <button mat-button type="button" (click)="removeCover()">Remove image</button>
+            } @else {
+              <label class="upload">
+                <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" (change)="uploadCover($event)" />
+                <mat-icon aria-hidden="true">upload</mat-icon>
+                Choose an image
+              </label>
+              <p class="muted hint">JPEG, PNG, GIF or WebP, up to 3 MB.</p>
+            }
+          </section>
+        </aside>
+      </div>
+    </form>
+  }
+</div>

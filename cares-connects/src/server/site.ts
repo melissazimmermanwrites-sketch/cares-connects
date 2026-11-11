@@ -2,6 +2,7 @@ import { type NextFunction, type Request, type Response, Router } from 'express'
 import { asc, eq } from 'drizzle-orm';
 import { db } from './db/client';
 import { categories, resources } from './db/schema';
+import { livePostsForSitemap, mediaRouter } from './blog/routes';
 import { shouldNoindex } from './robots';
 import { resourceParam } from '../shared/slug';
 
@@ -35,6 +36,8 @@ export function securityHeaders(req: Request, res: Response, next: NextFunction)
 
 export const siteFiles = Router();
 
+siteFiles.use(mediaRouter);
+
 siteFiles.get('/robots.txt', (_req, res) => {
   res.type('text/plain').set('Cache-Control', 'public, max-age=3600');
   res.send(['User-agent: *', 'Disallow: /admin', 'Disallow: /api/', '', `Sitemap: ${SITE_URL}/sitemap.xml`, ''].join('\n'));
@@ -44,13 +47,14 @@ const xmlEscape = (s: string) => s.replace(/[<>&'"]/g, (c) => `&#${c.charCodeAt(
 
 siteFiles.get('/sitemap.xml', async (_req, res, next) => {
   try {
-    const [cats, live] = await Promise.all([
+    const [cats, live, posts] = await Promise.all([
       db.select({ slug: categories.slug, updatedAt: categories.updatedAt }).from(categories).orderBy(asc(categories.sortOrder)),
       db
         .select({ id: resources.id, name: resources.name, updatedAt: resources.updatedAt })
         .from(resources)
         .where(eq(resources.isActive, true))
         .orderBy(asc(resources.id)),
+      livePostsForSitemap(),
     ]);
     const entry = (path: string, lastmod?: Date, priority = '0.5') =>
       `  <url><loc>${xmlEscape(SITE_URL + path)}</loc>${lastmod ? `<lastmod>${lastmod.toISOString().slice(0, 10)}</lastmod>` : ''}<priority>${priority}</priority></url>`;
@@ -63,6 +67,8 @@ siteFiles.get('/sitemap.xml', async (_req, res, next) => {
       entry('/list-your-organization', undefined, '0.5'),
       ...cats.map((c) => entry(`/category/${c.slug}`, c.updatedAt, '0.8')),
       ...live.map((r) => entry(`/resource/${resourceParam(r)}`, r.updatedAt, '0.6')),
+      entry('/blog', undefined, '0.7'),
+      ...posts.map((p) => entry(`/blog/${p.slug}`, p.updatedAt, '0.6')),
       '</urlset>',
       '',
     ].join('\n');

@@ -1,0 +1,48 @@
+<div class="page">
+  <header class="head">
+    <span class="cc-rainbow"></span>
+    <h1 class="cc-heading">Blog</h1>
+    <p class="muted">News, stories and guides from CARES Connects.</p>
+  </header>
+
+  @if (posts.isLoading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  } @else if (posts.error()) {
+    <p>We couldn’t load the blog. Please try again.</p>
+  } @else if (posts.value(); as result) {
+    <div class="list">
+      @for (post of result.items; track post.slug) {
+        <article class="card">
+          @if (post.coverImage) {
+            <a class="cover" [routerLink]="['/blog', post.slug]" tabindex="-1" aria-hidden="true">
+              <img [src]="post.coverImage" alt="" loading="lazy" />
+            </a>
+          }
+          <div class="text">
+            <p class="muted date"><time [attr.datetime]="post.publishedAt">{{ post.publishedAt | date: 'longDate' : 'UTC' }}</time></p>
+            <h2 class="cc-heading"><a [routerLink]="['/blog', post.slug]">{{ post.title }}</a></h2>
+            <p>{{ post.description }}</p>
+            <a class="more" [routerLink]="['/blog', post.slug]">Read more<span class="visually-hidden">: {{ post.title }}</span></a>
+          </div>
+        </article>
+      } @empty {
+        @if (pageNumber() > 1) {
+          <p>There’s nothing on this page. <a routerLink="/blog">Go to the newest posts</a>.</p>
+        } @else {
+          <p>No posts yet. Please check back soon.</p>
+        }
+      }
+    </div>
+
+    @if (lastPage() > 1) {
+      <nav class="pager" aria-label="Pages">
+        @if (pageNumber() > 1) {
+          <a routerLink="/blog" [queryParams]="pageQuery(pageNumber() - 1)" rel="prev"><mat-icon aria-hidden="true">arrow_back</mat-icon>Newer</a>
+        }
+        @if (pageNumber() < lastPage()) {
+          <a class="next" routerLink="/blog" [queryParams]="pageQuery(pageNumber() + 1)" rel="next">Older<mat-icon aria-hidden="true">arrow_forward</mat-icon></a>
+        }
+      </nav>
+    }
+  }
+</div>
