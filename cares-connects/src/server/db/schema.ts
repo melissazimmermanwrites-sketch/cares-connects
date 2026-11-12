@@ -328,6 +328,8 @@ export const blogPosts = sqliteTable(
     coverImage: text('cover_image'),
     coverAlt: text('cover_alt'),
     author: text('author'),
+    /** Topic labels shown on the post, e.g. ["Mental Health"]. */
+    categories: text('categories', { mode: 'json' }).$type<string[]>().notNull().default(sql`'[]'`),
     status: text('status', { enum: POST_STATUSES }).notNull().default('draft'),
     /** The date shown on the post. A published post goes live once this date arrives. */
     publishedAt: integer('published_at', { mode: 'timestamp' }),

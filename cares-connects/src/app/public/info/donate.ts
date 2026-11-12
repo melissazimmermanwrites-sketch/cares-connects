@@ -1,25 +1,24 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Seo } from '../../core/seo';
-import { DraftNotice } from './draft-notice';
+import { DONATION_OPTIONS } from '../site-content';
 
-/** Mock-up. Nothing here takes payment; the real donation link replaces the switched-off button. */
+/** Copy from the old site's Donate page. Each amount opens a Stripe Payment Link; no payment runs through this site. */
 @Component({
   selector: 'app-donate',
-  imports: [RouterLink, DraftNotice],
+  imports: [RouterLink],
   templateUrl: './donate.html',
   styleUrl: './info-page.scss',
 })
 export class Donate {
-  readonly amounts = ['$25', '$50', '$100', 'Other'];
+  readonly options = DONATION_OPTIONS;
 
   constructor() {
     inject(Seo).update({
       title: 'Donate · CARES Connects',
-      description: 'Support CARES Connects.',
+      description:
+        'Donate to CARES, a 501(c)(3) nonprofit. Your gift helps close the gap between available support services and the people who need them.',
       path: '/donate',
-      // Draft: stays out of search results until the real content is in.
-      noindex: true,
     });
   }
 }

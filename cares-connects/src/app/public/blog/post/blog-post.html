@@ -16,6 +16,11 @@
           <time [attr.datetime]="p.publishedAt">{{ p.publishedAt | date: 'longDate' : 'UTC' }}</time>
           @if (p.author) { · {{ p.author }} }
         </p>
+        @if (p.categories.length) {
+          <ul class="tags" aria-label="Categories">
+            @for (c of p.categories; track c) { <li>{{ c }}</li> }
+          </ul>
+        }
       </header>
       @if (p.coverImage) {
         <img class="cover" [src]="p.coverImage" [alt]="p.coverAlt ?? ''" />

@@ -68,11 +68,12 @@
     <div>
       <h2>Contact Us</h2>
       <span class="place"><mat-icon inline aria-hidden="true">location_on</mat-icon> California, US</span>
+      <a [href]="'mailto:' + email">{{ email }}</a>
       <a routerLink="/list-your-organization">List your organization</a>
     </div>
   </div>
   <div class="inner legal">
-    <span>Listings point you in the right direction, but hours and services change. Please call ahead..</span>
+    <span>Listings point you in the right direction, but hours and services change. Please call ahead.</span>
     <span>© {{ year }} CARES Connects · <a routerLink="/admin">Staff sign in</a></span>
   </div>
 </footer>

@@ -22,6 +22,11 @@
             <p class="muted date"><time [attr.datetime]="post.publishedAt">{{ post.publishedAt | date: 'longDate' : 'UTC' }}</time></p>
             <h2 class="cc-heading"><a [routerLink]="['/blog', post.slug]">{{ post.title }}</a></h2>
             <p>{{ post.description }}</p>
+            @if (post.categories.length) {
+              <ul class="tags" aria-label="Categories">
+                @for (c of post.categories; track c) { <li>{{ c }}</li> }
+              </ul>
+            }
             <a class="more" [routerLink]="['/blog', post.slug]">Read more<span class="visually-hidden">: {{ post.title }}</span></a>
           </div>
         </article>

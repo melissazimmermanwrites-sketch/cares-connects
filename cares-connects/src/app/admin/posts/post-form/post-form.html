@@ -100,6 +100,11 @@
               <mat-label>Author</mat-label>
               <input matInput formControlName="author" maxlength="100" />
             </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+              <mat-label>Categories</mat-label>
+              <input matInput formControlName="categories" placeholder="Mental Health, Nonprofit" />
+              <mat-hint>Separate with commas. Up to {{ maxCategories }}.</mat-hint>
+            </mat-form-field>
           </section>
 
           <section class="card" aria-labelledby="cover-title">

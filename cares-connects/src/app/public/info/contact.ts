@@ -5,12 +5,11 @@ import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Api, errorMessage } from '../../core/api';
 import { Seo } from '../../core/seo';
-import { LINKS } from '../site-content';
-import { DraftNotice } from './draft-notice';
+import { CONTACT_EMAIL, LINKS } from '../site-content';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule, RouterLink, DraftNotice],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './contact.html',
   styleUrl: './info-page.scss',
 })
@@ -20,6 +19,7 @@ export class Contact {
   private readonly router = inject(Router);
 
   readonly links = LINKS;
+  readonly email = CONTACT_EMAIL;
   readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(200)]],
     email: ['', [Validators.required, Validators.email, Validators.maxLength(200)]],
@@ -34,10 +34,8 @@ export class Contact {
   constructor() {
     inject(Seo).update({
       title: 'Contact · CARES Connects',
-      description: 'Get in touch with CARES Connects.',
+      description: 'Contact the Community Alliance of Resources Education and Support, a 501(c)(3) nonprofit in Placer County, California.',
       path: '/contact',
-      // Draft: stays out of search results until the real content is in.
-      noindex: true,
     });
     // Browser only: a token issued while rendering on the server would start its clock too early.
     afterNextRender(() => void this.loadToken());

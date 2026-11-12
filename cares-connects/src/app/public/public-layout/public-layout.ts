@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { ChatWidget } from '../chat/chat-widget';
-import { IMAGES, LINKS } from '../site-content';
+import { CONTACT_EMAIL, IMAGES, LINKS } from '../site-content';
 
 @Component({
   selector: 'app-public-layout',
@@ -14,6 +14,7 @@ import { IMAGES, LINKS } from '../site-content';
 export class PublicLayout {
   readonly year = new Date().getFullYear();
   readonly links = LINKS;
+  readonly email = CONTACT_EMAIL;
   readonly logo = IMAGES.logo;
   readonly menuOpen = signal(false);
 

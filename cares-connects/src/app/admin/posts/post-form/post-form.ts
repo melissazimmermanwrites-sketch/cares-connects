@@ -10,9 +10,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
-import type { AdminPost, PostInput, PostStatus } from '../../../../shared/blog';
+import { cleanCategories, MAX_CATEGORIES, type AdminPost, type PostInput, type PostStatus } from '../../../../shared/blog';
 import { slugify } from '../../../../shared/slug';
 import { Api, errorMessage } from '../../../core/api';
+import { Auth } from '../../../core/auth';
 import { applyMarkdownAction, type MarkdownAction } from './markdown-actions';
 
 const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
@@ -29,6 +30,7 @@ export class PostForm implements OnDestroy {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly auth = inject(Auth);
 
   /** Route param; undefined on /admin/posts/new. */
   readonly id = input<string>();
@@ -38,7 +40,10 @@ export class PostForm implements OnDestroy {
     title: ['', [Validators.required, Validators.maxLength(200)]],
     slug: ['', Validators.maxLength(120)],
     description: ['', Validators.maxLength(300)],
-    author: ['CARES Connects', Validators.maxLength(100)],
+    // New posts are credited to whoever is signed in; it can be changed before publishing.
+    author: [this.auth.user()?.name ?? '', Validators.maxLength(100)],
+    /** Comma-separated in the form, a list everywhere else. */
+    categories: [''],
     publishedOn: [''],
     coverImage: [''],
     coverAlt: ['', Validators.maxLength(300)],
@@ -58,6 +63,7 @@ export class PostForm implements OnDestroy {
   readonly previewHtml = signal('');
   /** On phones the editor and preview take turns. */
   readonly tab = signal<'write' | 'preview'>('write');
+  readonly maxCategories = MAX_CATEGORIES;
   readonly actions: { action: MarkdownAction; label: string; icon: string }[] = [
     { action: 'heading', label: 'Heading', icon: 'title' },
     { action: 'bold', label: 'Bold', icon: 'format_bold' },
@@ -98,6 +104,7 @@ export class PostForm implements OnDestroy {
       slug: post.slug,
       description: post.description,
       author: post.author ?? '',
+      categories: post.categories.join(', '),
       publishedOn: post.publishedOn ?? '',
       coverImage: post.coverImage ?? '',
       coverAlt: post.coverAlt ?? '',
@@ -195,6 +202,7 @@ export class PostForm implements OnDestroy {
       description: v.description.trim(),
       body: v.body,
       author: blank(v.author),
+      categories: cleanCategories(v.categories.split(',')),
       publishedOn: blank(v.publishedOn),
       coverImage: blank(v.coverImage),
       coverAlt: blank(v.coverAlt),
