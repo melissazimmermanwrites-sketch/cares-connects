@@ -1,12 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Seo } from '../../core/seo';
-import { DraftNotice } from './draft-notice';
 
-/** Mock-up. The intro and mission come from the home page; the rest is waiting on real content. */
+/** Copy from the old site's About page (exported by Mel, 2026-11-10). */
 @Component({
   selector: 'app-about',
-  imports: [RouterLink, DraftNotice],
+  imports: [RouterLink],
   templateUrl: './about.html',
   styleUrl: './info-page.scss',
 })
@@ -14,10 +13,8 @@ export class About {
   constructor() {
     inject(Seo).update({
       title: 'About · CARES Connects',
-      description: 'CARES Connects is a California 501(c)(3) nonprofit improving access to local resources.',
+      description: 'Meet the team and mission behind the nonprofit Community Alliance of Resources Education and Support (CARES).',
       path: '/about',
-      // Draft: stays out of search results until the real content is in.
-      noindex: true,
     });
   }
 }

@@ -1,22 +1,26 @@
 <div class="page">
-  <app-draft-notice />
-
   <header class="head">
     <span class="cc-rainbow"></span>
-    <h1 class="cc-heading">Help close the gap</h1>
-    <p>Your support helps connect people with the local resources they need.</p>
+    <h1 class="cc-heading">Make a donation</h1>
+    <p>
+      Thank you for your gift. The Community Alliance of Resources Education and Support is a 501(c)(3) nonprofit serving
+      Placer and Sacramento counties, and we invite you to help support our mission.
+    </p>
   </header>
 
   <div class="grid">
     <div>
       <section>
         <h2>What your gift does</h2>
-        <p class="todo">To add: what donations pay for, with real examples.</p>
+        <p>Your donation helps us close the gap between available support services and the people who need them.</p>
+        <p>Every gift, at any level, moves someone closer to the help they need.</p>
       </section>
       <section>
         <h2>About our nonprofit</h2>
-        <p>Community Alliance of Resources Education and Support is a 501(c)(3) nonprofit organization.</p>
-        <p class="todo">To add: EIN and the wording for donation receipts and tax information.</p>
+        <p>
+          All donations are processed securely through Stripe. Community Alliance of Resources Education and Support is a
+          501(c)(3) nonprofit organization.
+        </p>
       </section>
       <section>
         <h2>Volunteer for school credit</h2>
@@ -25,14 +29,17 @@
     </div>
 
     <aside class="card" aria-labelledby="give-title">
-      <h2 id="give-title">Make a donation</h2>
+      <h2 id="give-title">Choose an amount</h2>
       <div class="amounts">
-        @for (amount of amounts; track amount) {
-          <button type="button" class="amount" disabled>{{ amount }}</button>
+        @for (option of options; track option.url) {
+          <a class="amount" [href]="option.url" target="_blank" rel="noopener">
+            <span class="value">{{ option.label }}</span>
+            <span class="kind">{{ option.note }}</span>
+            <span class="visually-hidden"> (opens Stripe in a new tab)</span>
+          </a>
         }
       </div>
-      <button type="button" class="cc-btn orange small" disabled>Donate</button>
-      <p class="note muted">Preview only: no payment can be made here yet.</p>
+      <p class="note muted">You’ll finish your gift on Stripe’s secure checkout page.</p>
     </aside>
   </div>
 </div>
