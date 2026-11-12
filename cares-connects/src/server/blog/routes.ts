@@ -6,7 +6,15 @@ import { db } from '../db/client';
 import { blogMedia, blogPosts } from '../db/schema';
 import { handle, HttpError, parse } from '../http';
 import type { Page } from '../../shared/api-types';
-import { BLOG_PAGE_SIZE, type AdminPost, type AdminPostRow, type PostSummary, type PublicPost } from '../../shared/blog';
+import {
+  BLOG_PAGE_SIZE,
+  cleanCategories,
+  MAX_CATEGORIES,
+  type AdminPost,
+  type AdminPostRow,
+  type PostSummary,
+  type PublicPost,
+} from '../../shared/blog';
 import { slugify } from '../../shared/slug';
 import { renderMarkdown } from './markdown';
 import { detectImageType, MAX_IMAGE_BYTES } from './media';
@@ -34,6 +42,11 @@ const postSchema = z
     coverImage: optionalText(100).refine((v) => !v || /^\/media\/[a-f0-9]{24}$/.test(v), 'Choose an uploaded image'),
     coverAlt: optionalText(300),
     author: optionalText(100),
+    categories: z
+      .array(z.string().max(40, 'Keep each category under 40 characters'))
+      .default([])
+      .transform(cleanCategories)
+      .refine((v) => v.length <= MAX_CATEGORIES, `Use at most ${MAX_CATEGORIES} categories`),
     status: z.enum(['draft', 'published']),
     publishedOn: optionalText(10).refine((v) => !v || (/^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v))), 'Enter a valid date'),
   })
@@ -57,6 +70,7 @@ const toSummary = (p: Post): PostSummary => ({
   coverImage: p.coverImage,
   coverAlt: p.coverAlt,
   author: p.author,
+  categories: p.categories,
   publishedAt: p.publishedAt!.toISOString(),
 });
 
@@ -69,6 +83,7 @@ const toAdmin = (p: Post): AdminPost => ({
   coverImage: p.coverImage,
   coverAlt: p.coverAlt,
   author: p.author,
+  categories: p.categories,
   status: p.status,
   publishedOn: toDay(p.publishedAt),
   createdAt: p.createdAt.toISOString(),
@@ -158,6 +173,7 @@ function postValues(input: z.output<typeof postSchema>, slug: string, existing: 
     coverImage: input.coverImage,
     coverAlt: input.coverAlt,
     author: input.author,
+    categories: input.categories,
     status: input.status,
     publishedAt,
     updatedBy: email,

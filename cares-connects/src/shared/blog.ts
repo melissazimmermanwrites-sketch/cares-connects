@@ -11,6 +11,7 @@ export interface PostSummary {
   coverImage: string | null;
   coverAlt: string | null;
   author: string | null;
+  categories: string[];
   publishedAt: string;
 }
 
@@ -27,6 +28,7 @@ export interface PostInput {
   coverImage: string | null;
   coverAlt: string | null;
   author: string | null;
+  categories: string[];
   status: PostStatus;
   /** YYYY-MM-DD. Can be in the past for older posts; a future date goes live on that day. */
   publishedOn: string | null;
@@ -37,6 +39,23 @@ export interface AdminPost extends PostInput {
   createdAt: string;
   updatedAt: string;
   updatedBy: string | null;
+}
+
+/** Most categories a post can have. */
+export const MAX_CATEGORIES = 6;
+
+/** Trims, drops blanks and repeats (ignoring case), and keeps the first spelling used. */
+export function cleanCategories(values: readonly string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const raw of values) {
+    const value = raw.replace(/\s+/g, ' ').trim();
+    const key = value.toLowerCase();
+    if (!value || seen.has(key)) continue;
+    seen.add(key);
+    out.push(value);
+  }
+  return out;
 }
 
 export interface AdminPostRow {

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderMarkdown } from './markdown';
 import { detectImageType } from './media';
+import { cleanCategories } from '../../shared/blog';
 
 describe('renderMarkdown', () => {
   it('renders ordinary Markdown', () => {
@@ -63,5 +64,11 @@ describe('detectImageType', () => {
     expect(detectImageType(text('<svg onload="alert(1)"></svg>'))).toBeNull();
     expect(detectImageType(text('<html><script>alert(1)</script>'))).toBeNull();
     expect(detectImageType(bytes())).toBeNull();
+  });
+});
+
+describe('cleanCategories', () => {
+  it('trims, drops blanks, and keeps the first spelling of a repeat', () => {
+    expect(cleanCategories([' Mental  Health ', '', 'mental health', 'Nonprofit', '  '])).toEqual(['Mental Health', 'Nonprofit']);
   });
 });
