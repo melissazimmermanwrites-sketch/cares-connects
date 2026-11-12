@@ -1,0 +1,261 @@
+[
+  {
+    "slug": "boys-girls-club-placer-county-auburn",
+    "title": "After-School Programs in Auburn",
+    "org": "Boys & Girls Club of Placer County",
+    "icon": "youth",
+    "category": "Youth Activities"
+  },
+  {
+    "slug": "childrens-receiving-home-sacramento",
+    "title": "Support for Foster Youth and Teens in Sacramento",
+    "org": "Children's Receiving Home of Sacramento",
+    "icon": "foster",
+    "category": "Foster Youth"
+  },
+  {
+    "slug": "crisis-nursery-sacramento",
+    "title": "Free Emergency Child Care for Families in Crisis in Sacramento",
+    "org": "Sacramento Children's Home Crisis Nursery",
+    "icon": "parenting",
+    "category": "Parenting Resources"
+  },
+  {
+    "slug": "disability-support-roseville-placer-arc",
+    "title": "Disability Support in Roseville",
+    "org": "The Arc of Placer County",
+    "icon": "disability",
+    "category": "Disability Support"
+  },
+  {
+    "slug": "domestic-violence-help-auburn-stand-up-placer",
+    "title": "Domestic Violence Help in Auburn and Placer County",
+    "org": "Stand Up Placer",
+    "icon": "shield",
+    "category": "Domestic Violence / IPV"
+  },
+  {
+    "slug": "dress-for-success-job-help-north-sacramento",
+    "title": "Professional Clothing and Job Support for Women in North Sacramento",
+    "org": "Dress for Success Sacramento",
+    "icon": "briefcase",
+    "category": "Job Assistance"
+  },
+  {
+    "slug": "fieldhaven-feline-center-lincoln",
+    "title": "Cat Rescue and Spay/Neuter Help in Lincoln",
+    "org": "FieldHaven Feline Center",
+    "icon": "paw",
+    "category": "Pet health & rescue"
+  },
+  {
+    "slug": "folsom-cordova-community-partnership-rancho-cordova",
+    "title": "Help With Basic Needs and Utility Bills in Rancho Cordova",
+    "org": "Folsom Cordova Community Partnership",
+    "icon": "money",
+    "category": "Financial Aid"
+  },
+  {
+    "slug": "free-legal-help-auburn-lsnc",
+    "title": "Free Legal Help in Auburn and Placer County",
+    "org": "Legal Services of Northern California",
+    "icon": "legal",
+    "category": "Legal"
+  },
+  {
+    "slug": "free-medical-care-shifa-clinic-sacramento",
+    "title": "Free Medical Care in Sacramento",
+    "org": "Shifa Community Clinic",
+    "icon": "medical",
+    "category": "Medical and Dental Health"
+  },
+  {
+    "slug": "gathering-inn-emergency-shelter-roseville-rocklin",
+    "title": "Emergency Shelter and Housing Help in Roseville and Rocklin",
+    "org": "The Gathering Inn",
+    "icon": "house",
+    "category": "Shelter & Housing"
+  },
+  {
+    "slug": "nations-finest-veterans-sacramento",
+    "title": "Veteran Housing and Support in Sacramento",
+    "org": "Nation's Finest",
+    "icon": "veterans",
+    "category": "Veterans"
+  },
+  {
+    "slug": "opening-doors-immigration-sacramento",
+    "title": "Free Immigration Legal Help in Sacramento",
+    "org": "Opening Doors, Inc.",
+    "icon": "globe",
+    "category": "Immigration"
+  },
+  {
+    "slug": "paratransit-rides-training-sacramento",
+    "title": "Free Rides and Travel Training in Sacramento",
+    "org": "Paratransit, Inc.",
+    "icon": "bus",
+    "category": "Transportation"
+  },
+  {
+    "slug": "recovery-house-substance-recovery-sacramento",
+    "title": "Residential Recovery for Men and Women in Sacramento",
+    "org": "Sacramento Recovery House",
+    "icon": "recovery",
+    "category": "Substance Abuse & Recovery"
+  },
+  {
+    "slug": "salt-mine-food-closet-lincoln",
+    "title": "Food Help in Lincoln",
+    "org": "The Salt Mine",
+    "icon": "food",
+    "category": "Food"
+  },
+  {
+    "slug": "senior-services-rocklin-seniors-first",
+    "title": "Senior Services in Rocklin and Placer County",
+    "org": "Seniors First, Inc.",
+    "icon": "senior",
+    "category": "Aging Adult"
+  },
+  {
+    "slug": "assistance-league-thrift-shop-auburn",
+    "title": "Affordable Clothing in Auburn",
+    "org": "Assistance League of Greater Placer",
+    "icon": "shirt",
+    "category": "Clothing"
+  },
+  {
+    "slug": "bereavement-network-resources-grief-sacramento",
+    "title": "Finding Grief Support in Sacramento",
+    "org": "Bereavement Network Resources of Sacramento",
+    "icon": "candle",
+    "category": "Hospice"
+  },
+  {
+    "slug": "casa-placer-yuba-sutter-roseville",
+    "title": "Mentorship for Local Youth in Roseville",
+    "org": "CASA of Placer, Yuba and Sutter",
+    "icon": "people",
+    "category": "Mentorship"
+  },
+  {
+    "slug": "cash-human-trafficking-sacramento",
+    "title": "Survivor-Led Help for Sexual Exploitation in Sacramento",
+    "org": "Community Against Sexual Harm (CASH)",
+    "icon": "shield",
+    "category": "Human Trafficking"
+  },
+  {
+    "slug": "center-for-employment-opportunities-sacramento",
+    "title": "Jobs After Incarceration in Sacramento",
+    "org": "Center for Employment Opportunities",
+    "icon": "key",
+    "category": "Rehabilitation"
+  },
+  {
+    "slug": "chapa-de-indian-health-auburn",
+    "title": "Tribal Health Care in Auburn",
+    "org": "Chapa-De Indian Health",
+    "icon": "feather",
+    "category": "Tribal"
+  },
+  {
+    "slug": "del-oro-caregiver-resource-center-citrus-heights",
+    "title": "Help for Family Caregivers in Citrus Heights",
+    "org": "Del Oro Caregiver Resource Center",
+    "icon": "hands",
+    "category": "In-home Help"
+  },
+  {
+    "slug": "free-meals-sacramento-loaves-and-fishes",
+    "title": "Free Meals in Sacramento",
+    "org": "Loaves & Fishes",
+    "icon": "food",
+    "category": "Food"
+  },
+  {
+    "slug": "kidsfirst-counseling-family-resource-centers-roseville",
+    "title": "Free Counseling for Families in Roseville",
+    "org": "KidsFirst",
+    "icon": "mind",
+    "category": "Mental Health"
+  },
+  {
+    "slug": "la-familia-counseling-center-sacramento",
+    "title": "Free Bilingual Counseling in Sacramento",
+    "org": "La Familia Counseling Center",
+    "icon": "chat",
+    "category": "Latino"
+  },
+  {
+    "slug": "lighthouse-counseling-family-resource-center-lincoln",
+    "title": "Low-Cost Counseling in Lincoln",
+    "org": "Lighthouse Counseling & Family Resource Center",
+    "icon": "community",
+    "category": "Community Services"
+  },
+  {
+    "slug": "mental-health-urgent-care-sacramento",
+    "title": "Mental Health Urgent Care in Sacramento, No Appointment Needed",
+    "org": "Turning Point Community Programs",
+    "icon": "phone",
+    "category": "Crisis help lines"
+  },
+  {
+    "slug": "primary-care-sacramento-one-community-health",
+    "title": "Low-Cost Health Care in Sacramento",
+    "org": "One Community Health",
+    "icon": "medical",
+    "category": "Medical and Dental Health"
+  },
+  {
+    "slug": "recovery-housing-folsom-powerhouse-ministries",
+    "title": "Recovery and Crisis Help in Folsom",
+    "org": "Powerhouse Ministries",
+    "icon": "house",
+    "category": "Shelter & Housing"
+  },
+  {
+    "slug": "sacramento-bicycle-kitchen-sacramento",
+    "title": "Fix Your Own Bike in Sacramento",
+    "org": "Sacramento Bicycle Kitchen",
+    "icon": "gift",
+    "category": "Donation and Volunteer"
+  },
+  {
+    "slug": "sacramento-valley-sbdc-sacramento",
+    "title": "Free Small Business Advising in Sacramento",
+    "org": "Sacramento Valley Small Business Development Center",
+    "icon": "store",
+    "category": "Small Business"
+  },
+  {
+    "slug": "sleep-in-heavenly-peace-beds-sacramento",
+    "title": "Free Beds for Kids in Sacramento",
+    "org": "Sleep in Heavenly Peace, Sacramento Chapter",
+    "icon": "bed",
+    "category": "Household goods"
+  },
+  {
+    "slug": "suicide-loss-support-sacramento-friends-for-survival",
+    "title": "Support After a Suicide Loss in Sacramento",
+    "org": "Friends for Survival",
+    "icon": "sunrise",
+    "category": "Suicide Prevention"
+  },
+  {
+    "slug": "the-hub-wpusd-family-resource-center-lincoln",
+    "title": "Family Support in Lincoln",
+    "org": "The HUB at Western Placer Unified",
+    "icon": "book",
+    "category": "Education"
+  },
+  {
+    "slug": "youth-programs-del-paso-heights-roberts-family-development-center",
+    "title": "After-School Help in Del Paso Heights",
+    "org": "Roberts Family Development Center",
+    "icon": "youth",
+    "category": "Youth Activities"
+  }
+]

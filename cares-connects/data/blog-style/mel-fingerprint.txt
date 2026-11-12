@@ -1,0 +1,102 @@
+quiet-gem-compassion-lincoln.md {"words":330,"avgSent":9.4,"sd":7.1,"fk":9.5,"ttr":0.503}
+suicide-prevention-resources-sacramento-placer-counties.md {"words":1089,"avgSent":17.6,"sd":12.1,"fk":11.6,"ttr":0.389}
+supporting-loved-one-with-mental-illness-placer-county.md {"words":662,"avgSent":11.2,"sd":6.3,"fk":6.5,"ttr":0.364}
+{
+  "words": 2081,
+  "sentences": 160,
+  "uniq": 632,
+  "capsRate": 0.05,
+  "emojiRate": 0,
+  "topE": [],
+  "ttr": 0.304,
+  "avgWord": 5.289,
+  "avgSent": 13.34,
+  "variance": 9.817,
+  "fk": 9.255,
+  "openers": [
+    [
+      "the",
+      14
+    ],
+    [
+      "website",
+      11
+    ],
+    [
+      "you",
+      10
+    ],
+    [
+      "nami",
+      9
+    ],
+    [
+      "vincent",
+      8
+    ],
+    [
+      "it's",
+      6
+    ]
+  ],
+  "sig": [
+    [
+      "crisis",
+      42
+    ],
+    [
+      "support",
+      33
+    ],
+    [
+      "placer",
+      20
+    ],
+    [
+      "county",
+      20
+    ],
+    [
+      "mental",
+      18
+    ],
+    [
+      "health",
+      17
+    ],
+    [
+      "call",
+      16
+    ],
+    [
+      "suicide",
+      16
+    ],
+    [
+      "text",
+      16
+    ],
+    [
+      "phone",
+      16
+    ],
+    [
+      "nami",
+      16
+    ],
+    [
+      "sacramento",
+      15
+    ]
+  ],
+  "P": {
+    "comma": 159,
+    "period": 134,
+    "exclaim": 0,
+    "question": 7,
+    "semicolon": 5,
+    "colon": 34,
+    "dash": 0,
+    "ellipsis": 0
+  }
+}
