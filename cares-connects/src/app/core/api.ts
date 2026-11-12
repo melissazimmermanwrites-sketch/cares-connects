@@ -26,7 +26,7 @@ import type {
   VerificationState,
 } from '../../shared/submissions';
 import type { ContactInput, ContactMessageRow, ContactStatus, ContactSummary } from '../../shared/contact';
-import type { AdminPost, AdminPostRow, PostInput, PostSummary, PublicPost } from '../../shared/blog';
+import type { AdminPost, AdminPostRow, BlogCategory, PostInput, PostSummary, PublicPost } from '../../shared/blog';
 
 /** Turns an API error into a sentence safe to show the user. */
 export function errorMessage(err: unknown): string {
@@ -149,8 +149,12 @@ export class Api {
     return this.http.post<ContactMessageRow>(`/api/admin/messages/${id}/status`, { status });
   }
   // Blog
-  posts(page: number) {
-    return this.http.get<Page<PostSummary>>('/api/posts', { params: toParams({ page }) });
+  posts(query: { page: number; q?: string; category?: string }) {
+    return this.http.get<Page<PostSummary>>('/api/posts', { params: toParams(query) });
+  }
+
+  postCategories() {
+    return this.http.get<BlogCategory[]>('/api/posts/categories');
   }
   post(slug: string) {
     return this.http.get<PublicPost>(`/api/posts/${encodeURIComponent(slug)}`);

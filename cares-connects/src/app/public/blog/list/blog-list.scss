@@ -98,11 +98,97 @@
   padding: 0;
   list-style: none;
 
-  li {
+  a {
+    display: inline-block;
     padding: 2px 10px;
     border-radius: 999px;
     background: var(--mat-sys-secondary-container);
     color: var(--mat-sys-on-secondary-container);
     font: var(--mat-sys-label-medium);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 16px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 420px;
+
+  .field {
+    flex: 1;
+    --mat-form-field-outlined-container-shape: 28px;
+    background: var(--mat-sys-surface);
+    border-radius: 28px;
+  }
+
+  .go {
+    height: 56px;
+  }
+}
+
+// Same pill select as the county picker (county-filter.ts).
+.category {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  .label {
+    font-weight: 700;
+    color: var(--cc-navy, #0d3b66);
+  }
+
+  select {
+    min-height: 44px;
+    min-width: 220px;
+    max-width: 100%;
+    padding: 0 40px 0 16px;
+    border: 2px solid var(--cc-navy, #0d3b66);
+    border-radius: 999px;
+    background: #fff
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230d3b66' stroke-width='2'/%3E%3C/svg%3E")
+      no-repeat right 16px center;
+    appearance: none;
+    font: inherit;
+    color: var(--cc-ink, #1f2a37);
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 3px solid var(--cc-blue-text, #1669a3);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+
+  p {
+    margin: 0;
+  }
+}
+
+@media (max-width: 599px) {
+  .search {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
