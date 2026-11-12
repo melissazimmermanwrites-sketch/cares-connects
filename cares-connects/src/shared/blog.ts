@@ -44,6 +44,30 @@ export interface AdminPost extends PostInput {
 /** Most categories a post can have. */
 export const MAX_CATEGORIES = 6;
 
+/** A category in use on live posts, for the blog's filter. */
+export interface BlogCategory {
+  name: string;
+  count: number;
+}
+
+/** Longest search the blog accepts, and the most words it matches on. */
+export const MAX_SEARCH_LENGTH = 100;
+export const MAX_SEARCH_WORDS = 6;
+
+/**
+ * Splits a blog search into the words a post must all contain, ignoring case.
+ * "Food  help, Lincoln" → ["food", "help", "lincoln"]. Repeats and punctuation-only words are dropped.
+ */
+export function searchWords(q: string): string[] {
+  const words = q
+    .slice(0, MAX_SEARCH_LENGTH)
+    .toLowerCase()
+    .split(/[\s,]+/)
+    .map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, ''))
+    .filter(Boolean);
+  return [...new Set(words)].slice(0, MAX_SEARCH_WORDS);
+}
+
 /** Trims, drops blanks and repeats (ignoring case), and keeps the first spelling used. */
 export function cleanCategories(values: readonly string[]): string[] {
   const seen = new Set<string>();

@@ -10,7 +10,10 @@ import {
   BLOG_PAGE_SIZE,
   cleanCategories,
   MAX_CATEGORIES,
+  MAX_SEARCH_LENGTH,
+  searchWords,
   type AdminPost,
+  type BlogCategory,
   type AdminPostRow,
   type PostSummary,
   type PublicPost,
@@ -97,19 +100,64 @@ const isLive = () => and(eq(blogPosts.status, 'published'), lte(blogPosts.publis
 /** Public endpoints. Mounted at /api/posts. */
 export const blogRouter = Router();
 
+// Drizzle prints columns unqualified inside sql`` templates, which json_each would shadow.
+const POST_CATEGORIES = sql.raw('"blog_posts"."categories"');
+
+/** A query-string value as one trimmed string, capped; repeated or missing params become ''. */
+const queryText = (value: unknown, max: number) => (typeof value === 'string' ? value.trim().slice(0, max) : '');
+
+/** Live posts containing every search word (title, description, text or categories) and, if given, the category. */
+function postFilter(q: string, category: string): SQL | undefined {
+  const parts: (SQL | undefined)[] = [isLive()];
+  for (const word of searchWords(q)) {
+    const pattern = `%${word.replace(/[%_\\]/g, '\\$&')}%`;
+    parts.push(
+      or(
+        sql`${blogPosts.title} like ${pattern} escape '\\'`,
+        sql`${blogPosts.description} like ${pattern} escape '\\'`,
+        sql`${blogPosts.body} like ${pattern} escape '\\'`,
+        sql`${blogPosts.categories} like ${pattern} escape '\\'`,
+      ),
+    );
+  }
+  if (category) {
+    parts.push(sql`exists (select 1 from json_each(${POST_CATEGORIES}) where lower(value) = lower(${category}))`);
+  }
+  return and(...parts);
+}
+
 blogRouter.get(
   '/',
   handle(async (req, res) => {
     const page = Math.max(Math.trunc(Number(req.query['page'])) || 1, 1);
-    const [{ total }] = await db.select({ total: count() }).from(blogPosts).where(isLive());
+    const where = postFilter(queryText(req.query['q'], MAX_SEARCH_LENGTH), queryText(req.query['category'], 40));
+    const [{ total }] = await db.select({ total: count() }).from(blogPosts).where(where);
     const rows = await db
       .select()
       .from(blogPosts)
-      .where(isLive())
+      .where(where)
       .orderBy(desc(blogPosts.publishedAt), desc(blogPosts.id))
       .limit(BLOG_PAGE_SIZE)
       .offset((page - 1) * BLOG_PAGE_SIZE);
     const body: Page<PostSummary> = { total, items: rows.map(toSummary) };
+    res.set('Cache-Control', 'public, max-age=60');
+    res.json(body);
+  }),
+);
+
+/** Categories used on live posts, A to Z, with how many posts each has. Before /:slug so it isn't read as a slug. */
+blogRouter.get(
+  '/categories',
+  handle(async (_req, res) => {
+    const rows = await db.select({ categories: blogPosts.categories }).from(blogPosts).where(isLive());
+    const counts = new Map<string, BlogCategory>();
+    for (const name of rows.flatMap((r) => r.categories)) {
+      const key = name.toLowerCase();
+      const entry = counts.get(key) ?? { name, count: 0 };
+      entry.count++;
+      counts.set(key, entry);
+    }
+    const body = [...counts.values()].sort((a, b) => a.name.localeCompare(b.name));
     res.set('Cache-Control', 'public, max-age=60');
     res.json(body);
   }),

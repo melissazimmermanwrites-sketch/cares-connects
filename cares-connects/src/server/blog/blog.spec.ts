@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderMarkdown } from './markdown';
 import { detectImageType } from './media';
-import { cleanCategories } from '../../shared/blog';
+import { cleanCategories, MAX_SEARCH_WORDS, searchWords } from '../../shared/blog';
 
 describe('renderMarkdown', () => {
   it('renders ordinary Markdown', () => {
@@ -70,5 +70,29 @@ describe('detectImageType', () => {
 describe('cleanCategories', () => {
   it('trims, drops blanks, and keeps the first spelling of a repeat', () => {
     expect(cleanCategories([' Mental  Health ', '', 'mental health', 'Nonprofit', '  '])).toEqual(['Mental Health', 'Nonprofit']);
+  });
+});
+
+describe('searchWords', () => {
+  it('splits on spaces and commas, lowercases, and drops repeats', () => {
+    expect(searchWords('Food  help, Lincoln food')).toEqual(['food', 'help', 'lincoln']);
+  });
+
+  it('trims punctuation around words but keeps it inside them', () => {
+    expect(searchWords('"rent-help"? (Roseville).')).toEqual(['rent-help', 'roseville']);
+  });
+
+  it('returns nothing for blank or punctuation-only input', () => {
+    expect(searchWords('   ')).toEqual([]);
+    expect(searchWords('!!! ...')).toEqual([]);
+  });
+
+  it('caps the number of words', () => {
+    expect(searchWords('a b c d e f g h')).toHaveLength(MAX_SEARCH_WORDS);
+  });
+
+  it('keeps LIKE wildcards as ordinary characters for the caller to escape', () => {
+    expect(searchWords('50% off_')).toEqual(['50', 'off']);
+    expect(searchWords('a%b c_d')).toEqual(['a%b', 'c_d']);
   });
 });

@@ -3,6 +3,33 @@
     <span class="cc-rainbow"></span>
     <h1 class="cc-heading">Blog</h1>
     <p class="muted">News, stories and guides from CARES Connects.</p>
+
+    <div class="filters">
+      <form class="search" role="search" (submit)="search($event)">
+        <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+          <mat-icon matPrefix>search</mat-icon>
+          <mat-label>Search the blog</mat-label>
+          <input matInput name="q" type="search" [maxLength]="maxSearchLength" [value]="searchText()"
+                 (input)="searchText.set($any($event.target).value)" placeholder="e.g. food, Roseville, veterans" />
+          @if (searchText()) {
+            <button matSuffix mat-icon-button type="button" aria-label="Clear search" (click)="clearSearch()"><mat-icon>close</mat-icon></button>
+          }
+        </mat-form-field>
+        <button type="submit" class="cc-btn orange go">Search</button>
+      </form>
+
+      <label class="category">
+        <span class="label">Category</span>
+        <!-- Selection lives on the options: binding [value] on the select runs before the
+             categories load and leaves it blank. -->
+        <select (change)="setCategory($any($event.target).value)">
+          <option value="" [selected]="!activeCategory()">All categories</option>
+          @for (c of categories.value() ?? []; track c.name) {
+            <option [value]="c.name" [selected]="c.name.toLowerCase() === activeCategory().toLowerCase()">{{ c.name }} ({{ c.count }})</option>
+          }
+        </select>
+      </label>
+    </div>
   </header>
 
   @if (posts.isLoading()) {
@@ -10,6 +37,17 @@
   } @else if (posts.error()) {
     <p>We couldn’t load the blog. Please try again.</p>
   } @else if (posts.value(); as result) {
+    @if (filtering()) {
+      <div class="summary" aria-live="polite">
+        <p class="muted">
+          {{ result.total }} {{ result.total === 1 ? 'post' : 'posts' }}
+          @if (query()) { matching “{{ query() }}” }
+          @if (activeCategory()) { in {{ activeCategory() }} }
+        </p>
+        <button mat-button type="button" (click)="clearAll()">Show all posts</button>
+      </div>
+    }
+
     <div class="list">
       @for (post of result.items; track post.slug) {
         <article class="card">
@@ -24,7 +62,9 @@
             <p>{{ post.description }}</p>
             @if (post.categories.length) {
               <ul class="tags" aria-label="Categories">
-                @for (c of post.categories; track c) { <li>{{ c }}</li> }
+                @for (c of post.categories; track c) {
+                  <li><a routerLink="/blog" [queryParams]="categoryQuery(c)" [attr.aria-label]="'More posts in ' + c">{{ c }}</a></li>
+                }
               </ul>
             }
             <a class="more" [routerLink]="['/blog', post.slug]">Read more<span class="visually-hidden">: {{ post.title }}</span></a>
@@ -32,7 +72,9 @@
         </article>
       } @empty {
         @if (pageNumber() > 1) {
-          <p>There’s nothing on this page. <a routerLink="/blog">Go to the newest posts</a>.</p>
+          <p>There’s nothing on this page. <a routerLink="/blog" [queryParams]="pageQuery(1)">Go to the first page</a>.</p>
+        } @else if (filtering()) {
+          <p>No posts matched. Try a simpler word or another category, or <a routerLink="/find">search the directory</a> for local help.</p>
         } @else {
           <p>No posts yet. Please check back soon.</p>
         }
