@@ -1,237 +1,164 @@
-# CARES Connects: hand-off runbook
+# CARES Connects: handoff for Mel
 
-**For Claude (or whoever is setting this up for Mel).** This file walks you through moving
-CARES Connects onto Mel's own accounts. Work through it top to bottom, check each step before
-moving on, and ask Mel whenever a step needs her (signing up, logging in, choosing passwords,
-DNS). **When everything at the end is checked off, delete this file** (see the last section).
+Last updated 2026-11-10. Written for Mel, and for Claude Code if she uses it to help.
 
-Never type Mel's passwords or tokens into chat or commit them. Tokens go into the host's and
-GitHub's secret settings only.
+There are four things to do: gather blog posts, gather donation and page details, finish the Netlify settings for the `Develop` site, and update the databases.
 
----
+**Never paste passwords, tokens or secrets into chat or commit them.** They only go into the Netlify, Cloudflare and Turso settings. Commands below run from the `cares-connects/` folder.
 
-## 0. What this is
+## What's ready and what's waiting
 
-- `cares-connects/`: Angular 22 app with server rendering. One Node/Express server serves:
-  - the public site (home, find help, categories, listings, the "Find help" chat widget)
-  - the admin portal at `/admin` (resources, IRS **Discover** queue, categories, exports)
-  - the JSON API at `/api`
-- **Database:** Turso (hosted SQLite/libSQL) in production, a local file in development. Schema
-  changes are migrations in `cares-connects/drizzle/`.
-- **Chat brain:** a small model trained only on CARES content. It runs **in the visitor's
-  browser** from static files in `cares-connects/public/brain/`. There's no model server and no
-  GPU needed in production.
-- **Weekly IRS import:** a GitHub Action (`.github/workflows/discover.yml`) that adds newly
-  registered California 501(c)(3)s to the admin's Discover queue.
+| Work | Status | Waiting on |
+|---|---|---|
+| Listing pages and "List your organization" form | Merged into `Develop` | Its database tables (section 4) |
+| About, Contact and Donate pages | Merged into `Develop`, as drafts | Your content and donation link |
+| Blog and blog admin | In a pull request into `Develop` | Merging, then your posts |
+| `Develop` site on Netlify | Building again since the repo went public | `SUBMISSION_SECRET` (section 3) |
+| New database tables | Scripts ready | Section 4, on the development database first |
 
-Requirements: Node 24 (`cares-connects/.nvmrc`), npm, the Turso CLI, the GitHub CLI (`gh`).
+None of this is on caresconnects.org yet. That happens when `Develop` is merged into `main`. Until then, `/about`, `/contact`, `/donate` and the Blog link return "not found" there.
 
-All commands below run from `cares-connects/` unless noted.
+## 1. Blog posts
 
-```bash
-cd cares-connects
-nvm use          # Node 24
-npm ci
-```
+The posts aren't saved anywhere we can reach, so we need them from you. The best place to look is your old LeadConnector (GoHighLevel) website account.
 
----
+**Please don't cancel that account until everything in sections 1 and 2 is saved.**
 
-## 1. Database (Turso)
+For each post, send Jason:
 
-Mel needs a Turso account (`turso auth signup`, or `turso auth login` if she has one; she does
-this interactively).
+- Title
+- Date it was published
+- Full text
+- Images, as files if you can (JPEG, PNG, GIF or WebP, up to 3 MB each)
+- Its old web address, so we can try to keep old links working
 
-**Pick ONE of these**, depending on where the demo data lives:
+A copy-and-paste into a Google Doc is fine.
 
-### A. Fresh start (recommended if nobody edited listings in a demo yet)
+### After the blog is live
 
-```bash
-turso db create cares-connects
-turso db show cares-connects --url               # → libsql://cares-connects-<org>.turso.io
-turso db tokens create cares-connects            # → long token; keep it secret
+You can add and edit posts yourself at `/admin/posts`:
 
-export DATABASE_URL="libsql://cares-connects-<org>.turso.io"
-export DATABASE_AUTH_TOKEN="<token>"
-npm run db:migrate     # creates tables + the 58 California counties
-npm run db:seed        # loads Mel's original directory (501 listings, 33 categories)
-npm run discover       # first IRS import, about 10 seconds
-```
+1. Choose **New post**, then add the title and text. The buttons above the text handle headings, links, lists and images, and the preview shows how it will look.
+2. Add a description. Publishing needs one, and it appears on the blog page and in search results.
+3. For an older post, set its original date. A future date makes the post go live that day.
+4. Choose **Save draft** or **Publish**. Publishing doesn't use up a Netlify deploy.
 
-`db:seed` refuses to run on a database that already has listings. Only use `--force` on a
-brand-new database, because it wipes all listings.
+## 2. Donation link and page content
 
-### B. Keep the demo's data (listings were edited during the demo)
-
-- If the demo database lives in a separate Turso **organization** that Mel was invited to, she
-  can simply stay in it. Nothing moves.
-- Otherwise, move it into Mel's org. Mel adds Jason to her org first, then Jason runs:
-  `turso org db-transfer <database-name> <mel-org-name>`
-- Or copy from a local SQLite file: `turso db create cares-connects --from-file <file.db>`
-
-After a transfer, **the URL and tokens change**. Run `turso db show … --url` and
-`turso db tokens create …` again inside Mel's org and use those values below.
-Then run `npm run db:migrate` once (it's safe to repeat).
-
----
-
-## 2. Admin logins
-
-```bash
-npm run admin:create -- <mel's email> "Mel"
-```
-
-It prompts for a password (hidden, 10+ characters). **Mel types it herself.** Run the same command
-for anyone else who needs access. Running it for an existing email resets that password and
-signs that person out everywhere.
-
-Remove demo/developer admins from Mel's database once she can sign in. Ask Mel which emails to
-remove first, then:
-
-```bash
-turso db shell cares-connects "DELETE FROM sessions WHERE admin_id IN (SELECT id FROM admins WHERE email = '<email>'); DELETE FROM admins WHERE email = '<email>';"
-```
-
----
-
-## 3. Deploy the app (Netlify)
-
-> **Moving to Cloudflare Workers:** follow `CLOUDFLARE.md` instead of this section. The Netlify
-> setup below stays valid until that move is finished.
-
-The app is set up for Netlify: the CDN serves static files (including the chat brain) and one
-Netlify Function (`cares-connects/netlify/functions/app.mjs`) runs the Express server for
-page rendering and `/api`. Config is `cares-connects/netlify.toml`.
-
-**Deploy from a local build. Don't connect Netlify's Git builds or its Angular plugin.**
-Netlify's Angular plugin would swap our `server.ts` for an edge version that can't run the API.
-
-```bash
-cd cares-connects
-netlify login                                   # Mel logs in
-netlify sites:create --name <site-name>         # creates and links the site
-# environment variables: see table below
-npm ci && npm run build
-netlify deploy --prod --no-build
-```
-
-**Environment variables.** Set each with `--context production` and **no `--scope` flag**
-(with `--scope`, the CLI reports success but saves nothing). The token goes in as a secret:
-
-```bash
-netlify env:set DATABASE_URL "libsql://cares-connects-<org>.turso.io" --context production
-netlify env:set DATABASE_AUTH_TOKEN "<token>" --secret --context production
-netlify env:set NG_ALLOWED_HOSTS "caresconnects.org,www.caresconnects.org,<site-name>.netlify.app" --context production
-netlify env:set SITE_URL "https://caresconnects.org" --context production
-netlify env:set NODE_ENV production --context production
-```
-
-Check them with `netlify env:get <NAME> --context production`. Functions read environment
-variables at deploy time, so **redeploy after changing any of them**.
-
-| Variable | Purpose |
+| Page | What we need |
 |---|---|
-| `DATABASE_URL`, `DATABASE_AUTH_TOKEN` | Turso database |
-| `NG_ALLOWED_HOSTS` | every hostname the site answers on; Angular returns 400 for anything else |
-| `SITE_URL` | used in the sitemap |
-| `NODE_ENV=production` | login cookies become HTTPS-only |
-| `NOINDEX=true` | **test sites only**: keeps the site out of search results. Don't set it on the real site. |
-| `GITHUB_DISPATCH_TOKEN`, `GITHUB_REPOSITORY` | optional: lets the admin's "Check the IRS now" button start the GitHub Action (a fine-grained token with Actions read/write on this repo; repository as `owner/name`). Without them, the button explains where to run it. |
+| Donate | **The real donation link** |
+| Donate | EIN, and the wording you want about receipts and taxes |
+| Donate | What donations pay for, with real examples |
+| About | How CARES Connects started and why |
+| About | Team names, roles and photos |
+| About | Link to the *Connecting the Gaps* report |
+| Contact | Public email, phone and mailing address |
+| Volunteers | Please confirm this wording: "We're always accepting volunteers for school credit. Contact us for more information." |
 
-Why the IRS button works this way: a full import against Turso takes about 30–40 seconds,
-longer than a Netlify function may run, so on Netlify the import always runs in GitHub Actions.
+The Donate page can't take money until we have the link. The old `pay.caresconnects.org` main address shows "Pay Link Not Found", but a specific donation link there may still work, so check your account.
 
-**If the domain is not caresconnects.org**, also change `SITE_URL` in
-`src/app/public/site-content.ts` (canonical links and share previews), regenerate the share
-image with `npm run make:images`, and commit.
+## 3. Netlify settings for the Develop site
 
-**A Node host (Render, Railway, Fly.io) also works, unchanged:** build with
-`npm ci --include=dev && npm run db:migrate && npm run build` and start with
-`npm run serve:ssr:cares-connects`, using the same environment variables.
+`caresconnects.netlify.app` is the development site, built from the `Develop` branch. Builds started working again once the repo went public. While it was private, Netlify's Free plan blocked commits from anyone outside your Netlify team, which included Jason. **If the repo is ever made private again, `Develop` will stop deploying.**
 
-**A test copy is running** at `https://cares-connects-test.netlify.app` on Jason's Netlify and
-Turso (`NOINDEX=true`). Once Mel's site is live, ask Jason to delete that Netlify project and,
-if the data was copied rather than transferred, the test Turso database.
+### If a build fails with an Angular plugin error
 
----
+1. In Netlify, open the **caresconnects** project, then **Project configuration → Environment variables**.
+2. Add `NETLIFY_ANGULAR_PLUGIN_SKIP` with the value `true`. It must be set here, because setting it in `netlify.toml` doesn't work.
+3. If the Angular plugin is listed under **Build & deploy → Build plugins**, remove it. Don't install it instead: it replaces the server code with a version that can't run the API.
 
-## 4. Weekly IRS import (GitHub Actions)
+### Check the other settings
 
-The workflow is `.github/workflows/discover.yml` at the repo root. It runs Mondays 15:00 UTC and
-can be started manually from the Actions tab. Give it the database credentials (from the repo
-root):
+"Production" in Netlify means the `Develop` build. Menu names may differ slightly.
 
-```bash
-gh secret set DATABASE_URL         # paste when prompted
-gh secret set DATABASE_AUTH_TOKEN  # paste when prompted
-gh workflow run "IRS discovery"    # one manual run to confirm
-gh run watch
-```
+| Setting | Value | Notes |
+|---|---|---|
+| `NETLIFY_ANGULAR_PLUGIN_SKIP` | `true` | Only if the Angular plugin error appears |
+| `DATABASE_URL` | Your **development** database address | Must not be the live database |
+| `DATABASE_AUTH_TOKEN` | Token for that database | Mark it as secret |
+| `SITE_URL` | `https://caresconnects.netlify.app` | |
+| `NG_ALLOWED_HOSTS` | `caresconnects.netlify.app` | Other addresses get an error |
+| `NODE_ENV` | `production` | Makes login cookies HTTPS-only |
+| `SUBMISSION_SECRET` | A long random value | **Needed now.** Without it, the contact and "List your organization" forms say "This form isn't available right now". Create one with `openssl rand -base64 32`, and use a different one for the live site |
 
-The first run on a fresh database only queues orgs registered in the last 12 months, so the
-queue starts manageable. Later runs queue only what's new since the previous run.
+Don't set `NOINDEX`. Search engines already skip `.netlify.app` addresses.
 
----
-
-## 5. Point the domain
-
-Only after Mel has seen the new site working on the host's temporary URL:
-
-1. Add the custom domain in the host's dashboard.
-2. Update DNS where caresconnects.org is registered (Mel logs in; the host shows the records).
-3. Wait for HTTPS to be issued, then visit `https://caresconnects.org`.
-
-**Before switching DNS, read "Known gaps" below.** Some links still point at pages on the
-current caresconnects.org site.
-
----
-
-## 6. Check everything
-
-- [ ] Home page, `/find`, a category page and a listing page load
-- [ ] The "Find help" chat: ZIP → need → results; typing "is this free?" gets an answer;
-      typing a crisis phrase shows 911/988
-- [ ] `/admin` sign-in works with Mel's account; editing a listing shows up on the public site
-- [ ] Discover page shows the IRS queue; "Review & add" publishes a listing
-- [ ] Export → Google Sheets workbook downloads
-- [ ] `https://<domain>/robots.txt` and `/sitemap.xml` load
-- [ ] GitHub Actions: the "IRS discovery" run is green
-
----
-
-## Known gaps (tell Mel)
-
-- **About, Contact, Donate, Blog, the "Get the report" button and the "List your organization"
-  form** link to the current caresconnects.org pages and a Google Form
-  (`src/app/public/site-content.ts`, `LINKS`). Once caresconnects.org points at this app, those
-  pages won't exist here. Either build them, move them to another address and update `LINKS`,
-  or keep the old site on a subdomain.
-- **Logo and photos** are placeholders until real images are added to `public/` and set in
-  `IMAGES` in the same file.
-- Home page copy still says "Placer & Sacramento" in places. Update it when listings go
-  statewide.
-- Listing contact names, emails and phones from Mel's sheet are in `data/seed/directory.json`.
-  **Keep this repository private.**
-
----
-
-## Ongoing care
-
-- **Categories or FAQ changed?** Retrain the chat brain (steps in `cares-connects/brain/README.md`: `facts.py` →
-  `corpus.py` → `train.py` → `eval.py` → `export_web.py`, using any PyTorch machine with a GPU),
-  then commit the new `public/brain/` files. The brain only ever states facts written in
-  `brain/facts.py`; don't add anything there that isn't confirmed.
-- **Schema changes:** edit `src/server/db/schema.ts` → `npm run db:generate` → commit the new
-  migration. The deploy runs `db:migrate`.
-- **Narrowing the IRS queue:** edit `src/server/discovery/ntee.ts`.
-
----
-
-## Last step: delete this file
-
-When every box in section 6 is checked and Mel is signed in on her own accounts:
+If you don't have a development database yet, create one so test edits can't touch real listings:
 
 ```bash
-git rm HANDOFF.md
-git commit -m "Hand-off complete"
-git push
+turso db create cares-connects-dev
+export DATABASE_URL="$(turso db show cares-connects-dev --url)"
+export DATABASE_AUTH_TOKEN="$(turso db tokens create cares-connects-dev)"
+echo "$DATABASE_URL"    # stop unless this name ends in -dev
+npm run db:setup
+npm run admin:create -- <your email> "Your name"
+unset DATABASE_URL DATABASE_AUTH_TOKEN
 ```
+
+### Redeploy and check
+
+Go to **Deploys → Trigger deploy → Clear cache and deploy site**, then check:
+
+- The deploy succeeds. If it fails, send Jason the error from the deploy log.
+- caresconnects.netlify.app loads, its pages say `noindex, nofollow`, and its footer ends "Please call ahead.." with two periods. The second period is left over from a test, and Jason will remove it.
+- caresconnects.org still ends with one period and says `index, follow`, which confirms `Develop` doesn't change the live site.
+
+**Free plan limit:** you get 300 credits a month, and a successful `Develop` deploy costs 15, so at most 20 merges a month. Bandwidth and server use also spend credits. If they run out, Netlify projects pause until the next cycle. PR previews and failed deploys are free. caresconnects.org is on Cloudflare and shouldn't be affected.
+
+## 4. Database migrations
+
+The listing form, contact form and blog need new tables: migrations `0005`, `0006` and `0007`. **This only adds tables and doesn't copy or replace your listings.** Nothing from Jason's computer goes into your database.
+
+Do the **development database now**, since `0005` and `0006` are already in `Develop`, and run it again once the blog merges. Do the **live database only when `Develop` is merged into `main`**. `db:status` arrives with the blog pull request, so wait for that merge before starting. Run this **before** deploying the code that needs it, since the current site keeps working with the extra tables.
+
+Confirm your database names with `turso db list`. These steps assume the live one is `cares-connects`.
+
+```bash
+# 1. Back up the live database (put today's date in the name)
+turso db create cares-connects-backup-YYYYMMDD --from-db cares-connects
+
+# 2. Connect
+export DATABASE_URL="$(turso db show cares-connects --url)"
+export DATABASE_AUTH_TOKEN="$(turso db tokens create cares-connects)"
+
+# 3. See what would happen. This changes nothing.
+npm run db:status
+
+# 4. Apply it, then check again
+npm run db:migrate
+npm run db:status
+
+# 5. Disconnect
+unset DATABASE_URL DATABASE_AUTH_TOKEN
+```
+
+The last `db:status` should say "Up to date", with your listing count unchanged.
+
+- **If it says PROBLEM or refuses to run:** stop and send Jason the message. Nothing has been changed.
+- **Never run `npm run db:seed -- --force` on the live database.** It wipes your listings.
+- **The weekly IRS job also migrates:** the GitHub Action `discover.yml` runs `db:migrate` on the live database on its schedule, so a merge to `main` can reach it without a backup. Back up before merging, or ask Jason to remove that step.
+
+Before the contact form goes live, also add its secret to Cloudflare with `npx wrangler secret put SUBMISSION_SECRET`.
+
+## Checklist
+
+**Mel**
+
+- [ ] Send blog posts
+- [ ] Send the donation link and page content
+- [ ] Keep the LeadConnector account until that's saved
+- [ ] Add `SUBMISSION_SECRET` and check the other Netlify settings
+- [ ] Keep the GitHub repo public, or `Develop` stops deploying
+- [ ] Redeploy `Develop` and confirm the checks above
+- [ ] Migrate the development database once the blog merges, and the live one when `Develop` goes to `main`
+
+**Jason**
+
+- [x] Merge the listing form and the info pages into `Develop`
+- [ ] Merge the blog into `Develop`
+- [ ] Remove the double period from the footer
+- [ ] Put Mel's posts and content in, and take down the draft labels
+- [ ] Fix the Cloudflare rendering problem, so Google can read listing and blog pages
+
+Questions? Ask Jason. Don't delete this file until the checklist is done.

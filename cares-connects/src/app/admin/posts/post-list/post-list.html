@@ -1,0 +1,54 @@
+<div class="page">
+  <header class="head">
+    <div>
+      <h1>Blog</h1>
+      <p class="muted">Write and publish posts. Nothing appears on the site until it’s published.</p>
+    </div>
+    <a mat-flat-button routerLink="/admin/posts/new"><mat-icon>add</mat-icon>New post</a>
+  </header>
+
+  <div class="filters">
+    <nav class="tabs" aria-label="Filter posts">
+      @for (t of tabs; track t.value) {
+        <button type="button" mat-button [class.on]="current() === t.value" [attr.aria-current]="current() === t.value ? 'true' : null"
+                (click)="setFilters({ status: t.value || null })">{{ t.label }}</button>
+      }
+    </nav>
+    <mat-form-field appearance="outline" class="search" subscriptSizing="dynamic">
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-label>Search posts</mat-label>
+      <input matInput [value]="searchText()" (input)="searchText.set($any($event.target).value)" />
+    </mat-form-field>
+  </div>
+
+  @if (rows.isLoading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  } @else if (rows.error()) {
+    <p class="error-text" role="alert">Couldn’t load posts.</p>
+  }
+
+  <ul class="list">
+    @for (row of items(); track row.id) {
+      <li>
+        <a class="row-link" [routerLink]="['/admin/posts', row.id]">
+          <span class="title">{{ row.title }}</span>
+          <span class="muted small">
+            @if (row.publishedOn) { {{ row.publishedOn | date: 'mediumDate' : 'UTC' }} · }
+            edited {{ row.updatedAt | date: 'mediumDate' }}
+          </span>
+          <span class="pill" [class.ok]="label(row) === 'Published'" [class.warn]="label(row) === 'Scheduled'">{{ label(row) }}</span>
+        </a>
+      </li>
+    } @empty {
+      @if (!rows.isLoading() && !rows.error()) {
+        <li class="muted empty">
+          @if (q() || current()) { No posts match. } @else { No posts yet. Choose “New post” to write the first one. }
+        </li>
+      }
+    }
+  </ul>
+
+  @if (total() > 25) {
+    <mat-paginator [length]="total()" [pageIndex]="page()" [pageSize]="25" [hidePageSize]="true" (page)="onPage($event)" aria-label="Choose page" />
+  }
+</div>

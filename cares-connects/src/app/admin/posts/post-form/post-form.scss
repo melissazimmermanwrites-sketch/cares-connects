@@ -1,0 +1,206 @@
+@use '../../../public/blog/prose';
+
+.page {
+  max-width: 1280px;
+  padding-bottom: 64px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+  text-decoration: none;
+  font: var(--mat-sys-label-large);
+}
+
+.head {
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0 0 4px;
+    overflow-wrap: anywhere;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.layout {
+  display: grid;
+  gap: 16px;
+}
+
+.editor {
+  overflow: hidden;
+  border: 1px solid var(--mat-sys-outline);
+  border-radius: 12px;
+  background: var(--mat-sys-surface);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 4px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.tabs .on {
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.panes {
+  display: grid;
+  min-height: 520px;
+}
+
+.body {
+  width: 100%;
+  min-height: 520px;
+  padding: 16px;
+  border: 0;
+  outline: none;
+  resize: vertical;
+  background: transparent;
+  color: inherit;
+  font: 15px / 1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.preview {
+  display: none;
+  padding: 16px;
+  overflow: auto;
+}
+
+.show-preview {
+  .body {
+    display: none;
+  }
+
+  .preview {
+    display: block;
+  }
+}
+
+.side {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  background: var(--mat-sys-surface);
+
+  h2 {
+    margin: 0 0 4px;
+    font: var(--mat-sys-title-medium);
+  }
+}
+
+.publish-actions {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.hint {
+  margin: 0;
+  font: var(--mat-sys-body-small);
+}
+
+.error-text {
+  margin: 0;
+}
+
+.delete {
+  justify-self: start;
+  color: var(--mat-sys-error);
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  max-height: 180px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.upload,
+.icon-upload {
+  position: relative;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+}
+
+.upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+  border: 1px dashed var(--mat-sys-outline);
+  border-radius: 8px;
+  font: var(--mat-sys-label-large);
+}
+
+.icon-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  &:hover {
+    background: var(--mat-sys-surface-container-high);
+  }
+}
+
+@media (min-width: 1000px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+
+  // Wide screens show both at once, so the tabs aren't needed.
+  .tabs {
+    display: none;
+  }
+
+  .panes {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .body,
+  .show-preview .body {
+    display: block;
+    border-right: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .preview,
+  .show-preview .preview {
+    display: block;
+  }
+}

@@ -1,0 +1,45 @@
+<div class="page">
+  <header class="head">
+    <span class="cc-rainbow"></span>
+    <h1 class="cc-heading">Make a donation</h1>
+    <p>
+      Thank you for your gift. The Community Alliance of Resources Education and Support is a 501(c)(3) nonprofit serving
+      Placer and Sacramento counties, and we invite you to help support our mission.
+    </p>
+  </header>
+
+  <div class="grid">
+    <div>
+      <section>
+        <h2>What your gift does</h2>
+        <p>Your donation helps us close the gap between available support services and the people who need them.</p>
+        <p>Every gift, at any level, moves someone closer to the help they need.</p>
+      </section>
+      <section>
+        <h2>About our nonprofit</h2>
+        <p>
+          All donations are processed securely through Stripe. Community Alliance of Resources Education and Support is a
+          501(c)(3) nonprofit organization.
+        </p>
+      </section>
+      <section>
+        <h2>Volunteer for school credit</h2>
+        <p>We’re always accepting volunteers for school credit. <a routerLink="/contact">Contact us</a> for more information.</p>
+      </section>
+    </div>
+
+    <aside class="card" aria-labelledby="give-title">
+      <h2 id="give-title">Choose an amount</h2>
+      <div class="amounts">
+        @for (option of options; track option.url) {
+          <a class="amount" [href]="option.url" target="_blank" rel="noopener">
+            <span class="value">{{ option.label }}</span>
+            <span class="kind">{{ option.note }}</span>
+            <span class="visually-hidden"> (opens Stripe in a new tab)</span>
+          </a>
+        }
+      </div>
+      <p class="note muted">You’ll finish your gift on Stripe’s secure checkout page.</p>
+    </aside>
+  </div>
+</div>

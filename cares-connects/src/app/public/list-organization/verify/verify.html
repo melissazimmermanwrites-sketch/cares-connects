@@ -1,0 +1,40 @@
+<div class="page" aria-live="polite">
+  @if (error(); as message) {
+    <p class="error-text" role="alert">{{ message }}</p>
+  }
+
+  @if (state(); as s) {
+    @switch (s.state) {
+      @case ('ready') {
+        <h1 class="cc-heading">Did you ask to list {{ s.orgName }}?</h1>
+        <p>Someone used this email address to ask us to add this organization to the CARES Connects directory.</p>
+        <div class="actions">
+          <button type="button" class="cc-btn orange small" [disabled]="sending()" (click)="answer('verified')">Yes, that was me</button>
+          <button type="button" class="decline" [disabled]="sending()" (click)="answer('declined')">No, this wasn’t me</button>
+        </div>
+      }
+      @case ('verified') {
+        <mat-icon class="icon ok" aria-hidden="true">mark_email_read</mat-icon>
+        <h1 class="cc-heading">Your email is confirmed</h1>
+        <p>Thank you. We’ll review {{ s.orgName }} next, and may call to confirm the details.</p>
+        <a routerLink="/resources" class="cc-btn orange small">See all listings</a>
+      }
+      @case ('declined') {
+        <mat-icon class="icon" aria-hidden="true">block</mat-icon>
+        <h1 class="cc-heading">Thanks for letting us know</h1>
+        <p>We won’t publish this request, and we won’t email this address about a listing request again.</p>
+      }
+      @case ('expired') {
+        <h1 class="cc-heading">This link has expired</h1>
+        <p>Nothing has been published. To continue, please <a routerLink="/list-your-organization">send the form again</a>.</p>
+      }
+      @default {
+        <h1 class="cc-heading">We can’t find that request</h1>
+        <p>The link may be incomplete, or it was replaced by a newer email. Try the link in the most recent message.</p>
+      }
+    }
+  } @else if (!error()) {
+    <h1 class="visually-hidden">Checking your link…</h1>
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  }
+</div>

@@ -35,6 +35,33 @@ export const routes: Routes = [
         loadComponent: () => import('./admin/discover/discover').then((m) => m.Discover),
       },
       {
+        path: 'submissions',
+        title: 'Submissions · CARES Admin',
+        loadComponent: () => import('./admin/submissions/submissions').then((m) => m.Submissions),
+      },
+      {
+        path: 'messages',
+        title: 'Messages · CARES Admin',
+        loadComponent: () => import('./admin/messages/messages').then((m) => m.Messages),
+      },
+      {
+        path: 'posts',
+        title: 'Blog · CARES Admin',
+        loadComponent: () => import('./admin/posts/post-list/post-list').then((m) => m.PostList),
+      },
+      {
+        path: 'posts/new',
+        title: 'New post · CARES Admin',
+        loadComponent: () => import('./admin/posts/post-form/post-form').then((m) => m.PostForm),
+        canDeactivate: [(c: { canLeave(): boolean }) => c.canLeave()],
+      },
+      {
+        path: 'posts/:id',
+        title: 'Edit post · CARES Admin',
+        loadComponent: () => import('./admin/posts/post-form/post-form').then((m) => m.PostForm),
+        canDeactivate: [(c: { canLeave(): boolean }) => c.canLeave()],
+      },
+      {
         path: 'categories',
         title: 'Categories · CARES Admin',
         loadComponent: () => import('./admin/categories/categories').then((m) => m.Categories),
@@ -59,9 +86,50 @@ export const routes: Routes = [
         loadComponent: () => import('./public/find-help/find-help').then((m) => m.FindHelp),
       },
       {
+        path: 'about',
+        loadComponent: () => import('./public/info/about').then((m) => m.About),
+      },
+      {
+        path: 'contact',
+        loadComponent: () => import('./public/info/contact').then((m) => m.Contact),
+      },
+      {
+        path: 'contact/thanks',
+        loadComponent: () => import('./public/info/contact-thanks/contact-thanks').then((m) => m.ContactThanks),
+      },
+      {
+        path: 'donate',
+        loadComponent: () => import('./public/info/donate').then((m) => m.Donate),
+      },
+      {
+        path: 'blog',
+        loadComponent: () => import('./public/blog/list/blog-list').then((m) => m.BlogList),
+      },
+      {
+        path: 'blog/:slug',
+        loadComponent: () => import('./public/blog/post/blog-post').then((m) => m.BlogPost),
+      },
+      {
         path: 'category/:slug',
         loadComponent: () => import('./public/category/category').then((m) => m.CategoryPage),
       },
+      {
+        path: 'resources',
+        loadComponent: () => import('./public/directory/directory').then((m) => m.DirectoryPage),
+      },
+      {
+        path: 'list-your-organization',
+        loadComponent: () => import('./public/list-organization/list-organization').then((m) => m.ListOrganization),
+      },
+      {
+        path: 'list-your-organization/thanks',
+        loadComponent: () => import('./public/list-organization/thanks/thanks').then((m) => m.ListingThanks),
+      },
+      {
+        path: 'list-your-organization/verify',
+        loadComponent: () => import('./public/list-organization/verify/verify').then((m) => m.ListingVerify),
+      },
+      { path: 'resource', redirectTo: 'resources', pathMatch: 'full' },
       {
         path: 'resource/:id',
         loadComponent: () => import('./public/resource-detail/resource-detail').then((m) => m.ResourceDetail),

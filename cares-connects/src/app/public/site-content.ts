@@ -1,23 +1,31 @@
 /**
  * Marketing copy and outside links for the public site, kept in one place so they're easy to edit.
- * The About / Contact / Donate links still point at the current caresconnects.org pages until
- * those pages are rebuilt here.
  */
 
 /** Public origin used for canonical URLs and share links (no trailing slash). */
 export const SITE_URL = 'https://caresconnects.org';
 
+/** ZTA (ztas.io) site ID for chat usage numbers. Null keeps tracking off. Site IDs aren't secret. */
+export const ZTAS_SITE_ID = null as string | null;
+/** Where chat usage is counted, so development and local testing don't skew the numbers. */
+export const ANALYTICS_HOSTS = ['caresconnects.org', 'www.caresconnects.org'];
+
 export const LINKS = {
-  about: 'https://caresconnects.org/about',
-  contact: 'https://caresconnects.org/contact',
-  donate: 'https://caresconnects.org/donate',
-  blog: 'https://www.caresconnects.org/blog',
-  listYourOrganization: 'https://docs.google.com/forms/d/1BwqNlFJQCEyfeHqMpa8XJFiKT6qO0smfEisBGIeasnY',
-  // TODO: the live site's "Get the report" button has no link yet; send people to Contact for now.
-  report: 'https://caresconnects.org/contact',
   instagram: 'https://instagram.com/cares_connects',
   linkedin: 'https://www.linkedin.com/company/cares-connects',
 };
+
+export const CONTACT_EMAIL = 'caresconnects@gmail.com';
+
+/** Stripe Payment Links from the old site. Each opens Stripe's own checkout page. */
+export const DONATION_OPTIONS = [
+  { label: '$25', note: 'One-time gift', url: 'https://donate.stripe.com/5kQ6oI3Q161Yf9n1Tw9sk01' },
+  { label: '$50', note: 'One-time gift', url: 'https://donate.stripe.com/8x200keuFeyu7GVdCe9sk02' },
+  { label: '$100', note: 'One-time gift', url: 'https://donate.stripe.com/4gM4gAbitcqm4uJ1Tw9sk03' },
+  { label: '$500', note: 'One-time gift', url: 'https://donate.stripe.com/cNi28s5Y99ea9P3aq29sk04' },
+  { label: '$1,000', note: 'One-time gift', url: 'https://donate.stripe.com/7sY4gAcmxgGCbXb41E9sk05' },
+  { label: 'Custom', note: 'You choose the amount', url: 'https://donate.stripe.com/6oUbJ2dqB2PM0etcya9sk00' },
+];
 
 /**
  * Photos for the About and campaign sections. Leave null to show a branded placeholder;

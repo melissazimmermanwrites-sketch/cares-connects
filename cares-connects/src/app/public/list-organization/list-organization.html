@@ -1,0 +1,164 @@
+<div class="page">
+    <header class="head">
+      <span class="cc-rainbow"></span>
+      <h1 class="cc-heading">List your organization</h1>
+      <p>
+        Add your nonprofit or public agency to the free directory for people looking for help in Placer and Sacramento
+        Counties. We check every submission before it goes live.
+      </p>
+    </header>
+
+    @if (unavailable()) {
+      <p class="error-text" role="alert">This form isn’t available right now. Please try again later.</p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <section aria-labelledby="org-title">
+        <h2 id="org-title">Your organization</h2>
+        <mat-form-field appearance="outline">
+          <mat-label>Organization name</mat-label>
+          <input matInput formControlName="name" required autocomplete="organization" />
+          <mat-error>Enter the organization’s name.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Website</mat-label>
+          <input matInput formControlName="website" required type="url" inputmode="url" placeholder="yourorganization.org" />
+          <mat-hint>We check the site to confirm the organization is active.</mat-hint>
+          <mat-error>Enter your website.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Public phone number</mat-label>
+          <input matInput formControlName="phone" required type="tel" autocomplete="tel" />
+          <mat-error>Enter a phone number.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Address (optional)</mat-label>
+          <input matInput formControlName="address" autocomplete="street-address" />
+          <mat-hint>Leave this out if your location is confidential.</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>EIN (optional)</mat-label>
+          <input matInput formControlName="ein" inputmode="numeric" placeholder="12-3456789" />
+          <mat-hint>If you’re a registered nonprofit, this speeds up our review.</mat-hint>
+          <mat-error>An EIN has 9 digits.</mat-error>
+        </mat-form-field>
+      </section>
+
+      <section aria-labelledby="services-title">
+        <h2 id="services-title">What you do</h2>
+        <mat-form-field appearance="outline">
+          <mat-label>Services you provide</mat-label>
+          <textarea matInput formControlName="services" required rows="5"></textarea>
+          <mat-error>Tell us what services you provide.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Your mission (optional)</mat-label>
+          <textarea matInput formControlName="mission" rows="3"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Categories</mat-label>
+          <mat-select formControlName="categoryIds" multiple required>
+            @for (c of categories.value() ?? []; track c.id) {
+              <mat-option [value]="c.id">{{ c.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Pick at least one category.</mat-error>
+        </mat-form-field>
+        <mat-checkbox formControlName="statewide">We serve all of California</mat-checkbox>
+        @if (!form.controls.statewide.value) {
+          <mat-form-field appearance="outline">
+            <mat-label>Counties you serve</mat-label>
+            <mat-select formControlName="countyIds" multiple>
+              @for (c of counties.value() ?? []; track c.id) {
+                <mat-option [value]="c.id">{{ c.name }} County</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+      </section>
+
+      <section aria-labelledby="contact-title">
+        <h2 id="contact-title">Who we should contact</h2>
+        <p class="muted">This stays private. We only use it to confirm your listing.</p>
+        <mat-form-field appearance="outline">
+          <mat-label>Your name</mat-label>
+          <input matInput formControlName="contactName" required autocomplete="name" />
+          <mat-error>Enter a contact name.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Work email</mat-label>
+          <input matInput formControlName="contactEmail" required type="email" autocomplete="email" />
+          <mat-hint>We’ll send a confirmation link here. An address on your website’s domain is quickest to verify.</mat-hint>
+          <mat-error>Enter a valid email.</mat-error>
+        </mat-form-field>
+      </section>
+
+      <section aria-labelledby="more-title">
+        <h2 id="more-title">A few more questions (optional)</h2>
+        <fieldset>
+          <legend>How do people apply?</legend>
+          @for (o of options.applicationMethods; track o) {
+            <mat-checkbox (change)="toggle('applicationMethods', o, $event.checked)">{{ o }}</mat-checkbox>
+          }
+        </fieldset>
+        <fieldset>
+          <legend>How do you decide who qualifies?</legend>
+          @for (o of options.eligibility; track o) {
+            <mat-checkbox (change)="toggle('eligibility', o, $event.checked)">{{ o }}</mat-checkbox>
+          }
+        </fieldset>
+        <fieldset>
+          <legend>How do people hear about you?</legend>
+          @for (o of options.outreach; track o) {
+            <mat-checkbox (change)="toggle('outreach', o, $event.checked)">{{ o }}</mat-checkbox>
+          }
+        </fieldset>
+        <fieldset>
+          <legend>How long do you provide services?</legend>
+          @for (o of options.serviceLength; track o) {
+            <mat-checkbox (change)="toggle('serviceLength', o, $event.checked)">{{ o }}</mat-checkbox>
+          }
+        </fieldset>
+        <mat-form-field appearance="outline">
+          <mat-label>Are there fees?</mat-label>
+          <mat-select formControlName="fees">
+            <mat-option [value]="null">Prefer not to say</mat-option>
+            @for (o of options.fees; track o) {
+              <mat-option [value]="o">{{ o }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Usual wait for services</mat-label>
+          <mat-select formControlName="waitTime">
+            <mat-option [value]="null">Prefer not to say</mat-option>
+            @for (o of options.waitTime; track o) {
+              <mat-option [value]="o">{{ o }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </section>
+
+      <!-- Hidden from people and screen readers. Bots fill in every field they find. -->
+      <div class="fax" aria-hidden="true">
+        <label>Fax extension <input formControlName="faxExtension" tabindex="-1" autocomplete="off" /></label>
+      </div>
+
+      <mat-checkbox formControlName="authorized" required>I’m allowed to list this organization, and these details are accurate.</mat-checkbox>
+      @if (form.controls.authorized.touched && form.controls.authorized.invalid) {
+        <p class="error-text small">Please confirm this before sending.</p>
+      }
+
+      @if (turnstileOn()) {
+        <div #turnstile class="turnstile"></div>
+      }
+
+      @if (error(); as message) {
+        <p class="error-text" role="alert">{{ message }}</p>
+      }
+
+      <button type="submit" class="cc-btn orange" [disabled]="sending() || unavailable()">
+        {{ sending() ? 'Sending…' : 'Send for review' }}
+      </button>
+    </form>
+</div>

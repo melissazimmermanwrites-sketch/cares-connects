@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { Api } from '../../core/api';
 import { ORGANIZATION_JSONLD, Seo } from '../../core/seo';
 import { serviceAreaLabel } from '../../../shared/api-types';
+import { resourceLink } from '../../../shared/slug';
 import { mapsUrl, telHref } from '../contact-links';
 import { FEATURED_CATEGORIES, FEATURES, IMAGES, LINKS, STEPS } from '../site-content';
 
@@ -41,6 +42,7 @@ export class Home {
   });
 
   /** A real, verified listing for the hero's "example result" card. */
+  readonly resourceLink = resourceLink;
   readonly foodListings = rxResource({ stream: () => this.api.resources({ category: 'food', county: 'placer' }) });
   readonly example = computed(() => {
     const list = this.foodListings.value() ?? [];

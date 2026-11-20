@@ -1,5 +1,6 @@
 import { Injectable, PLATFORM_ID, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { ChatAnalytics } from './chat-analytics';
 
 /** Must match normalize() in brain/corpus.py and public/brain/brain-worker.js. */
 export function normalize(text: string): string {
@@ -19,6 +20,7 @@ export function normalize(text: string): string {
 @Injectable({ providedIn: 'root' })
 export class Brain {
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly analytics = inject(ChatAnalytics);
   private worker: Worker | null = null;
   private ready: Promise<boolean> | null = null;
   private nextId = 1;
@@ -47,15 +49,20 @@ export class Brain {
     if (!this.browser || typeof Worker === 'undefined') return Promise.resolve(false);
     this.ready ??= new Promise<boolean>((resolve) => {
       this.status.set('loading');
+      const started = performance.now();
+      const loaded = (label: 'ready' | 'failed') =>
+        this.analytics.track('chat_model_load', { label, value: Math.round(performance.now() - started) });
       const worker = new Worker('/brain/brain-worker.js');
       this.worker = worker;
       worker.onmessage = (e: MessageEvent) => {
         const m = e.data ?? {};
         if (m.type === 'ready') {
           this.status.set('ready');
+          loaded('ready');
           resolve(true);
         } else if (m.type === 'error' && m.id === undefined) {
           this.status.set('failed');
+          loaded('failed');
           resolve(false);
         } else if (m.id !== undefined) {
           this.pending.get(m.id)?.(m.type === 'answer' ? String(m.text) : null);
@@ -64,6 +71,7 @@ export class Brain {
       };
       worker.onerror = () => {
         this.status.set('failed');
+        loaded('failed');
         resolve(false);
       };
       worker.postMessage({ type: 'load' });

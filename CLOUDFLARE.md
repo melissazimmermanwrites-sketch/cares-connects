@@ -127,6 +127,11 @@ minutes. During those minutes the site may be unreachable, so do this at a quiet
 
 ## 8. Make Netlify the development site
 
+**Status, 2026-11-10:** done. Netlify has no custom domains, builds `Develop` from
+`cares-connects`, and uses the `cares-connects-dev` database. Both netlify.app checks print
+`x-robots-tag: noindex, nofollow`, and caresconnects.org prints nothing. Cloudflare's
+**Always Use HTTPS** is on, so `http://` redirects to `https://`.
+
 Do this after step 7 passes. **Keep the Netlify project and its files** (`netlify.toml`,
 `netlify/`, `serverless-http`), because `Develop` deploys from them.
 
@@ -173,6 +178,29 @@ Do this after step 7 passes. **Keep the Netlify project and its files** (`netlif
    nothing, because the live site has to stay in Google. Don't add the development site to
    `robots.txt`: a crawler that is blocked from a page can't see its `noindex`.
 
+**Before deploying the "List your organization" form:**
+
+1. Apply the new tables to the production database with `npm run db:migrate`.
+2. `npx wrangler secret put SUBMISSION_SECRET` with a long random value (`openssl rand -base64 32`).
+   Without it, the form politely refuses submissions.
+3. Required for verification emails: create a [Resend](https://resend.com) account, add
+   caresconnects.org there and add the DNS records it shows in Cloudflare, then run
+   `npx wrangler secret put RESEND_API_KEY`. Until then nothing reaches "To be sorted" by itself:
+   requests wait in "Waiting on email", where an admin can move them along after confirming another way. `MAIL_FROM` in `vars` overrides the sender (default `verify@caresconnects.org`).
+4. Recommended: create a Turnstile widget (Cloudflare dashboard → Turnstile) for caresconnects.org.
+   Add `TURNSTILE_SITE_KEY` to `vars` in `wrangler.jsonc` and run
+   `npx wrangler secret put TURNSTILE_SECRET_KEY`. The form works without these, with weaker bot protection.
+5. Recommended: add a rate limiting rule (Security → WAF) on `POST /api/submissions`, so a flood is
+   stopped before it reaches the Worker. The app's own limits still apply behind it.
+
+**Before deploying the contact form:** apply the new tables with `npm run db:migrate`, then set
+`SUBMISSION_SECRET` to a long random value (`openssl rand -base64 32`), using
+`npx wrangler secret put SUBMISSION_SECRET` for Cloudflare and `netlify env:set` for Netlify. Without
+it, the form refuses messages. Recommended: add a Cloudflare rate limiting rule on `POST /api/contact`.
+
+**Before deploying the blog:** apply its tables with `npm run db:migrate`. Posts and images live in the
+database, so publishing one doesn't need a deploy.
+
 **Rolling back** before step 8: in Cloudflare DNS, remove the Worker custom domains and add back
 `A caresconnects.org → 75.2.60.5` and `CNAME www → caresconnects.netlify.app` (DNS only). After
 step 8, also add the domains back in Netlify and restore its production settings.
@@ -187,10 +215,16 @@ Merging to `main` doesn't update the live site by itself. Deploy from an up-to-d
 |---|---|
 | Deploy `main` to the live site | `git checkout main && git pull`, then `npm run cf:deploy` |
 | Update the development site | Push to `Develop`; Netlify builds it |
+| Deploy `Develop` by hand | From the repo root (not `cares-connects/`): `netlify deploy --prod` |
 | Watch live logs | `npx wrangler tail` |
 | Change a secret | `npx wrangler secret put <NAME>` (takes effect immediately) |
 | Change `SITE_URL` / allowed hosts | edit `vars` in `wrangler.jsonc`, then deploy |
 | Run the Worker locally | put `DATABASE_URL=…` in `.dev.vars` (git-ignored), then `npm run build && npm run cf:dev` |
+
+**Netlify blocks builds from people outside the Netlify team.** On the free plan, a commit to
+this private repo only builds if its author is a member of the Netlify team; otherwise the
+deploy fails with "Build blocked: Unrecognized Git contributor". Either add the contributor to
+the Netlify team, or have a team member merge their work into `Develop`.
 
 Workers can't run a long job in the background, so the IRS import always runs in GitHub Actions,
 as it did on Netlify. `.github/workflows/discover.yml` doesn't change.

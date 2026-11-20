@@ -1,0 +1,61 @@
+<div class="page">
+  <header class="head">
+    <h1>Messages</h1>
+    <p class="muted">Sent through the public Contact page. Nobody is emailed when one arrives, so check here.</p>
+  </header>
+
+  <nav class="tabs" aria-label="Filter messages">
+    @for (t of tabs; track t.value) {
+      <button type="button" mat-button [class.on]="current() === t.value" [attr.aria-current]="current() === t.value ? 'true' : null" (click)="select(t.value)">
+        {{ t.label }}
+        @if (t.value === 'new' && summary.value()?.new; as n) { <span class="count">{{ n }}</span> }
+        @if (t.value === 'spam' && summary.value()?.spam; as n) { <span class="count muted-count">{{ n }}</span> }
+      </button>
+    }
+  </nav>
+
+  @if (rows.isLoading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading" />
+  } @else if (rows.error()) {
+    <p class="error-text" role="alert">Couldn't load messages.</p>
+  }
+
+  <div class="list">
+    @for (m of items(); track m.id) {
+      <article class="card">
+        <header>
+          <h2>{{ m.name }}</h2>
+          <p class="muted small">{{ m.email }} · {{ m.createdAt | date: 'medium' }}</p>
+        </header>
+        @if (m.spamReasons.length) {
+          <p class="flags small">Spam filter: {{ m.spamReasons.join('; ') }}</p>
+        }
+        <p class="text">{{ m.message }}</p>
+        <footer>
+          @if (m.status !== 'spam') {
+            <a mat-flat-button [href]="replyLink(m)">Reply by email</a>
+          }
+          @if (m.status === 'new') {
+            <button mat-button (click)="mark(m, 'read')">Mark as read</button>
+          }
+          @if (m.status === 'read') {
+            <button mat-button (click)="mark(m, 'new')">Mark as new</button>
+          }
+          @if (m.status === 'spam') {
+            <button mat-button (click)="mark(m, 'new')">Not spam</button>
+          } @else {
+            <button mat-button (click)="mark(m, 'spam')" [attr.aria-label]="'Spam: message from ' + m.name">Spam</button>
+          }
+        </footer>
+      </article>
+    } @empty {
+      @if (!rows.isLoading() && !rows.error()) {
+        <p class="muted">Nothing here.</p>
+      }
+    }
+  </div>
+
+  @if (total() > 20) {
+    <mat-paginator [length]="total()" [pageIndex]="page()" [pageSize]="20" [hidePageSize]="true" (page)="onPage($event)" aria-label="Choose page" />
+  }
+</div>

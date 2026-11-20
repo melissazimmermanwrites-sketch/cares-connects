@@ -1,49 +1,75 @@
-.page {
-  max-width: 800px;
-}
-
-.crumbs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
-  margin-bottom: 12px;
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  text-decoration: none;
   font: var(--mat-sys-label-large);
 }
 
 .head {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
-  margin-bottom: 20px;
-}
+  margin-bottom: 24px;
 
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.facts {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 4px 16px;
-  margin: 0 0 8px;
-
-  dt {
-    font-weight: 500;
-  }
-
-  dd {
+  h1 {
     margin: 0;
   }
 }
 
-section {
-  margin-top: 24px;
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Phones get the contact panel first: most visitors came here to call. */
+.layout {
+  display: grid;
+  gap: 24px;
+}
+
+.contact {
+  align-self: start;
+  padding: 20px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 16px;
+  background: var(--mat-sys-surface);
+}
+
+.actions {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.facts {
+  margin: 0;
+
+  dt {
+    margin-top: 12px;
+    font-weight: 600;
+  }
+
+  dd {
+    margin: 2px 0 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.body section {
+  margin-bottom: 24px;
 
   h2 {
-    margin-bottom: 8px;
+    margin: 0 0 8px;
   }
 
   p {
@@ -59,5 +85,23 @@ section {
 
   a {
     text-decoration: none;
+  }
+}
+
+@media (min-width: 840px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+
+  .contact {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: 16px;
+  }
+
+  .body {
+    grid-column: 1;
+    grid-row: 1;
   }
 }

@@ -37,6 +37,16 @@
         </section>
       }
 
+      @if (submission.value(); as s) {
+        <section class="card notice" aria-labelledby="submission-title">
+          <h2 id="submission-title"><mat-icon>inbox</mat-icon> From the “List your organization” form</h2>
+          <p>
+            We filled this in from what {{ s.contactName }} sent ({{ s.contactEmail }}). Treat it as unconfirmed: check
+            the details, and saving will publish it.
+          </p>
+        </section>
+      }
+
       @if (record()?.duplicates?.length && form.controls.duplicateGroup.value) {
         <section class="card notice" aria-labelledby="dup-title">
           <h2 id="dup-title"><mat-icon>content_copy</mat-icon> Possible duplicate</h2>

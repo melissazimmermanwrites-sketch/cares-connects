@@ -23,6 +23,7 @@ import {
   type ResourceInput,
   type VerificationStatus,
 } from '../../../shared/api-types';
+import type { SubmissionRow } from '../../../shared/submissions';
 
 @Component({
   selector: 'app-resource-form',
@@ -57,6 +58,8 @@ export class ResourceForm {
   readonly isNew = computed(() => !this.id());
   /** Query param set when adding an org from the IRS discovery queue. */
   readonly fromEin = input<string>();
+  /** Query param set when adding an org from the "List your organization" queue. */
+  readonly fromSubmission = input<string>();
 
   readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(200)]],
@@ -90,6 +93,10 @@ export class ResourceForm {
     params: () => (this.isNew() ? this.fromEin() : undefined),
     stream: ({ params }) => (params ? this.api.discovery(params) : of(undefined)),
   });
+  readonly submission = rxResource({
+    params: () => (this.isNew() && this.fromSubmission() ? Number(this.fromSubmission()) : undefined),
+    stream: ({ params }) => (params ? this.api.submission(params) : of(undefined)),
+  });
   /** Web search to find the phone number and website the IRS file doesn't have. */
   readonly webSearchUrl = computed(() => {
     const d = this.discovery.value();
@@ -121,6 +128,10 @@ export class ResourceForm {
       const d = this.discovery.value();
       if (d) this.prefillFromDiscovery(d);
     });
+    effect(() => {
+      const s = this.submission.value();
+      if (s) this.prefillFromSubmission(s);
+    });
     // Statewide listings don't need a county list.
     this.form.controls.statewide.valueChanges.pipe(takeUntilDestroyed()).subscribe((statewide) => {
       const counties = this.form.controls.countyIds;
@@ -139,6 +150,33 @@ export class ResourceForm {
       categoryIds: d.category ? [d.category.id] : [],
       verificationStatus: 'needs_verification',
       notes: `Found in IRS records (activity code ${d.ntee}${d.ruling ? `, registered ${d.ruling}` : ''}).`,
+    });
+    this.form.markAsDirty();
+  }
+
+  private prefillFromSubmission(s: SubmissionRow): void {
+    // Notes show on the public page, so only practical details go there, not the survey answers.
+    const a = s.answers;
+    const notes = [
+      a.applicationMethods.length ? `How to apply: ${a.applicationMethods.join(', ').toLowerCase()}.` : null,
+      a.fees ? `Fees: ${a.fees.toLowerCase()}.` : null,
+      a.waitTime ? `Usual wait: ${a.waitTime.toLowerCase()}.` : null,
+    ].filter(Boolean);
+    this.form.patchValue({
+      name: s.name,
+      website: s.website,
+      phone: s.phone,
+      address: s.address ?? '',
+      ein: s.ein ?? '',
+      mission: s.mission ?? '',
+      services: s.services,
+      notes: notes.join(' '),
+      statewide: s.statewide,
+      countyIds: s.countyIds,
+      categoryIds: s.categoryIds,
+      contactPerson: s.contactName,
+      contactEmail: s.contactEmail,
+      verificationStatus: 'needs_verification',
     });
     this.form.markAsDirty();
   }
@@ -248,7 +286,14 @@ export class ResourceForm {
       const id = this.id();
       const saved = await firstValueFrom(id ? this.api.updateResource(Number(id), input) : this.api.createResource(input));
       this.load(saved);
-      if (!id && this.fromEin()) {
+      const submissionId = !id && this.fromSubmission() ? Number(this.fromSubmission()) : null;
+      if (submissionId) {
+        await firstValueFrom(this.api.setSubmissionStatus(submissionId, 'approved', saved.id));
+        this.snackBar
+          .open(`Published “${saved.name}”`, 'Back to Submissions', { duration: 8000, verticalPosition: 'top' })
+          .onAction()
+          .subscribe(() => this.router.navigate(['/admin/submissions']));
+      } else if (!id && this.fromEin()) {
         // Added from the IRS queue: it's published, so offer a quick way back to the next one.
         this.snackBar
           .open(`Published “${saved.name}”`, 'Back to Discover', { duration: 8000, verticalPosition: 'top' })

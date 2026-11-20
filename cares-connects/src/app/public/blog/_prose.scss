@@ -1,0 +1,68 @@
+// Styles for rendered post content, which Angular's component styles can't reach directly.
+:host ::ng-deep .prose {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 1.5em 0 0.5em;
+    font-family: var(--cc-heading-font);
+    line-height: 1.2;
+    color: var(--cc-navy);
+  }
+
+  p,
+  ul,
+  ol,
+  blockquote,
+  pre,
+  table {
+    margin: 0 0 1em;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5em 0;
+    border-radius: 12px;
+  }
+
+  blockquote {
+    padding-left: 16px;
+    border-left: 4px solid var(--cc-orange);
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  pre {
+    padding: 12px;
+    overflow-x: auto;
+    border-radius: 8px;
+    background: var(--mat-sys-surface-container);
+  }
+
+  code {
+    font-size: 0.9em;
+  }
+
+  hr {
+    margin: 2em 0;
+    border: 0;
+    border-top: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 6px 10px;
+    border: 1px solid var(--mat-sys-outline-variant);
+  }
+}

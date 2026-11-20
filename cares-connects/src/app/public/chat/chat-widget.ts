@@ -6,6 +6,8 @@ import { firstValueFrom } from 'rxjs';
 import { Api } from '../../core/api';
 import { mapsUrl, telHref } from '../contact-links';
 import { type CountyRef, type PublicResource, serviceAreaLabel } from '../../../shared/api-types';
+import { ChatAnalytics, modelOutcome, reportableNeed } from './chat-analytics';
+import { resourceLink } from '../../../shared/slug';
 import { Brain } from './brain';
 import { FOLLOW_UPS, type FollowUpOption, GENERIC_FOLLOW_UP, isCrisis, parseBrain, parseYesNo } from './chat-flows';
 
@@ -48,8 +50,11 @@ const RESULT_LIMIT = 5;
   styleUrl: './chat-widget.scss',
 })
 export class ChatWidget {
+  readonly resourceLink = resourceLink;
+
   private readonly api = inject(Api);
   private readonly brain = inject(Brain);
+  private readonly analytics = inject(ChatAnalytics);
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly log = viewChild<ElementRef<HTMLElement>>('log');
   private readonly input = viewChild<ElementRef<HTMLInputElement>>('input');
@@ -94,6 +99,7 @@ export class ChatWidget {
   toggle(): void {
     if (this.open()) return this.close();
     this.open.set(true);
+    this.analytics.track('chat_opened');
     if (!this.messages().length) this.start();
     this.focusInput();
   }
@@ -201,16 +207,23 @@ export class ChatWidget {
     this.user(text);
     // Known need phrase ("food pantry", "rent help")? Use it directly; the brain handles the rest.
     const phrase = await this.brain.matchPhrase(text);
-    if (phrase && this.categoryName().has(phrase)) return this.chooseNeed(phrase);
+    if (phrase && this.categoryName().has(phrase)) {
+      this.analytics.track('chat_need_found', { category: 'phrase', label: reportableNeed(phrase) });
+      return this.chooseNeed(phrase);
+    }
     const answer = await this.think(text);
     const parsed = answer ? parseBrain(answer) : null;
     if (parsed && 'crisis' in parsed) return this.showCrisis();
-    if (parsed && 'need' in parsed && this.categoryName().has(parsed.need)) return this.chooseNeed(parsed.need);
+    if (parsed && 'need' in parsed && this.categoryName().has(parsed.need)) {
+      this.analytics.track('chat_need_found', { category: 'model', label: reportableNeed(parsed.need) });
+      return this.chooseNeed(parsed.need);
+    }
     if (answer && !parsed) {
       // An FAQ answer or a polite "I only help with…": show it, then ask again.
       this.say(answer);
       return this.askNeed();
     }
+    this.analytics.track('chat_not_understood', { category: this.step });
     this.say('Sorry, I did not catch that. Could you pick the closest one?');
     this.askNeed();
   }
@@ -240,6 +253,7 @@ export class ChatWidget {
     }
     this.typing.set(false);
     this.step = 'done';
+    this.analytics.track('chat_results', { label: items.length ? 'found' : 'none', value: items.length });
     const name = this.categoryName().get(this.need) ?? 'help';
     if (!items.length) {
       return this.say(
@@ -281,6 +295,7 @@ export class ChatWidget {
     if (!text || this.typing()) return;
     this.draft.set('');
     if (isCrisis(text)) {
+      this.analytics.track('chat_crisis_rule');
       this.user(text);
       return this.showCrisis();
     }
@@ -320,8 +335,16 @@ export class ChatWidget {
 
   private async think(text: string): Promise<string | null> {
     this.typing.set(true);
+    const started = performance.now();
     try {
-      return await this.brain.ask(text);
+      const answer = await this.brain.ask(text);
+      // Only what kind of answer and how long it took. Never the message or the answer's text.
+      this.analytics.track('chat_model_answer', {
+        category: this.step,
+        label: modelOutcome(answer),
+        value: Math.round(performance.now() - started),
+      });
+      return answer;
     } finally {
       this.typing.set(false);
     }

@@ -1,0 +1,28 @@
+<div class="page">
+  <mat-icon class="icon" aria-hidden="true">task_alt</mat-icon>
+  <h1 class="cc-heading">Thank you for reaching out</h1>
+  <p class="lead">We’ve received your request to list your organization. Here’s what happens next.</p>
+
+  <ol class="steps">
+    <li>
+      <strong>Confirm your email</strong>
+      <span>
+        Look for a message from CARES Connects @if (email(); as address) { at <b>{{ address }}</b> } and open the link
+        inside within 7 days. Check your spam folder if you don’t see it.
+      </span>
+    </li>
+    <li>
+      <strong>We check the details</strong>
+      <span>We review your website and information, and we may call to confirm them.</span>
+    </li>
+    <li>
+      <strong>Your listing goes live</strong>
+      <span>Once it’s approved, people looking for help can find you in the directory.</span>
+    </li>
+  </ol>
+
+  <div class="actions">
+    <a routerLink="/resources" class="cc-btn orange small">See all listings</a>
+    <a routerLink="/" class="home">Back to home</a>
+  </div>
+</div>

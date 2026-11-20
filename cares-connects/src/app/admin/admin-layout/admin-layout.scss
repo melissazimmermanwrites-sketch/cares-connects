@@ -63,3 +63,24 @@
   font: var(--mat-sys-label-small);
   line-height: 18px;
 }
+
+// On phones the links scroll sideways inside the bar, rather than widening the whole page.
+.bar {
+  overflow: hidden;
+}
+
+.nav {
+  flex: 0 1 auto;
+  min-width: 0;
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.brand {
+  flex: none;
+}
+
+.spacer {
+  flex: 1 0 0;
+}

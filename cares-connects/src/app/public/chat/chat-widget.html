@@ -29,7 +29,7 @@
             <ul class="results">
               @for (item of r.items; track item.id) {
                 <li class="result">
-                  <a class="name" [routerLink]="['/resource', item.id]">{{ item.name }}</a>
+                  <a class="name" [routerLink]="resourceLink(item)">{{ item.name }}</a>
                   <span class="area">{{ serviceArea(item) }}</span>
                   <span class="actions">
                     @if (tel(item.phone); as href) { <a [href]="href">Call {{ item.phone }}</a> }
